@@ -8,6 +8,7 @@ export class UserRepository extends AbstractRepository<User> {
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
   ) {
+    
     super(userModel);
   }
 }

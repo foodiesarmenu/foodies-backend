@@ -6,8 +6,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { DashboardStrategy } from './stratigies/dashboard.strategy';
 import { LocalStrategy } from './stratigies/local.strategy';
-import { UserRepository } from 'src/models';
-import { UserFactoryService } from './factory/user.factory';
 import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
 
 @Module({
@@ -33,7 +31,7 @@ import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
     UserMongoModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, DashboardStrategy, UserFactoryService],
+  providers: [AuthService, LocalStrategy, DashboardStrategy],
   exports: [AuthService]
 })
 export class AuthModule { }

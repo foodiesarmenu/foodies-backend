@@ -4,7 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy, 'local-admin') {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local-client') {
   constructor(private authService: AuthService) {
     super({
       usernameField: 'email',
@@ -12,7 +12,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local-admin') {
   }
 
   async validate(username: string, password: string): Promise<any> {
-    const user = await this.authService.validateAdmin(username, password);
+    const user = await this.authService.validateClient(username, password);
 
     if (!user) {
       throw new UnauthorizedException('User not exist');

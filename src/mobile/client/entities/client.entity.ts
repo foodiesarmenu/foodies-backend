@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export class User {
+export class Client {
   readonly _id?: mongoose.Types.ObjectId;
   name: string;
   email: string;
@@ -12,6 +12,4 @@ export class User {
   isActive?: boolean;
   dateOfBirth: Date;
   type?: string;
-  isEmailVerified?: boolean;
-  isPhoneVerified?: boolean;
 }
