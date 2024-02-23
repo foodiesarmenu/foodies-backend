@@ -4,6 +4,7 @@ import {
   IsDate,
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
@@ -14,37 +15,45 @@ import { GENDER } from '../../../common/constants/gender.constant';
 export class CreateClientDto {
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   countryCode: string;
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   phoneNumber: string;
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])/gm, {
     message:
       'Password must be between 6 and 64 characters long with 1 special character and capital character each',
   })
   @MinLength(6)
   @MaxLength(64)
+  @IsNotEmpty()
   password: string;
 
   @ApiProperty()
   @IsEnum(GENDER)
+  @IsNotEmpty()
   gender: string;
 
   @ApiProperty()
   @Transform(({ value }) => new Date(value))
   @IsDate()
+  @IsNotEmpty()
   dateOfBirth: Date;
 }
 

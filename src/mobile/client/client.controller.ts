@@ -23,7 +23,7 @@ export class ClientController {
     const createClientResponse = new CreateResponse<Client>();
     try {
       const client = await this.clientFactoryService.createNewClient(
-        createClientDto,
+        createClientDto,//body
       );
       const createdClient = await this.clientService.create(client);
       createClientResponse.success = true;

@@ -1,4 +1,4 @@
-export const generateMessage = (entity) => ({
+export const generateMessage = (entity: string) => ({
     AlreadyExists: `${entity} already exists!`,
     NotFound: `${entity} not found!`,
     FailedToCreate: `Failed to create ${entity}!`,

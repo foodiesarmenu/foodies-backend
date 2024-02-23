@@ -20,7 +20,7 @@ export class ClientService {
     throw error;
   }
 
-  
+
   public async create(client: Client) {
     try {
       const clientExists = await this.clientRepository.exists({
@@ -33,9 +33,7 @@ export class ClientService {
         throw new ConflictException(message.user.AlreadyExists);
       }
 
-      await this.clientRepository.create(client);
-
-      const userCreated = await this.findOne(client.email);
+      const userCreated = await this.clientRepository.create(client);
 
       if (!userCreated) {
         throw new BadRequestException(message.user.FailedToCreate);
