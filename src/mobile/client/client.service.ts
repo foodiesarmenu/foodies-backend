@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { omit } from 'lodash';
+import { NotFoundError } from 'rxjs';
 import { message } from 'src/common/constants/message.constant';
 import { Client, ClientRepository } from 'src/models';
 
@@ -33,9 +34,8 @@ export class ClientService {
         throw new ConflictException(message.user.AlreadyExists);
       }
 
-      await this.clientRepository.create(client);
+      const userCreated = await this.clientRepository.create(client);
 
-      const userCreated = await this.findOne(client.email);
 
       if (!userCreated) {
         throw new BadRequestException(message.user.FailedToCreate);
@@ -47,11 +47,65 @@ export class ClientService {
     }
   }
 
-  public async findOne(email: string) {
+
+
+
+  // ********************************* update user data *********************************  
+  public async updateOne(id: string, updatedClientData: Partial<Client>) {
     try {
-      return await this.clientRepository.getOne({ email });
+      console.log(id);
+
+      const existingClient = await this.clientRepository.getOne({ _id: id });
+      console.log(existingClient);
+
+      if (!existingClient) {
+        throw new BadRequestException(message.user.NotFound);
+      }
+      const updatedClient = await this.clientRepository.update({ _id: id }, updatedClientData, {new: true});
+      if (!updatedClient) {
+        throw new BadRequestException(message.user.FailedToUpdate);
+      }
+      return updatedClient;
     } catch (error) {
       this.handleError(error);
     }
   }
+  // ********************************* update user data *********************************  
+
+
+  // *****************************  get one user *******************************
+  public async getOneUser(id: string) {
+    try {
+      const user = await this.clientRepository.getOne({ _id: id });
+      if (!user) {
+        throw new BadRequestException(message.user.NotFound);
+      }
+      return user;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  // *****************************  get one user *******************************
+
+
+  public async deleteUser(id: string) {
+    try {
+      const existUser = await this.clientRepository.getOne({ _id: id });
+      if (!existUser) {
+        throw new BadRequestException(message.user.NotFound);
+      }
+      const deletedUser = await this.clientRepository.delete({ _id: id });
+      return deletedUser
+
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+
+
 }
+
+
+

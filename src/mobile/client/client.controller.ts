@@ -1,14 +1,14 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import { Public } from '../../common/decorators/public.decorator';
-import { CreateResponse } from '../../common/dto/response.dto';
+import { CreateResponse, UpdateResponse } from '../../common/dto/response.dto';
 import { ClientFactoryService } from './factory/client.factory';
 import { ClientService } from './client.service';
-import { CreateClientDto } from './dtos';
+import { CreateClientDto, UpdateClientDto } from './dtos';
 import { Client } from 'src/models';
 
-@Controller('dashboard/client')
+@Controller('mobile/client')
 @ApiTags(swagger.MobileUser)
 export class ClientController {
   constructor(
@@ -34,4 +34,42 @@ export class ClientController {
     }
     return createClientResponse;
   }
+
+
+  @Put('updateUser/:id')
+  async update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+    const updateClientResponse = new UpdateResponse<Client>();
+    try {
+      const updatedClient = await this.clientService.updateOne(id, updateClientDto);
+      updateClientResponse.success = true;
+      updateClientResponse.data = updatedClient;
+    } catch (error) {
+      updateClientResponse.success = false;
+      throw error;
+    }
+    return updateClientResponse;
+  }
+
+
+  @Get('getUser/:id')
+  async getOneUser(@Param('id') id: string) {
+    try {
+      const user = await this.clientService.getOneUser(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  @Delete("DeleteUser/:id")
+  async deleteUser(@Param('id') id: string) {
+    try {
+      const user = await this.clientService.deleteUser(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
