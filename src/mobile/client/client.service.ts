@@ -21,7 +21,7 @@ export class ClientService {
     throw error;
   }
 
-  
+
   public async create(client: Client) {
     try {
       const clientExists = await this.clientRepository.exists({
