@@ -3,9 +3,10 @@ import {
   ConflictException,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { omit } from 'lodash';
-import { NotFoundError } from 'rxjs';
+import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Client, ClientRepository } from 'src/models';
 
@@ -20,7 +21,6 @@ export class ClientService {
     this.logger.error(error);
     throw error;
   }
-
 
   public async create(client: Client) {
     try {
@@ -47,57 +47,80 @@ export class ClientService {
     }
   }
 
-
-
-
-  // ********************************* update user data *********************************  
-  public async updateOne(id: string, updatedClientData: Partial<Client>) {
+  public async findAll(query: FindAllQuery) {
     try {
-      console.log(id);
+      const clients = await this.clientRepository.getAll(
+        { isDeleted: false },
+        query,
+      );
+      return clients;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
 
-      const existingClient = await this.clientRepository.getOne({ _id: id });
-      console.log(existingClient);
+  public async findClient(clientId: string) {
+    try {
+      const client = await this.clientRepository.getOne({
+        _id: clientId,
+        isDeleted: false,
+      });
 
-      if (!existingClient) {
-        throw new BadRequestException(message.user.NotFound);
+      if (!client) {
+        throw new NotFoundException(message.user.NotFound);
       }
-      const updatedClient = await this.clientRepository.update({ _id: id }, updatedClientData, {new: true});
+
+      return omit(client, ['password']) as unknown as Client;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  public async update(clientId: string, client: Client) {
+    try {
+      const clientExists = await this.clientRepository.exists({
+        _id: clientId,
+      });
+
+      if (!clientExists) {
+        throw new NotFoundException(message.user.NotFound);
+      }
+
+      const updatedClient = await this.clientRepository.update(
+        { _id: clientId },
+        client,
+        { new: true },
+      );
+
       if (!updatedClient) {
         throw new BadRequestException(message.user.FailedToUpdate);
       }
-      return updatedClient;
-    } catch (error) {
-      this.handleError(error);
-    }
-  }
-  // ********************************* update user data *********************************  
 
-
-  // *****************************  get one user *******************************
-  public async getOneUser(id: string) {
-    try {
-      const user = await this.clientRepository.getOne({ _id: id });
-      if (!user) {
-        throw new BadRequestException(message.user.NotFound);
-      }
-      return user;
+      return omit(updatedClient, ['password']) as unknown as Client;
     } catch (error) {
       this.handleError(error);
     }
   }
 
-  // *****************************  get one user *******************************
-
-
-  public async deleteUser(id: string) {
+  public async delete(clientId: string) {
     try {
-      const existUser = await this.clientRepository.getOne({ _id: id });
-      if (!existUser) {
-        throw new BadRequestException(message.user.NotFound);
-      }
-      const deletedUser = await this.clientRepository.delete({ _id: id });
-      return deletedUser
+      const clientExists = await this.clientRepository.exists({
+        _id: clientId,
+      });
 
+      if (!clientExists) {
+        throw new NotFoundException(message.user.NotFound);
+      }
+
+      const clientDeleted = await this.clientRepository.update(
+        { _id: clientId, isDeleted: false },
+        { isDeleted: true },
+        { new: true, lean: true },
+      );
+
+      if (!clientDeleted) {
+        throw new NotFoundException(message.user.FailedToDelete);
+      }
     } catch (error) {
       this.handleError(error);
     }
