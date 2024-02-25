@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService>(ConfigService);
   const port = config.get('port');
-
+  console.log(port)
   const document = SwaggerModule.createDocument(app, swaggerUi);
   SwaggerModule.setup('api-docs', app, document);
 

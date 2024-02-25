@@ -8,5 +8,6 @@ export const generateMessage = (entity: string) => ({
 
 export const message = {
     user: generateMessage('User'),
+    restaurant: generateMessage('Restaurant'),
     meal: generateMessage('Meal'),
 };

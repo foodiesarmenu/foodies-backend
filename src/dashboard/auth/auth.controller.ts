@@ -1,21 +1,18 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import { Public } from '../../common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login-customer.dto';
 
-@ApiTags(swagger.MobileAuth)
-@Controller('mobile/auth')
-export class AuthController {
-  constructor(
-    private authService: AuthService,
-  ) { }
+@ApiTags(swagger.DashboardAuth)
+@Controller('dashboard/auth')
+export class AuthAdminController {
+  constructor(private authService: AuthService) { }
 
-  @ApiOperation({ summary: 'Login' })
   @Public()
-  @UseGuards(AuthGuard('local-client'))
+  @UseGuards(AuthGuard('local-admin'))
   @ApiBody({
     type: LoginDto,
   })
