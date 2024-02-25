@@ -3,4 +3,9 @@ export const swagger = {
   MobileAuth: 'Mobile Auth',
   MobileUser: 'Mobile User',
 
+
+
+  //Dashboard
+  DashboardRestaurant: 'Dashboard Restaurant Operations',
+
 };

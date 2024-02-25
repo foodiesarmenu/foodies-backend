@@ -12,4 +12,5 @@ export class Client {
   isActive?: boolean;
   dateOfBirth: Date;
   type?: string;
+  
 }
