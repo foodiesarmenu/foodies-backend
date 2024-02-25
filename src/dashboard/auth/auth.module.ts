@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
+import { AdminModule } from '../admin/admin.module';
+import { AuthAdminController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { MobileStrategy } from './stratigies/mobile.strategy';
+import { DashboardStrategy } from './stratigies/dashboard.strategy';
 import { LocalStrategy } from './stratigies/local.strategy';
-import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
 
 @Module({
   imports: [
@@ -28,10 +28,9 @@ import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
         };
       },
     }),
-    UserMongoModule,
+    AdminModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, MobileStrategy],
-  exports: [AuthService]
+  controllers: [AuthAdminController],
+  providers: [AuthService, LocalStrategy, DashboardStrategy],
 })
-export class AuthModule { }
+export class AuthAdminModule { }

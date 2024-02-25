@@ -1,4 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import { Public } from '../../common/decorators/public.decorator';
@@ -8,7 +12,7 @@ import { ClientService } from './client.service';
 import { CreateClientDto } from './dtos';
 import { Client } from 'src/models';
 
-@Controller('dashboard/client')
+@Controller('mobile/client')
 @ApiTags(swagger.MobileUser)
 export class ClientController {
   constructor(

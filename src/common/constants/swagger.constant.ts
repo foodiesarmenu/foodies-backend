@@ -7,5 +7,9 @@ export const swagger = {
 
   //Dashboard
   DashboardRestaurant: 'Dashboard Restaurant Operations',
+  DashboardAuth: 'Auth Dashboard Operations',
+  Dashboard: 'Admin Dashboard Operations',
+
+
 
 };

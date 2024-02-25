@@ -21,15 +21,17 @@ import { dashboardAppModule } from './dashboard/dashboard.module';
         useUnifiedTopology: true,
       }),
     }),
-    MobileAppModule,
-    dashboardAppModule
+
+    dashboardAppModule,
+    MobileAppModule
+
   ],
   controllers: [],
   providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule { }

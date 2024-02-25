@@ -7,6 +7,7 @@ export type RestaurantDocument = Restaurant & Document;
 @Schema({
   timestamps: true,
 })
+
 export class Restaurant {
   readonly _id?: Types.ObjectId;
 
