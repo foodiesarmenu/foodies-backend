@@ -21,8 +21,10 @@ import { dashboardAppModule } from './dashboard/dashboard.module';
         useUnifiedTopology: true,
       }),
     }),
+
     dashboardAppModule,
     MobileAppModule
+
   ],
   controllers: [],
   providers: [

@@ -9,4 +9,7 @@ export const swagger = {
   DashboardRestaurant: 'Dashboard Restaurant Operations',
   DashboardAuth: 'Auth Dashboard Operations',
   Dashboard: 'Admin Dashboard Operations',
+
+
+
 };

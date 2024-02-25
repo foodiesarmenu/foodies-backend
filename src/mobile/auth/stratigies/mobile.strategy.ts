@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
 @Injectable()
+
 export class MobileStrategy extends PassportStrategy(Strategy, 'mobile') {
   constructor(private configService: ConfigService) {
     super({

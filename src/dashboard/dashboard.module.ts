@@ -5,5 +5,7 @@ import { AuthAdminModule } from './auth/auth.module';
 
 @Module({
     imports: [RestaurantModule, AdminModule, AuthAdminModule]
+
+
 })
 export class dashboardAppModule { }
