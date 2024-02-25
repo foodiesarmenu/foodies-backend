@@ -8,3 +8,9 @@ export * from './client/client.schema';
 
 export * from './restaurant/restaurant.repository';
 export * from './restaurant/restaurant.schema';
+
+export * from './client/client.repository';
+export * from './client/client.schema';
+
+export * from './meal/meal.repository';
+export * from './meal/meal.schema';

@@ -6,6 +6,8 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
 import { dashboardAppModule } from './dashboard/dashboard.module';
+import { VendorModule } from './vendor/vendor-app.module';
+
 
 @Module({
   imports: [
@@ -22,9 +24,9 @@ import { dashboardAppModule } from './dashboard/dashboard.module';
       }),
     }),
 
+
     dashboardAppModule,
     MobileAppModule
-
   ],
   controllers: [],
   providers: [
