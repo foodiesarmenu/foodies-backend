@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
+import { VendorModule } from './vendor/vendor-app.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MobileAppModule } from './mobile/mobile-app.module';
       }),
     }),
     MobileAppModule,
+    VendorModule,
   ],
   controllers: [],
   providers: [
