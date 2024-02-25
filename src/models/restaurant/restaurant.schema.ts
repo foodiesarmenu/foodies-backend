@@ -5,8 +5,7 @@ import { CITY } from 'src/common';
 export type RestaurantDocument = Restaurant & Document;
 
 @Schema({
-  timestamps: true,
-})
+  timestamps: true,})
 export class Restaurant {
   readonly _id?: Types.ObjectId;
 

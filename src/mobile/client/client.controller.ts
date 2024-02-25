@@ -8,7 +8,7 @@ import { ClientService } from './client.service';
 import { CreateClientDto } from './dtos';
 import { Client } from 'src/models';
 
-@Controller('dashboard/client')
+@Controller('mobile/client')
 @ApiTags(swagger.MobileUser)
 export class ClientController {
   constructor(
