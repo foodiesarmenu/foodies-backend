@@ -4,7 +4,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { DashboardStrategy } from './stratigies/dashboard.strategy';
+import { DashboardStrategy } from './stratigies/mobile.strategy';
 import { LocalStrategy } from './stratigies/local.strategy';
 import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
 

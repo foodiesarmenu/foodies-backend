@@ -6,8 +6,8 @@ import { Restaurant, RestaurantDocument } from './restaurant.schema';
 export class RestaurantRepository extends AbstractRepository<Restaurant> {
   constructor(
     @InjectModel(Restaurant.name)
-    private readonly restModel: Model<RestaurantDocument>,
+    private readonly restaurantModel: Model<RestaurantDocument>,
   ) {
-    super(restModel);
+    super(restaurantModel);
   }
 }

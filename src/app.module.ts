@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
-import { AddRestaurantModule } from './dashboard-admin/add-restaurant/add-restaurant.module';
+import { dashboardAppModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -13,16 +13,16 @@ import { AddRestaurantModule } from './dashboard-admin/add-restaurant/add-restau
       load: [configuration],
       isGlobal: true,
     }),
-     MongooseModule.forRootAsync({
-       inject: [ConfigService],
-       useFactory: (configService: ConfigService) => ({
-         uri: configService.get('database').url,
-         useNewUrlParser: true,
-         useUnifiedTopology: true,
-       }),
-     }),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('database').url,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+    }),
     MobileAppModule,
-    AddRestaurantModule,
+    dashboardAppModule
   ],
   controllers: [],
   providers: [
@@ -32,4 +32,4 @@ import { AddRestaurantModule } from './dashboard-admin/add-restaurant/add-restau
     // },
   ],
 })
-export class AppModule {}
+export class AppModule { }
