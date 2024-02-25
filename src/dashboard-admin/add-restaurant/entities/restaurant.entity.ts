@@ -1,16 +1,16 @@
 import mongoose from 'mongoose';
 
-export class Client {
+export class Restaurant {
   readonly _id?: mongoose.Types.ObjectId;
   name: string;
   email: string;
-  countryCode: string;
   phoneNumber: string;
   password: string;
-  gender: string;
   isDeleted?: boolean;
   isActive?: boolean;
-  dateOfBirth: Date;
-  type?: string;
-  
+  registerationDate: Date;
+  address?: string;
+  avatar?: string;
+  canDeliver: boolean;
+  city: string;
 }
