@@ -1,15 +1,16 @@
 import { Meal } from 'src/models';
-import { UpdateMealDto, createMealDto } from '../dtos/index';
+import { UpdateMealDto, CreateMealDto } from '../dtos/index';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MealFactoryService {
-  async createNewMeal(createMealDto: createMealDto) {
+  async createNewMeal(createMealDto: CreateMealDto) {
     const newMeal = new Meal();
-    newMeal.name = createMealDto.name;
-    newMeal.price = createMealDto.price;
-    newMeal.description = createMealDto.description;
     newMeal.image = createMealDto.image;
+    newMeal.name = createMealDto.name;
+    newMeal.description = createMealDto.description;
+    newMeal.price = createMealDto.price;
+    newMeal.currency = createMealDto.currency;
     newMeal.rate = createMealDto.rate;
     newMeal.tags = createMealDto.tags;
 
@@ -18,11 +19,11 @@ export class MealFactoryService {
 
   updateMeal(updateMealDto: UpdateMealDto) {
     const newMeal = new Meal();
+    newMeal.image = updateMealDto.image && updateMealDto.image;
     newMeal.name = updateMealDto.name && updateMealDto.name;
     newMeal.price = updateMealDto.price && updateMealDto.price;
-    newMeal.description =
-      updateMealDto.description && updateMealDto.description;
-    newMeal.image = updateMealDto.image && updateMealDto.image;
+    newMeal.currency = updateMealDto.currency && updateMealDto.currency;
+    newMeal.description = updateMealDto.description && updateMealDto.description;
     newMeal.rate = updateMealDto.rate && updateMealDto.rate;
     newMeal.tags = updateMealDto.tags && updateMealDto.tags;
 

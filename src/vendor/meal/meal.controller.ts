@@ -5,79 +5,97 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
+  Query,
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateResponse, Public, swagger } from 'src/common';
-import { createMealDto } from './dtos';
+import {
+  CreateResponse,
+  FindAllQuery, FindAllResponse,
+  FindOneResponse,
+  RemoveResponse,
+  UpdateResponse,
+  swagger
+} from 'src/common';
+import { CreateMealDto, UpdateMealDto } from './dtos';
 import { Meal } from 'src/models';
 
-@Controller('meal')
-@ApiTags(swagger.VendorMeal)
+@Controller('dashboard/restaurants/meal')
+@ApiTags(swagger.RestaurantMeal)
 export class MealController {
   constructor(
-    private readonly MealService: MealService,
-    private readonly MealFactoryService: MealFactoryService,
-  ) {}
+    private readonly mealService: MealService,
+    private readonly mealFactoryService: MealFactoryService,
+  ) { }
 
-  @ApiOperation({ summary: 'Register a new meal' })
-  @Public()
-  @Post('AddMeal')
-  async AddMeal(@Body() createMealDto: createMealDto) {
+  @ApiOperation({ summary: 'Create new meal' })
+  @Post()
+  async Create(@Body() createMealDto: CreateMealDto) {
     const createMealResponse = new CreateResponse<Meal>();
     try {
-      const meal = await this.MealFactoryService.createNewMeal(createMealDto);
-      const createdMeal = await this.MealService.create(meal);
+      const meal =
+        await this.mealFactoryService.createNewMeal(createMealDto);
+
+      const createdMeal = await this.mealService.create(meal);
       createMealResponse.success = true;
       createMealResponse.data = createdMeal;
     } catch (error) {
       createMealResponse.success = false;
       throw error;
     }
+
     return createMealResponse;
   }
 
   @ApiOperation({ summary: 'Get all meals' })
-  @Public()
-  @Get('GetMeals')
-  async GetMeal() {
-    const getMealsResponse = new CreateResponse<Meal[]>();
+  @Get()
+  async getMeals(@Query() query: FindAllQuery) {
+    const getMealsResponse = new FindAllResponse<Meal>();
     try {
-      const meals = await this.MealService.getAllMeals();
+      const meals = await this.mealService.getAllMeals(query);
       getMealsResponse.success = true;
-      getMealsResponse.data = meals;
+      getMealsResponse.data = meals.data;
+      getMealsResponse.currentPage = meals.currentPage;
+      getMealsResponse.numberOfPages = meals.numberOfPages;
+      getMealsResponse.numberOfRecords = meals.numberOfRecords;
     } catch (error) {
       getMealsResponse.success = false;
       throw error;
     }
+
     return getMealsResponse;
   }
 
-  @ApiOperation({ summary: 'Get meal by id' })
-  @Public()
-  @Get('GetMealById/:id')
-  async GetMealById(@Param('id') id: string) {
-    const getMealByIdResponse = new CreateResponse<Meal>();
+  @ApiOperation({ summary: 'Get meal' })
+
+  @Get(':mealId')
+  async getMeal(@Param('mealId') mealId: string) {
+    const getMealResponse = new FindOneResponse<Meal>();
     try {
-      const meal = await this.MealService.getMealById(id);
-      getMealByIdResponse.success = true;
-      getMealByIdResponse.data = meal;
+      const meal = await this.mealService.findMeal(mealId);
+      getMealResponse.success = true;
+      getMealResponse.data = meal;
     } catch (error) {
-      getMealByIdResponse.success = false;
+      getMealResponse.success = false;
       throw error;
     }
-    return getMealByIdResponse;
+    return getMealResponse;
   }
 
-  @ApiOperation({ summary: 'Update meal by id' })
-  @Public()
-  @Put('UpdateMeal/:id')
-  async UpdateMeal(@Param('id') id: string, @Body() meal: Partial<Meal>) {
-    const updateMealResponse = new CreateResponse<Meal>();
+  @ApiOperation({ summary: 'Update meal' })
+  @Patch(':mealId')
+  async update(
+    @Body() updateMealDto: UpdateMealDto,
+    @Param('mealId') mealId: string,
+  ) {
+    const updateMealResponse = new UpdateResponse<Meal>();
     try {
-      const updatedMeal = await this.MealService.updateMeal(id, meal);
+
+      const meal = this.mealFactoryService.updateMeal(updateMealDto);
+
+      const updatedMeal = await this.mealService.updateMeal(mealId, meal);
       updateMealResponse.success = true;
       updateMealResponse.data = updatedMeal;
     } catch (error) {
@@ -87,15 +105,13 @@ export class MealController {
     return updateMealResponse;
   }
 
-  @ApiOperation({ summary: 'Delete meal by id' })
-  @Public()
-  @Delete('DeleteMeal/:id')
-  async DeleteMeal(@Param('id') id: string) {
-    const deleteMealResponse = new CreateResponse<Meal>();
+  @ApiOperation({ summary: 'Delete meal' })
+  @Delete(':mealId')
+  async deleteMeal(@Param('mealId') mealId: string) {
+    const deleteMealResponse = new RemoveResponse();
     try {
-      const deletedMeal = await this.MealService.deleteMeal(id);
+      await this.mealService.deleteMeal(mealId);
       deleteMealResponse.success = true;
-      deleteMealResponse.data = deletedMeal;
     } catch (error) {
       deleteMealResponse.success = false;
       throw error;

@@ -3,13 +3,15 @@ import {
   ConflictException,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
+import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Meal, MealRepository } from 'src/models';
 
 @Injectable()
 export class MealService {
-  constructor(private mealRepository: MealRepository) {}
+  constructor(private mealRepository: MealRepository) { }
 
   private readonly logger = new Logger(MealService.name);
 
@@ -23,7 +25,7 @@ export class MealService {
       const mealCreated = await this.mealRepository.create(meal);
 
       if (!mealCreated) {
-        throw new BadRequestException(message.user.FailedToCreate);
+        throw new BadRequestException(message.meal.FailedToCreate);
       }
 
       return mealCreated;
@@ -32,19 +34,65 @@ export class MealService {
     }
   }
 
-  public async getAllMeals(): Promise<Meal[]> {
-    return this.mealRepository.find();
+  public async getAllMeals(query: FindAllQuery) {
+
+    try {
+      const meals = await this.mealRepository.getAll(
+        { isDeleted: false },
+        query
+      );
+      return meals;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 
-  async getMealById(id: string): Promise<Meal> {
-    return this.mealRepository.findById(id);
+  async findMeal(mealId: string) {
+    return this.mealRepository.getOne({
+      _id: mealId,
+      isDeleted: false
+    });
   }
 
-  async updateMeal(id: string, meal: Partial<Meal>): Promise<Meal> {
-    return this.mealRepository.findByIdAndUpdate(id, meal);
+  async updateMeal(mealId: string, meal: Meal) {
+
+    try {
+      const isExist = await this.mealRepository.getOne({
+        _id: mealId,
+        isDeleted: false
+      });
+
+      if (!isExist) throw new NotFoundException(message.meal.NotFound);
+
+      const updatedMeal = await this.mealRepository.update(
+        { _id: mealId },
+        meal,
+        { new: true }
+      );
+
+      return updatedMeal;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 
-  async deleteMeal(id: string): Promise<void> {
-    return this.mealRepository.findByIdAndDelete(id);
+  async deleteMeal(mealId: string) {
+    try {
+      const isExist = await this.mealRepository.getOne({
+        _id: mealId,
+        isDeleted: false
+      });
+
+      if (!isExist) throw new NotFoundException(message.meal.NotFound);
+
+      const deletedMeal = await this.mealRepository.update(
+        { _id: mealId },
+        { isDeleted: true },
+        { new: true }
+      );
+      return deletedMeal;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 }

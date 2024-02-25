@@ -4,4 +4,4 @@ import { MealModule } from './meal/meal.module';
 @Module({
   imports: [MealModule],
 })
-export class VendorModule {}
+export class VendorModule { }

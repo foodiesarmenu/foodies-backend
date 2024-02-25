@@ -32,4 +32,4 @@ import { VendorModule } from './vendor/vendor-app.module';
     // },
   ],
 })
-export class AppModule {}
+export class AppModule { }

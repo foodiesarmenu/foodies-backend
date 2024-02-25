@@ -7,5 +7,6 @@ export const generateMessage = (entity) => ({
 });
 
 export const message = {
-    user: generateMessage('User')
+    user: generateMessage('User'),
+    meal: generateMessage('Meal'),
 };

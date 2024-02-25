@@ -7,6 +7,9 @@ export type MealDocument = Meal & Document;
   timestamps: true,
 })
 export class Meal {
+
+  readonly _id?: Types.ObjectId;
+
   @Prop({ type: String, required: true })
   image: string;
 
@@ -14,21 +17,21 @@ export class Meal {
   name: string;
 
   @Prop({ type: Number, required: true })
-  price?: number;
+  price: number;
 
-  @Prop({ type: String })
+  @Prop({ type: String, required: true })
+  currency: string;
+
+  @Prop({ type: String, required: true })
   description: string;
 
   @Prop({ type: Number })
-  rate: number;
+  rate?: number;
 
-  @Prop({ type: [String] })
+  @Prop({ type: [String], required: true })
   tags: string[];
 
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean;
-
-  readonly _id?: Types.ObjectId;
 }
-
 export const MealSchema = SchemaFactory.createForClass(Meal);

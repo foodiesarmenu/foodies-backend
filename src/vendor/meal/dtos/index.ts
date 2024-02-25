@@ -1,31 +1,34 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 
-export class createMealDto {
-  @ApiProperty()
-  @IsString()
-  name: string;
+export class CreateMealDto {
 
-  @ApiProperty()
-  @IsString()
-  description: string;
-
-  @ApiProperty()
-  @IsNumber()
-  price: number;
-
-  @ApiProperty()
+  @ApiProperty({ type: 'string' })
   @IsString()
   image: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string' })
+  @IsString()
+  name: string;
+
+  @ApiProperty({ type: 'string' })
+  @IsString()
+  description: string;
+
+  @ApiProperty({ type: 'number' })
+  @IsNumber()
+  price: number;
+
+  @ApiProperty({ type: 'string' })
+  @IsString()
+  currency: string;
+
+  @ApiProperty({ type: 'number' })
   @IsNumber()
   rate: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'array', items: { type: 'string' } })
   @IsArray()
   tags: string[];
 }
-
-export class UpdateMealDto extends PartialType(createMealDto) {}
+export class UpdateMealDto extends PartialType(CreateMealDto) { }
