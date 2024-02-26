@@ -1,12 +1,11 @@
 import {
   Body,
   Controller,
-  Post
+  Post,
   Delete,
   Get,
   Param,
   Patch,
-  Post,
   Query
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';

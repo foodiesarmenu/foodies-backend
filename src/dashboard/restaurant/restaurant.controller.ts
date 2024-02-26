@@ -24,7 +24,7 @@ import { CreateRestaurantDto, UpdateRestaurantDto } from './dto';
 import { FindAllQuery, Role, Roles } from 'src/common';
 
 Roles(Role.ADMIN)
-@ApiTags(swagger.DashboardRestaurant)
+@ApiTags(swagger.AdminAdminRestaurant)
 @Controller('dashboard/admin/restaurant')
 export class RestaurantController {
   constructor(

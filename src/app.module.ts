@@ -26,7 +26,8 @@ import { VendorModule } from './vendor/vendor-app.module';
 
 
     dashboardAppModule,
-    MobileAppModule
+    MobileAppModule,
+    VendorModule
   ],
   controllers: [],
   providers: [

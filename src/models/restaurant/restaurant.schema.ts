@@ -41,6 +41,8 @@ export class Restaurant {
   @Prop({ type: String, default: 'active' })
   status: string;
 
+  @Prop({ type: String, default: 'Restaurant' })
+  type?: string
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
 }
