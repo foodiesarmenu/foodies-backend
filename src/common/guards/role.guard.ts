@@ -5,7 +5,7 @@ import { Role } from '../constants/role.constant';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) { }
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -14,6 +14,8 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
+    console.log(requireRoles, 'requireRoles');
+    
     if (!requireRoles) {
       return true;
     }

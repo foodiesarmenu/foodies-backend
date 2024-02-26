@@ -4,5 +4,6 @@ export const CUSTOMER = 'Customer';
 export enum Role {
   ADMIN = 'Admin',
   RESTAURANT = 'Restaurant',
-  USER = 'User'
+  USER = 'User',
+  Client = 'Client',
 }
