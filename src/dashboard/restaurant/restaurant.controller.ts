@@ -23,8 +23,8 @@ import { Restaurant } from 'src/models/restaurant/restaurant.schema';
 import { CreateRestaurantDto, UpdateRestaurantDto } from './dto';
 import { FindAllQuery, Role, Roles } from 'src/common';
 
-Roles(Role.ADMIN)
-@ApiTags(swagger.DashboardRestaurant)
+@Roles(Role.ADMIN)
+@ApiTags(swagger.AdminAdminRestaurant)
 @Controller('dashboard/admin/restaurant')
 export class RestaurantController {
   constructor(

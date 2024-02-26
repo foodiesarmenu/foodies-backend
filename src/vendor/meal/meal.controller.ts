@@ -16,13 +16,16 @@ import {
   FindAllQuery, FindAllResponse,
   FindOneResponse,
   RemoveResponse,
+  Role,
+  Roles,
   UpdateResponse,
   swagger
 } from 'src/common';
 import { CreateMealDto, UpdateMealDto } from './dtos';
 import { Meal } from 'src/models';
 
-@Controller('dashboard/restaurants/meal')
+@Roles(Role.RESTAURANT)
+@Controller('dashboard/restaurant/meal')
 @ApiTags(swagger.RestaurantMeal)
 export class MealController {
   constructor(
