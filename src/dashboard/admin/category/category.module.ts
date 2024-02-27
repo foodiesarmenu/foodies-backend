@@ -17,4 +17,4 @@ import { CategoryController } from './category.controller';
   providers: [CategoryService, CategoryFactoryService, CategoryRepository],
   exports: [CategoryService, CategoryRepository],
 })
-export class RestaurantModule { }
+export class CategoryModule { }
