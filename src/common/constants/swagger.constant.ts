@@ -5,6 +5,7 @@ export const swagger = {
 
   //Dashboard
   AdminAdminRestaurant: 'Admin Dashboard Restaurant Operations',
+  AdminCategory : 'Admin Dashboard Category operations',
   DashboardAuth: 'Auth Dashboard Operations',
   Dashboard: 'Admin Dashboard Operations',
 
