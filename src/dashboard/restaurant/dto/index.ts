@@ -7,7 +7,7 @@ import {
     IsEnum,
     IsMongoId,
 } from 'class-validator';
-import { CITY } from '../../../common/constants/cities.constants';
+import { CITY } from '../../../common/constants/city.constants';
 import { SchemaTypes, Types } from 'mongoose';
 
 

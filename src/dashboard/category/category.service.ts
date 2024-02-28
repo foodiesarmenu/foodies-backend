@@ -5,7 +5,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { omit } from 'lodash';
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Category } from 'src/models/category/category.schema';
@@ -25,26 +24,24 @@ export class CategoryService {
   }
 
 
-  public async create(cat: Category) {
+  public async create(category: Category) {
     try {
       const exist = await this.categoryRepository.exists({
-        $or: [
-          { _id: cat._id }
-        ],
+        name: category.name
       });
 
       if (exist) {
         throw new ConflictException(message.category.AlreadyExists);
       }
 
-      const createdCategory = await this.categoryRepository.create(cat);
+      const createdCategory = await this.categoryRepository.create(category);
 
 
       if (!createdCategory) {
-        throw new BadRequestException(message.restaurant.FailedToCreate);
+        throw new BadRequestException(message.category.FailedToCreate);
       }
 
-      return omit(createdCategory, ['password']) as unknown as Category;
+      return createdCategory;
     } catch (error) {
       this.handleError(error);
     }
@@ -53,44 +50,46 @@ export class CategoryService {
 
   public async getAll(query: FindAllQuery) {
     try {
-      const cats = await this.categoryRepository.getAll(
+      const categories = await this.categoryRepository.getAll(
+        { isDeleted: false },
         query
       );
-      return cats;
+      return categories;
     } catch (error) {
       this.handleError(error);
     }
   }
 
-  public async getOne(catId: string) {
+  public async getOne(categoryId: string) {
     try {
-      const cat = await this.categoryRepository.getOne(
+      const category = await this.categoryRepository.getOne(
         {
-          _id: catId
+          _id: categoryId,
+          isDeleted: false
         }
       );
 
-      if (!cat) {
+      if (!category) {
         throw new BadRequestException(message.category.NotFound);
       }
 
-      return cat;
+      return category;
     } catch (error) {
       this.handleError(error);
     }
   }
 
-  public async update(catId: string, category: Category) {
+  public async update(categoryId: string, category: Category) {
     try {
 
       const isExist = await this.categoryRepository.exists({
-        _id: catId
+        _id: categoryId
       });
 
       if (!isExist) throw new NotFoundException(message.category.NotFound);
 
       const categoryUpdated = await this.categoryRepository.update(
-        { _id: catId },
+        { _id: categoryId },
         category,
         { new: true },
       );
@@ -102,21 +101,21 @@ export class CategoryService {
     }
   }
 
-  public async delete(catId: string) {
+  public async delete(categoryId: string) {
     try {
       const isExist = await this.categoryRepository.exists({
-        _id: catId
+        _id: categoryId
       });
 
       if (!isExist) throw new NotFoundException(message.category.NotFound);
 
-      const catDeleted = await this.categoryRepository.update(
-        { _id: catId },
+      const categoryDeleted = await this.categoryRepository.update(
+        { _id: categoryId },
         { isDeleted: true },
         { new: true },
       );
 
-      return catDeleted;
+      return categoryDeleted;
     }
     catch (error) {
       this.handleError(error);
