@@ -7,6 +7,7 @@ import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
 import { dashboardAppModule } from './dashboard/dashboard.module';
 import { VendorModule } from './vendor/vendor-app.module';
+import { RestaurantModule } from './mobile/restaurant/restaurant.module';
 
 
 @Module({
@@ -27,7 +28,7 @@ import { VendorModule } from './vendor/vendor-app.module';
 
     dashboardAppModule,
     MobileAppModule,
-    VendorModule
+    VendorModule,
   ],
   controllers: [],
   providers: [

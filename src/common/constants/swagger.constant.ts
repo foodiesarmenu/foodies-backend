@@ -3,7 +3,7 @@ export const swagger = {
   MobileAuth: 'Mobile Auth Operations',
   MobileUser: 'Mobile User Operations',
   MobileCategory: 'Mobile Category Operations',
-
+  MobileRestaurant: 'Mobile Restaurant Operations',
 
   //Dashboard
   AdminRestaurant: 'Admin Dashboard Restaurant Operations',
