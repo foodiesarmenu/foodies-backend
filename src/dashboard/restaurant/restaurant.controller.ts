@@ -24,7 +24,7 @@ import { CreateRestaurantDto, UpdateRestaurantDto } from './dto';
 import { FindAllQuery, Role, Roles } from 'src/common';
 
 @Roles(Role.ADMIN)
-@ApiTags(swagger.AdminAdminRestaurant)
+@ApiTags(swagger.AdminRestaurant)
 @Controller('dashboard/admin/restaurant')
 export class RestaurantController {
   constructor(
@@ -97,7 +97,7 @@ export class RestaurantController {
     @Body() updateRestaurantDto: UpdateRestaurantDto,
     @Param('restaurantId') restaurantId: string,
   ) {
-    const updateRestaurantIdResponse = new UpdateResponse<Restaurant>();
+    const updateRestaurantResponse = new UpdateResponse<Restaurant>();
     try {
       const restaurant =
         this.restaurantFactoryService.updateRestaurant(updateRestaurantDto);
@@ -106,13 +106,13 @@ export class RestaurantController {
         restaurantId,
         restaurant,
       );
-      updateRestaurantIdResponse.success = true;
-      updateRestaurantIdResponse.data = restaurantUpdated;
+      updateRestaurantResponse.success = true;
+      updateRestaurantResponse.data = restaurantUpdated;
     } catch (error) {
-      updateRestaurantIdResponse.success = false;
+      updateRestaurantResponse.success = false;
       throw error;
     }
-    return updateRestaurantIdResponse;
+    return updateRestaurantResponse;
   }
 
   @ApiOperation({ summary: 'Delete restaurant' })
