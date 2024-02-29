@@ -24,7 +24,7 @@ import { CreateClientDto, UpdateClientDto } from './dtos';
 import { Client } from 'src/models';
 import { FindAllQuery, Role, Roles } from 'src/common';
 
-@Roles(Role.Client)
+
 @Controller('mobile/client')
 @ApiTags(swagger.MobileUser)
 export class ClientController {

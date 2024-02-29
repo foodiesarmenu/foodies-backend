@@ -19,7 +19,7 @@ import { RestaurantModule } from './mobile/restaurant/restaurant.module';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database').url,
+        uri: configService.get('onlineDatabase').url,
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),

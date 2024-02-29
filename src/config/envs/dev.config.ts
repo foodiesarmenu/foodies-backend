@@ -9,6 +9,9 @@ export default () => ({
   database: {
     url: process.env.MONGODB_URL,
   },
+  onlineDatabase: {
+    url: process.env.ONLINE_MONGODB_URL,
+  },
   access: {
     ADMIN_PUBLIC_KEY: process.env.ADMIN_PUBLIC_KEY,
     ADMIN_PRIVATE_KEY: process.env.ADMIN_PRIVATE_KEY,
