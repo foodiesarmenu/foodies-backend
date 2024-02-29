@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import { json, urlencoded } from 'express';
-import { AppModule } from './app.module'; 
+import { AppModule } from './app.module';
 import { RestLoggingInterceptor } from './blocks/interceptors/rest-logging';
 import { swaggerUi } from './config/docs/swagger.config';
 
@@ -24,7 +24,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(port, () => {
+  await app.listen(port || 8000, () => {
     console.warn(`Server running on port ${port}`);
   });
 }
