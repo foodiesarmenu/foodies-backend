@@ -9,4 +9,7 @@ export default () => ({
   database: {
     url: process.env.MONGODB_URL,
   },
+  onlineDatabase: {
+    url: process.env.ONLINE_MONGODB_URL,
+  },
 });
