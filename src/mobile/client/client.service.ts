@@ -47,6 +47,21 @@ export class ClientService {
     }
   }
 
+  // sakrrrrrrrrrr
+
+  public async getUserData(userId: string) {
+    try {
+      let user = await this.clientRepository.getOne({ _id: userId })
+      if (!user) {
+        throw new NotFoundException(message.user.NotFound);
+      }
+      return user
+    } catch {
+    }
+  }
+    // sakrrrrrrrrrr
+
+
   public async findAll(query: FindAllQuery) {
     try {
       const clients = await this.clientRepository.getAll(

@@ -51,6 +51,22 @@ export class ClientController {
     return createClientResponse;
   }
 
+
+  // sakrrrrrrrrrr
+  @ApiOperation({ summary: 'get client data' })
+  @Get(":clientId")
+  async getUserData(@Param('clientId') clientId: string) {
+    try {
+      const client = await this.clientService.getUserData(clientId);
+      return client;
+    } catch (error) {
+      throw error;
+    }
+  }
+  // sakrrrrrrrrrr
+
+
+
   @ApiOperation({ summary: 'Get All Clients' })
   @Get()
   async getClients(@Query() query: FindAllQuery) {
