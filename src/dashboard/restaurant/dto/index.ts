@@ -51,10 +51,9 @@ export class CreateRestaurantDto {
     @IsNotEmpty()
     city: string;
 
-    @ApiProperty({ description: 'The category of the restaurant', type: String })
-    @IsMongoId()
-    @IsNotEmpty()
-    category: Types.ObjectId;
+    @ApiProperty({ description: 'The category of the restaurant', type: [SchemaTypes.ObjectId] })
+    @IsMongoId({ each: true })
+    category: Types.ObjectId[];
 
     @ApiProperty({ description: 'The status of the restaurant', type: String, default: 'active' })
     status: string;

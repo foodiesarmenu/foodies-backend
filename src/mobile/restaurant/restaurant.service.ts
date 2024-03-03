@@ -14,11 +14,12 @@ export class RestaurantService {
         throw error;
     }
 
-    getAll(query: FindAllQuery) {
+    public async getAll(query: FindAllQuery) {
+
         try {
-            const restaurant = this.restaurantRepository.getAll(
+            const restaurant = await this.restaurantRepository.getAll(
                 { isDeleted: false },
-                query
+                { populate: [{ path: 'category', select: 'name' }], ...query },
             );
             return restaurant;
         } catch (error) {

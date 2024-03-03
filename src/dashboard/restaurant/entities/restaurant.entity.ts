@@ -11,7 +11,7 @@ export class Restaurant {
   password: string;
   canDeliver: boolean;
   city: string;
-  category: Types.ObjectId;
+  category: Types.ObjectId[];
   status: string;
   isDeleted?: boolean;
 }

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, SchemaTypes, Types } from 'mongoose';
 import { CITY } from 'src/common';
 
 export type RestaurantDocument = Restaurant & Document;
@@ -35,14 +35,15 @@ export class Restaurant {
   @Prop({ type: String, enum: CITY, required: true })
   city: string;
 
-  @Prop({ type: Types.ObjectId, required: true })
-  category: Types.ObjectId;
+  @Prop({ type: [{ type: SchemaTypes.ObjectId, ref: 'Category' }], required: true })
+  category: Types.ObjectId[];
 
   @Prop({ type: String, default: 'active' })
   status: string;
 
   @Prop({ type: String, default: 'Restaurant' })
   type?: string
+
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
 }
