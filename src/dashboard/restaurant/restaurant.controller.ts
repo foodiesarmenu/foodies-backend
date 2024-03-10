@@ -6,7 +6,8 @@ import {
   Query,
   Param,
   Patch,
-  Delete
+  Delete,
+  UseInterceptors
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -22,6 +23,8 @@ import { RestaurantService } from './restaurant.service';
 import { Restaurant } from 'src/models/restaurant/restaurant.schema';
 import { CreateRestaurantDto, UpdateRestaurantDto } from './dto';
 import { FindAllQuery, Role, Roles } from 'src/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadInterceptor } from 'src/blocks/interceptors/image-upload.interceptor';
 
 @Roles(Role.ADMIN)
 @ApiTags(swagger.AdminRestaurant)
@@ -34,6 +37,7 @@ export class RestaurantController {
 
   @ApiOperation({ summary: 'Register a new restaurant' })
   @Post()
+  @UseInterceptors(FileInterceptor('image'), ImageUploadInterceptor)
   async create(@Body() createNewRestaurant: CreateRestaurantDto) {
     const createRestaurantResponse = new CreateResponse<Restaurant>();
 

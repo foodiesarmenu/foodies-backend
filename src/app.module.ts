@@ -7,7 +7,6 @@ import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
 import { dashboardAppModule } from './dashboard/dashboard.module';
 import { VendorModule } from './vendor/vendor-app.module';
-import { RestaurantModule } from './mobile/restaurant/restaurant.module';
 
 
 @Module({
@@ -15,7 +14,8 @@ import { RestaurantModule } from './mobile/restaurant/restaurant.module';
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
-    }),
+    },
+    ),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -24,8 +24,6 @@ import { RestaurantModule } from './mobile/restaurant/restaurant.module';
         useUnifiedTopology: true,
       }),
     }),
-
-
     dashboardAppModule,
     MobileAppModule,
     VendorModule,

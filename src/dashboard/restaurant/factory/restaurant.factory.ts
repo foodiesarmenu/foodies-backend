@@ -12,7 +12,8 @@ export class RestaurantFactoryService {
     restaurant.name = createRestaurantDTO.name;
     restaurant.email = createRestaurantDTO.email;
     restaurant.address = createRestaurantDTO.address;
-    restaurant.avatar = createRestaurantDTO.avatar;
+    restaurant.description = createRestaurantDTO.description;
+    restaurant.image = createRestaurantDTO.image;
     restaurant.phoneNumber = createRestaurantDTO.phoneNumber;
     restaurant.password = hashedPassword;
     restaurant.canDeliver = createRestaurantDTO.canDeliver;
@@ -29,7 +30,8 @@ export class RestaurantFactoryService {
     updateArticle.name = updateRestaurant.name;
     updateArticle.email = updateRestaurant.email;
     updateArticle.address = updateRestaurant.address;
-    updateArticle.avatar = updateRestaurant.avatar;
+    updateArticle.description = updateRestaurant.description;
+    updateArticle.image = updateRestaurant.image;
     updateArticle.phoneNumber = updateRestaurant.phoneNumber;
     updateArticle.canDeliver = updateRestaurant.canDeliver;
     updateArticle.city = updateRestaurant.city;

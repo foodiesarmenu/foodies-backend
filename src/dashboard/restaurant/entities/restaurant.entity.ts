@@ -6,10 +6,11 @@ export class Restaurant {
   name: string;
   email: string;
   address: string;
-  avatar: string;
+  description: string;
+  image: string;
   phoneNumber: string;
   password: string;
-  canDeliver: boolean;
+  canDeliver?: boolean;
   city: string;
   category: Types.ObjectId[];
   status: string;

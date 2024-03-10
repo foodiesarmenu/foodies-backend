@@ -20,8 +20,11 @@ export class Restaurant {
   @Prop({ type: String, required: true })
   address: string;
 
+  @Prop({ type: String })
+  description: string
+
   @Prop({ type: String, required: true })
-  avatar: string;
+  image: string;
 
   @Prop({ type: String, required: true })
   phoneNumber: string;
@@ -30,7 +33,7 @@ export class Restaurant {
   password: string;
 
   @Prop({ type: Boolean, default: false })
-  canDeliver: boolean;
+  canDeliver?: boolean;
 
   @Prop({ type: String, enum: CITY, required: true })
   city: string;
