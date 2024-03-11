@@ -1,6 +1,8 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { v2 as cloudinary } from 'cloudinary';
+import { imageMimeTypes } from 'src/common';
+
 
 cloudinary.config({
     cloud_name: 'dlvndc08a',
@@ -15,6 +17,18 @@ export class ImageUploadInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
         const file = request.file;
+        console.log(file, 'file');
+
+        if (!file) {
+            throw new BadRequestException('Image is required');
+        }
+
+        console.log(file.mimetype.split('/')[1], 'file.mimetype.split(/)');
+        console.log(imageMimeTypes.includes(file.mimetype.split('/')[1]), 'imageMimeTypes.includes');
+
+        if (!imageMimeTypes.includes(file.mimetype.split('/')[1])) {
+            throw new BadRequestException('Invalid image type');
+        }
 
         return new Observable(observer => {
             cloudinary.uploader.upload_large(file.path, { resource_type: "image", folder: this.folder }, (error, result) => {

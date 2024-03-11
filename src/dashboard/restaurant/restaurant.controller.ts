@@ -7,7 +7,8 @@ import {
   Param,
   Patch,
   Delete,
-  UseInterceptors
+  UseInterceptors,
+  UsePipes
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -37,7 +38,7 @@ export class RestaurantController {
 
   @ApiOperation({ summary: 'Register a new restaurant' })
   @Post()
-  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('restaurant'))
+  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('category'))
   async create(@Body() createNewRestaurant: CreateRestaurantDto) {
     const createRestaurantResponse = new CreateResponse<Restaurant>();
 

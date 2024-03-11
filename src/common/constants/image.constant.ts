@@ -1,1 +1,1 @@
-export const imageMimeTypes = ['.jpg', '.jpeg', '.png', '.bmp'];
+export const imageMimeTypes = ['jpg', 'jpeg', 'png', 'bmp'];
