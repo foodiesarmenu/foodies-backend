@@ -14,7 +14,8 @@ import { VendorModule } from './vendor/vendor-app.module';
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
-    }),
+    },
+    ),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -23,8 +24,6 @@ import { VendorModule } from './vendor/vendor-app.module';
         useUnifiedTopology: true,
       }),
     }),
-
-
     dashboardAppModule,
     MobileAppModule,
     VendorModule,
