@@ -6,7 +6,8 @@ import {
   Query,
   Param,
   Patch,
-  Delete
+  Delete,
+  UseInterceptors
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -22,6 +23,8 @@ import { CategoryService } from './category.service';
 import { Category } from 'src/models/category/category.schema';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { FindAllQuery, Role, Roles } from 'src/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadInterceptor } from 'src/blocks/interceptors/image-upload.interceptor';
 
 @Roles(Role.ADMIN)
 @ApiTags(swagger.AdminCategory)
@@ -33,6 +36,7 @@ export class CategoryController {
   ) { }
 
   @ApiOperation({ summary: 'add new category' })
+  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('category'))
   @Post()
   async create(@Body() createNewCategory: CreateCategoryDto) {
     const createCategoryResponse = new CreateResponse<Category>();

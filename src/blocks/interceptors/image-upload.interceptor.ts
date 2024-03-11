@@ -10,22 +10,28 @@ cloudinary.config({
 
 @Injectable()
 export class ImageUploadInterceptor implements NestInterceptor {
+    constructor(private folder: string) { }
+
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
         const file = request.file;
-        console.log(file, 'file');
 
         return new Observable(observer => {
-            cloudinary.uploader.upload_large(file.path, { resource_type: "image", folder: 'restaurant' }, (error, result) => {
-                console.log(file);
-
+            cloudinary.uploader.upload_large(file.path, { resource_type: "image", folder: this.folder }, (error, result) => {
                 if (error) {
                     observer.error(error);
                 } else {
                     request.body.image = result.url;
+                    request.body.imagePublicId = result.public_id; // store the public ID of the uploaded image
                     next.handle().subscribe({
                         next: (response) => observer.next(response),
-                        error: (error) => observer.error(error),
+                        error: (error) => {
+                            // delete the uploaded image
+                            cloudinary.uploader.destroy(request.body.imagePublicId, (error, result) => {
+                                console.log(result, 'image deleted');
+                            });
+                            observer.error(error);
+                        },
                         complete: () => observer.complete(),
                     });
                 }

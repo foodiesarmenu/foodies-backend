@@ -37,7 +37,7 @@ export class RestaurantController {
 
   @ApiOperation({ summary: 'Register a new restaurant' })
   @Post()
-  @UseInterceptors(FileInterceptor('image'), ImageUploadInterceptor)
+  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('restaurant'))
   async create(@Body() createNewRestaurant: CreateRestaurantDto) {
     const createRestaurantResponse = new CreateResponse<Restaurant>();
 
