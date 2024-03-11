@@ -4,7 +4,7 @@ export const swagger = {
   MobileUser: 'Mobile User Operations',
   MobileCategory: 'Mobile Category Operations',
   MobileRestaurant: 'Mobile Restaurant Operations',
-
+  MobileFavorite: 'Mobile Favorite Operations',
   //Dashboard
   AdminRestaurant: 'Admin Dashboard Restaurant Operations',
   AdminCategory: 'Admin Dashboard Category operations',

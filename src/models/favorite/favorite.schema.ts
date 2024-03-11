@@ -10,14 +10,14 @@ export class Favorite {
 
     readonly _id?: Types.ObjectId;
 
-    @Prop({ type: SchemaTypes.ObjectId, ref: 'User', required: true })
-    userId: Types.ObjectId;
+    @Prop({ type: SchemaTypes.ObjectId, ref: 'Client', required: true })
+    user: Types.ObjectId;
 
     @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
-    restaurantId: Types.ObjectId;
+    restaurant: Types.ObjectId;
 
     @Prop({ type: Boolean, default: false })
     isDeleted?: boolean
 }
 
-export const FavouiteSchema = SchemaFactory.createForClass(Favorite);
+export const FavoriteSchema = SchemaFactory.createForClass(Favorite);
