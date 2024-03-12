@@ -5,6 +5,8 @@ import { omit } from 'lodash';
 import { ClientRepository } from 'src/models';
 import { Client } from '../client/entities/client.entity';
 
+import { ChangePasswordDto } from './dto/ChangePasswordDto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -52,5 +54,25 @@ export class AuthService {
 
   public signJwt(payload: any) {
     return this.jwtService.sign(payload);
+  }
+
+  async changePassword(user: Client, changePasswordDto: ChangePasswordDto) {
+    try {
+      const userId = user._id;      
+      const { currentPassword, newPassword } = changePasswordDto;
+      const userFromDb = await this.clientRepository.getOne(userId);
+      if (!userFromDb) {
+        throw new Error('User not found');
+      }
+      if (!bcrypt.compareSync(currentPassword, userFromDb.password)) {
+        throw new Error('Current password is incorrect');
+      }
+      const hashedNewPassword = bcrypt.hashSync(newPassword, 10);
+      await this.clientRepository.update({ _id: userId }, { password: hashedNewPassword }, {});
+      return { message: 'Password changed successfully' };
+    } catch (error) {
+      this.logger.error(error.message);
+      throw error;
+    }
   }
 }
