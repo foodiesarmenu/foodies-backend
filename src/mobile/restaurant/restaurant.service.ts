@@ -27,4 +27,20 @@ export class RestaurantService {
         }
     }
 
+    public async getAllByCategory(categoryId: string) {
+        try {
+            const restaurants = await this.restaurantRepository.getAll(
+                {
+                    isDeleted: false,
+                    category: categoryId
+                },
+                { populate: [{ path: 'category', select: 'name' }] },
+            );
+            return restaurants;
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+
 }
