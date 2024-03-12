@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { omit } from 'lodash';
@@ -6,6 +6,7 @@ import { ClientRepository } from 'src/models';
 import { Client } from '../client/entities/client.entity';
 
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
+import { message } from 'src/common/constants/message.constant';
 
 @Injectable()
 export class AuthService {
@@ -56,23 +57,37 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async changePassword(user: Client, changePasswordDto: ChangePasswordDto) {
+  async changePassword(changePasswordDto: ChangePasswordDto, userId: string) {
     try {
-      const userId = user._id;      
-      const { currentPassword, newPassword } = changePasswordDto;
-      const userFromDb = await this.clientRepository.getOne(userId);
-      if (!userFromDb) {
-        throw new Error('User not found');
+
+
+      if (changePasswordDto.newPassword !== changePasswordDto.confirmPassword) {
+        throw new BadRequestException(message.user.PasswordNotMatch)
       }
-      if (!bcrypt.compareSync(currentPassword, userFromDb.password)) {
-        throw new Error('Current password is incorrect');
+
+      const user = await this.clientRepository.getOne({ _id: userId });
+
+      if (!user) {
+        throw new ConflictException(message.user.NotFound);
       }
-      const hashedNewPassword = bcrypt.hashSync(newPassword, 10);
-      await this.clientRepository.update({ _id: userId }, { password: hashedNewPassword }, {});
-      return { message: 'Password changed successfully' };
-    } catch (error) {
-      this.logger.error(error.message);
-      throw error;
+
+      if (!bcrypt.compareSync(changePasswordDto.currentPassword, user.password)) {
+        throw new ConflictException(message.user.InvalidPassword);
+      }
+
+      const hashedPassword = bcrypt.hashSync(changePasswordDto.newPassword, 10);
+      const updatedUser = await this.clientRepository.update(
+        { _id: userId },
+        { password: hashedPassword },
+        { new: true }
+      );
+      console.log(updatedUser, 'updatedUser');
+
+      return updatedUser;
+    } catch (error: any) {
+      this.handleError(error);
     }
   }
+
+
 }

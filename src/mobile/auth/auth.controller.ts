@@ -6,7 +6,8 @@ import { Public } from '../../common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login-customer.dto';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
-import { Client } from '../client/entities/client.entity';
+import { changePasswordResponse } from 'src/common';
+import { Client } from 'src/models';
 
 @ApiTags(swagger.MobileAuth)
 @Controller('mobile/auth')
@@ -27,10 +28,25 @@ export class AuthController {
   }
 
 
-  @ApiOperation({ summary: 'Change Password' })
+
+  @ApiOperation({ summary: 'Change password' })
   @Patch('change-password')
-  async changePassword(@Request() req: Express.Request, @Body() changePasswordDto: ChangePasswordDto) {
-    return this.authService.changePassword(req.user as Client, changePasswordDto);
+  async changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Request() req: Express.Request
+  ) {
+    const PasswordResponse = new changePasswordResponse<Client>();
+    try {
+      const password = await this.authService.changePassword(
+        changePasswordDto,
+        req.user['_id']);
+      PasswordResponse.success = true;
+      PasswordResponse.data = password;
+    } catch (error) {
+      PasswordResponse.success = false;
+      throw error;
+    }
+    return PasswordResponse;
   }
 }
 
