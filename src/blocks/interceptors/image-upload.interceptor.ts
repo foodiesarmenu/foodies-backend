@@ -23,6 +23,7 @@ export class ImageUploadInterceptor implements NestInterceptor {
             throw new BadRequestException('Image is required');
         }
 
+
         if (!imageMimeTypes.includes(file.mimetype.split('/')[1])) {
             throw new BadRequestException('Invalid image type');
         }

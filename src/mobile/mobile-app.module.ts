@@ -5,9 +5,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/common';
 import { CategoryModule } from './category/category.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
-  imports: [AuthModule, ClientModule, RestaurantModule,CategoryModule],
+  imports: [
+    AuthModule,
+    ClientModule,
+    RestaurantModule,
+    CategoryModule,
+    FavoriteModule,
+  ],
   providers: [
     {
       provide: APP_GUARD,
