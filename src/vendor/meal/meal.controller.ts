@@ -8,6 +8,8 @@ import {
   Patch,
   Post,
   Query,
+  Request,
+  UseInterceptors,
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -23,6 +25,8 @@ import {
 } from 'src/common';
 import { CreateMealDto, UpdateMealDto } from './dtos';
 import { Meal } from 'src/models';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadInterceptor } from 'src/blocks/interceptors/image-upload.interceptor';
 
 @Roles(Role.RESTAURANT)
 @Controller('dashboard/restaurant/meal')
@@ -35,11 +39,18 @@ export class MealController {
 
   @ApiOperation({ summary: 'Create new meal' })
   @Post()
-  async Create(@Body() createMealDto: CreateMealDto) {
+  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('meal'))
+  async Create(
+    @Body() createMealDto: CreateMealDto,
+    @Request() req: Express.Request,
+  ) {
     const createMealResponse = new CreateResponse<Meal>();
     try {
       const meal =
-        await this.mealFactoryService.createNewMeal(createMealDto);
+        await this.mealFactoryService.createNewMeal(
+          createMealDto,
+          req.user['_id']
+        );
 
       const createdMeal = await this.mealService.create(meal);
       createMealResponse.success = true;
