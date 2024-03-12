@@ -1,7 +1,10 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateMealDto {
+
+
 
   @ApiProperty({ type: 'string' })
   @IsString()
@@ -16,7 +19,7 @@ export class CreateMealDto {
   description: string;
 
   @ApiProperty({ type: 'number' })
-  @IsNumber()
+  @IsString()
   price: number;
 
   @ApiProperty({ type: 'string' })
@@ -24,8 +27,24 @@ export class CreateMealDto {
   currency: string;
 
   @ApiProperty({ type: 'number' })
-  @IsNumber()
+  @IsString()
   rate: number;
+
+  @ApiProperty({ type: 'number' })
+  @IsString()
+  calories: number;
+
+  @ApiProperty({ type: 'number' })
+  @IsString()
+  protein: number;
+
+  @ApiProperty({ type: 'number' })
+  @IsString()
+  fat: number;
+
+  @ApiProperty({ type: 'number' })
+  @IsString()
+  carbohydrates: number;
 
   @ApiProperty({ type: 'array', items: { type: 'string' } })
   @IsArray()

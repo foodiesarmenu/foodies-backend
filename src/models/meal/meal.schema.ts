@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, SchemaTypes, Types } from 'mongoose';
 
 export type MealDocument = Meal & Document;
 
@@ -9,6 +9,9 @@ export type MealDocument = Meal & Document;
 export class Meal {
 
   readonly _id?: Types.ObjectId;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
+  restaurant: Types.ObjectId
 
   @Prop({ type: String, required: true })
   image: string;
@@ -31,7 +34,20 @@ export class Meal {
   @Prop({ type: [String], required: true })
   tags: string[];
 
+  @Prop({ type: Number, required: true })
+  calories: number;
+
+  @Prop({ type: Number, required: true })
+  protein: number;
+
+  @Prop({ type: Number, required: true })
+  fat: number;
+
+  @Prop({ type: Number, required: true })
+  carbohydrates: number;
+
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean;
 }
+
 export const MealSchema = SchemaFactory.createForClass(Meal);

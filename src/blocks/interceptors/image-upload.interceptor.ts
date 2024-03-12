@@ -23,9 +23,6 @@ export class ImageUploadInterceptor implements NestInterceptor {
             throw new BadRequestException('Image is required');
         }
 
-        console.log(file.mimetype.split('/')[1], 'file.mimetype.split(/)');
-        console.log(imageMimeTypes.includes(file.mimetype.split('/')[1]), 'imageMimeTypes.includes');
-
         if (!imageMimeTypes.includes(file.mimetype.split('/')[1])) {
             throw new BadRequestException('Invalid image type');
         }
