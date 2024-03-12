@@ -1,6 +1,17 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query
+} from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
-import { FindAllQuery, FindAllResponse, Role, Roles, swagger } from 'src/common';
+import {
+  FindAllQuery,
+  FindAllResponse,
+  Role,
+  Roles,
+  swagger
+} from 'src/common';
 import { Restaurant } from 'src/models';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -29,4 +40,27 @@ export class RestaurantController {
 
     return getAllRestaurantsResponse;
   }
+
+  @ApiOperation({ summary: 'Get all restaurants' })
+  @Get(':categoryId')
+  async search(
+    @Param('categoryId') categoryId: string,
+  ) {
+    const getAllRestaurantsResponse = new FindAllResponse<Restaurant>();
+
+    try {
+      const restaurants = await this.restaurantService.getAllByCategory(categoryId);
+      getAllRestaurantsResponse.success = true;
+      getAllRestaurantsResponse.data = restaurants.data;
+      getAllRestaurantsResponse.currentPage = restaurants.currentPage;
+      getAllRestaurantsResponse.numberOfPages = restaurants.numberOfPages;
+      getAllRestaurantsResponse.numberOfRecords = restaurants.numberOfRecords;
+    } catch (error) {
+      getAllRestaurantsResponse.success = false;
+      throw error;
+    }
+
+    return getAllRestaurantsResponse;
+  }
+
 }
