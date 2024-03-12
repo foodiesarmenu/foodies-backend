@@ -6,6 +6,7 @@ import { RolesGuard } from 'src/common';
 import { CategoryModule } from './category/category.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { FavoriteModule } from './favorite/favorite.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FavoriteModule } from './favorite/favorite.module';
     RestaurantModule,
     CategoryModule,
     FavoriteModule,
+    MenuModule
   ],
   providers: [
     {
