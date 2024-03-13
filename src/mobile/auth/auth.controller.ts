@@ -27,8 +27,6 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-
-
   @ApiOperation({ summary: 'Change password' })
   @Patch('change-password')
   async changePassword(
