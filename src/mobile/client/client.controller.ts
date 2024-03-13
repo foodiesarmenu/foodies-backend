@@ -6,7 +6,8 @@ import {
   Get,
   Param,
   Patch,
-  Query
+  Query,
+  Request
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -89,10 +90,10 @@ export class ClientController {
   }
 
   @ApiOperation({ summary: 'Update client' })
-  @Patch(':clientId')
+  @Patch()
   async updateClient(
     @Body() updateClientDto: UpdateClientDto,
-    @Param('clientId') clientId: string,
+    @Request() req: Express.Request
   ) {
     const updateClientResponse = new UpdateResponse<Client>();
     try {
@@ -100,14 +101,14 @@ export class ClientController {
         this.clientFactoryService.updateClient(updateClientDto);
 
       const updateClient = await this.clientService.update(
-        clientId,
+        req.user['_id'],
         client,
       );
       updateClientResponse.success = true;
       updateClientResponse.data = updateClient;
     } catch (error) {
       updateClientResponse.success = false;
-      throw error;
+      throw error; 
     }
     return updateClientResponse;
   }
