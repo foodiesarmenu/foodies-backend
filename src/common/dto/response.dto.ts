@@ -46,5 +46,4 @@ export class OTPResponse {
 export class changePasswordResponse<T> {
   success: boolean;
   data: T;
-  PasswordResponse: changePasswordResponse<import("e:/Graduation-Project/Pahse-2/foodies-backend/src/models/index").Client>;
 }
