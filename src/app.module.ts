@@ -1,3 +1,5 @@
+import { CartModule } from './mobile/cart/cart.module';
+import { CartController } from './mobile/cart/cart.controller';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -10,6 +12,7 @@ import { VendorModule } from './vendor/vendor-app.module';
 
 @Module({
   imports: [
+    CartModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -27,7 +30,8 @@ import { VendorModule } from './vendor/vendor-app.module';
     MobileAppModule,
     VendorModule,
   ],
-  controllers: [],
+  controllers: [
+    CartController,],
   providers: [
     {
       provide: APP_GUARD,

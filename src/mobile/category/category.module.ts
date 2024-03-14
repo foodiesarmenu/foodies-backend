@@ -11,7 +11,9 @@ import { CategoryController } from './category.controller';
       name: Category.name,
       schema: CategorySchema,
     },
-  ]),],
+  ]
+  )
+    ,],
   controllers: [CategoryController],
   providers: [CategoryService, CategoryRepository],
   exports: [CategoryService, CategoryRepository],

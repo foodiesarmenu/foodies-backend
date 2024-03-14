@@ -11,10 +11,7 @@ import { CategoryRepository } from 'src/models/category/category.repository';
 @Injectable()
 export class CategoryService {
   constructor(private categoryRepository: CategoryRepository) { }
-
   private readonly logger = new Logger(CategoryService.name);
-
-
   handleError(error: any) {
     this.logger.error(error);
     throw error;
