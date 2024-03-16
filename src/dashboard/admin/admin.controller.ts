@@ -7,8 +7,7 @@ import { Admin } from '../../models/admin/admin.schema';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dtos';
 import { AdminFactoryService } from './factory/admin.factory';
-import { Role, Roles } from 'src/common';
-@Roles(Role.ADMIN)
+
 @ApiTags(swagger.Dashboard)
 @Controller('dashboard/admin')
 export class AdminController {

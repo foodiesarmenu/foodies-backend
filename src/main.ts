@@ -24,7 +24,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(port || 8000, () => {
+  await app.listen( 8000, () => {
     console.warn(`Server running on port ${port}`);
   });
 }

@@ -6,13 +6,18 @@ import {
 } from '@nestjs/common';
 import { omit } from 'lodash';
 import { Admin, AdminRepository } from '../../models';
+import { message } from 'src/common/constants/message.constant';
 
 @Injectable()
 export class AdminService {
-  constructor(private adminRepository: AdminRepository) {}
+  constructor(private adminRepository: AdminRepository) { }
 
   private readonly logger = new Logger(AdminService.name);
 
+  handleError(error: any) {
+    this.logger.error(error);
+    throw error;
+  }
   public async create(admin: Admin) {
     try {
       const adminExists = await this.adminRepository.exists({
@@ -20,24 +25,22 @@ export class AdminService {
       });
 
       if (adminExists) {
-        throw new ConflictException('Account already exists!');
+        throw new ConflictException(message.user.AlreadyExists);
       }
 
-      await this.adminRepository.create(admin);
+      const userCreated = await this.adminRepository.create(admin);
 
-      const userCreated = await this.findOne(admin.email);
 
       if (!userCreated) {
-        throw new BadRequestException('Failed to create admin');
+        throw new BadRequestException(message.user.AlreadyExists);
       }
 
       return omit(userCreated, ['password']) as unknown as Admin;
     } catch (error) {
-      this.logger.error('--Error--', error);
-      throw new BadRequestException('Failed to create admin');
+      this.handleError(error)
     }
   }
-
+  
   public async findOne(email: string) {
     try {
       return await this.adminRepository.getOne({ email });
@@ -46,4 +49,5 @@ export class AdminService {
       throw new BadRequestException(error);
     }
   }
+
 }
