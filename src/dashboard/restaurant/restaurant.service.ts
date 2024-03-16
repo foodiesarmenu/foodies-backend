@@ -55,7 +55,7 @@ export class RestaurantService {
         { isDeleted: false },
         query
       );
-      return restaurants;
+      return omit(restaurants, ['password']);
     } catch (error) {
       this.handleError(error);
     }
@@ -118,7 +118,8 @@ export class RestaurantService {
         { new: true },
       );
 
-      return restaurantDeleted;
+      return this.restaurantRepository.getAll({ isDeleted: false },
+        {});
     }
     catch (error) {
       this.handleError(error);
