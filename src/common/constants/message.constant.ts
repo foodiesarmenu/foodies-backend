@@ -14,5 +14,7 @@ export const message = {
     },
     restaurant: generateMessage('Restaurant'),
     meal: generateMessage('Meal'),
-    category: generateMessage('Category')
+    category: generateMessage('Category'),
+    cart: generateMessage('cart')
+
 };
