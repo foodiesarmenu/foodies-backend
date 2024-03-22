@@ -1,43 +1,22 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, IsMongoId, IsNumber, IsOptional } from 'class-validator';
+import { Types } from 'mongoose';
+
+
+
 
 export class CreateCartDTO {
-    @ApiProperty()
-    @IsNotEmpty()
-    userId: string;
 
     @ApiProperty()
+    @IsMongoId()
     @IsNotEmpty()
-    @IsString()
-    cartItems: [string];
+    meal: Types.ObjectId;
 
     @ApiProperty()
+    @IsMongoId()
     @IsNotEmpty()
-    quantity: Number;
-    
-    @ApiProperty()
-    @IsNotEmpty()
-    price: Number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    totalProductDiscount: Number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    totalPrice: Number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    totalPriceAfterDiscount: Number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    discount: Number;
-
-
+    restaurantId: Types.ObjectId;
 
 }
 
 
-export class UpdateCartDto extends PartialType(CreateCartDTO) { }

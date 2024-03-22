@@ -6,8 +6,8 @@ import { Cart, CartDocument } from './cart.schema';
 export class CartRepository extends AbstractRepository<Cart> {
     constructor(
         @InjectModel(Cart.name)
-        private readonly CartModel: Model<CartDocument>,
+        private readonly cartModel: Model<CartDocument>,
     ) {
-        super(CartModel);
+        super(cartModel);
     }
 }

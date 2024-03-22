@@ -1,6 +1,3 @@
-import { CartModule } from './mobile/cart/cart.module';
-import { CartService } from './mobile/cart/cart.service';
-import { CartController } from './mobile/cart/cart.controller'; // Correct the path to the CartController file
 
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,7 +12,7 @@ import { CartFactoryService } from './mobile/cart/factory/cart.factory';
 
 @Module({
   imports: [
-    CartModule,
+
     CartFactoryService,
     ConfigModule.forRoot({
       load: [configuration],
@@ -34,11 +31,9 @@ import { CartFactoryService } from './mobile/cart/factory/cart.factory';
     MobileAppModule,
     VendorModule,
   ],
-  controllers: [
-    CartController,],
+
   providers: [
-    CartService,
-    CartFactoryService,
+
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

@@ -1,25 +1,34 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseInterceptors } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateResponse, FindAllQuery, FindAllResponse, FindOneResponse, RemoveResponse, Role, Roles, UpdateResponse, swagger } from "src/common";
 import { CartService } from "./cart.service";
-import { CreateCartDTO, UpdateCartDto } from "./dto/cart-dto";
+import { CreateCartDTO } from "./dto/cart-dto";
 import { Cart } from "src/models/cart/cart.schema";
 import { CartFactoryService } from "./factory/cart.factory";
+import { Types } from "mongoose";
+import { ObjectId } from "mongodb";
 
-@Roles(Role.ADMIN)
-@ApiTags(swagger.AdminCategory)
+@Roles(Role.Client)
+@ApiTags(swagger.MobileCart)
 @Controller('mobile/cart')
 export class CartController {
     constructor(
         private readonly cartService: CartService,
         private readonly cartFactoryService: CartFactoryService,
     ) { }
-    @ApiOperation({ summary: 'add new category' })
+
+
+    @ApiOperation({ summary: 'Add Meal To Cart' })
     @Post()
-    async create(@Body() createNewCartDTO: CreateCartDTO) {
+    async create(
+        @Body() createNewCartDTO: CreateCartDTO,
+        @Request() req: Express.Request,
+    ) {
         const createCartResponse = new CreateResponse<Cart>();
         try {
-            const cart = await this.cartFactoryService.createNewCart(createNewCartDTO);
+            const cart = await this.cartFactoryService.createNewCart(createNewCartDTO, req.user['_id']);
+
+            const createdCart = await this.cartService.addMealToCart(cart);
             createCartResponse.success = true;
             createCartResponse.data = cart;
         } catch (error) {
@@ -29,47 +38,55 @@ export class CartController {
         return createCartResponse;
     }
 
-    @ApiOperation({ summary: 'Get cart' })
-    @Get(':cartId')
-    async getOne(@Param('cartId') cartId: string) {
-        const getOneCartResponse = new FindOneResponse<Cart>();
+
+    @ApiOperation({ summary: 'Get Cart' })
+    @Get()
+    async get(
+        @Request() req: Express.Request,
+    ) {
+        const findCartResponse = new FindOneResponse<Cart>();
         try {
-            const category = await this.cartService.getOne(cartId);
-            getOneCartResponse.success = true;
-            getOneCartResponse.data = category;
+            const cart = await this.cartService.getCart(req.user['_id']);
+            console.log(cart);
+
+            findCartResponse.success = true;
+            findCartResponse.data = cart;
         } catch (error) {
-            getOneCartResponse.success = false;
+            findCartResponse.success = false;
             throw error;
         }
-        return getOneCartResponse;
+        return findCartResponse;
     }
-    // async update(
-    //     @Body() updateCartDto: UpdateCartDto,
-    //     @Param('cartId') cartId: string,
-    // ) {
-    //     const updateCartResponce = new UpdateResponse<Cart>(); 
-    //     try {
-    //         const cartUpdate = await this.cartService.update(
-    //             cartId,
-    //             updateCartDto, 
-    //         );
-    //             updateCartResponce.success = true;
-    //         updateCartResponce.data = cartUpdate;
-    //     } catch (error) {
-    //         updateCartResponce.success = false;
-    //         throw error;
-    //     }
-    //     return updateCartResponce;
-    // }
-    
-    @ApiOperation({ summary: 'Delete category' })
+
+    @ApiOperation({ summary: 'Remove Meal From Cart' })
     @Delete(':cartId')
-    async delete(@Param('cartId') cartId: string) {
+    async delete(
+        @Param('cartId') cartId: string,
+        @Request() req: Express.Request,
+    ) {
         const deleteCartResponse = new RemoveResponse();
         try {
-            await this.cartService.delete(cartId);
+            await this.cartService.removeMealFromCart(cartId, req.user['_id']);
 
             deleteCartResponse.success = true;
+
+        } catch (error) {
+            deleteCartResponse.success = false;
+            throw error;
+        }
+        return deleteCartResponse;
+    }
+
+    @ApiOperation({ summary: 'Delete Cart' })
+    @Delete()
+    async deleteCart(
+        @Request() req: Express.Request,
+    ) {
+        const deleteCartResponse = new RemoveResponse();
+        try {
+            await this.cartService.deleteCart(req.user['_id']);
+            deleteCartResponse.success = true;
+
         } catch (error) {
             deleteCartResponse.success = false;
             throw error;

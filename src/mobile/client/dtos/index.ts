@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -25,7 +26,7 @@ export class CreateClientDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   countryCode: string;
 
   @ApiProperty()
@@ -47,13 +48,13 @@ export class CreateClientDto {
 
   @ApiProperty()
   @IsEnum(GENDER)
-  @IsNotEmpty()
+  @IsOptional()
   gender: string;
 
   @ApiProperty()
   @Transform(({ value }) => new Date(value))
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   dateOfBirth: Date;
 }
 
