@@ -11,7 +11,7 @@ export class Promotion {
     readonly _id?: Types.ObjectId;
 
     @Prop({ type: String, required: true })
-    name: string;
+    title: string;
 
     @Prop({ type: String, required: true })
     description: string;
