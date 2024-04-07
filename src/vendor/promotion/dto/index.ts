@@ -16,8 +16,6 @@ export class createPromotionDto {
     @IsString()
     image: string;
 
-    @ApiProperty({ type: SchemaTypes.ObjectId })
-    restaurant: Types.ObjectId;
 }
 
 export class UpdatePromotionDto extends PartialType(createPromotionDto) { }

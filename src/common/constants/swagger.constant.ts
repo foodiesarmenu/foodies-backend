@@ -14,5 +14,5 @@ export const swagger = {
   //Restaurant
   RestaurantMeal: 'Restaurant Meal Operations',
   RestaurantAuth: 'Restaurant Auth Operations',
-
+  RestaurantPromotion: 'Restaurant Promotion Operations',
 };
