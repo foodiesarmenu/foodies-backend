@@ -13,10 +13,10 @@ export class Client {
   email: string;
   address?: string;
   avatar?: string;
-  countryCode: string;
+  countryCode?: string;
   phoneNumber: string;
   password: string;
-  gender: string;
+  gender?: string;
   isDeleted?: boolean;
 
   @Prop({ type: Boolean, default: true })

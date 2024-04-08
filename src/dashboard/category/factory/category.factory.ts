@@ -19,7 +19,7 @@ export class CategoryFactoryService {
     const updatedCategory = new Category();
     updatedCategory.image = updatedCategoryDto.image;
     updatedCategory.name = updatedCategoryDto.name;
-    updatedCategory.description = updatedCategory.description;
+    updatedCategory.description = updatedCategoryDto.description;
 
     return updatedCategory;
   }
