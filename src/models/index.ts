@@ -20,3 +20,6 @@ export * from './category/category.schema';
 
 export * from './favorite/favorite.repository';
 export * from './favorite/favorite.schema';
+
+export * from './promotion/promotion.repository';
+export * from './promotion/promotion.schema';
