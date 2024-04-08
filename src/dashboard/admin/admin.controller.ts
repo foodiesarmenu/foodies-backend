@@ -34,6 +34,20 @@ export class AdminController {
       throw error;
     }
     return createAdminResponse;
-  }
+  }  @ApiOperation({ summary: 'Get admin' })
+  @Get(':email')
+  async getOneAdmin(@Param('email') email: string) {
+    const getOneAdminResponse = new FindOneResponse<Admin>();
+    
+    try {
+      const admin = await this.adminService.findOne(email);
+      getOneAdminResponse.success = true;
+      getOneAdminResponse.data = admin;
+    } catch (error) {
+      getOneAdminResponse.success = false;
+      throw error;
+    }
+    return getOneAdminResponse;
+}
 
 }
