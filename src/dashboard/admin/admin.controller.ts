@@ -35,7 +35,7 @@ export class AdminController {
     }
     return createAdminResponse;
   }  @ApiOperation({ summary: 'Get admin' })
-  @Get(':email')
+  @Get('profile/:email')
   async getOneAdmin(@Param('email') email: string) {
     const getOneAdminResponse = new FindOneResponse<Admin>();
     
