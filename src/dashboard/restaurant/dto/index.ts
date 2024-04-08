@@ -27,10 +27,14 @@ export class CreateRestaurantDto {
     @IsNotEmpty()
     address: string;
 
+
+    @ApiProperty({ description: 'The description of the restaurant', type: String })
+    description: string;
+
     @ApiProperty({ description: 'The avatar of the restaurant', type: String })
     @IsString()
     @IsNotEmpty()
-    avatar: string;
+    image: string;
 
     @ApiProperty({ description: 'The phone number of the restaurant', type: String })
     @IsString()
@@ -43,7 +47,6 @@ export class CreateRestaurantDto {
     password: string;
 
     @ApiProperty({ description: 'Whether the restaurant can deliver or not', type: Boolean })
-    @IsBoolean()
     canDeliver: boolean;
 
     @ApiProperty({ description: 'The city of the restaurant', type: String, enum: CITY })
@@ -51,13 +54,13 @@ export class CreateRestaurantDto {
     @IsNotEmpty()
     city: string;
 
-    @ApiProperty({ description: 'The category of the restaurant', type: String })
-    @IsMongoId()
-    @IsNotEmpty()
-    category: Types.ObjectId;
+    @ApiProperty({ description: 'The category of the restaurant', type: [SchemaTypes.ObjectId] })
+    @IsMongoId({ each: true })
+    category: Types.ObjectId[];
 
     @ApiProperty({ description: 'The status of the restaurant', type: String, default: 'active' })
     status: string;
+
 }
 
 export class UpdateRestaurantDto extends PartialType(CreateRestaurantDto) { }

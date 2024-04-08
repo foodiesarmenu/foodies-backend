@@ -31,5 +31,10 @@ export enum CATEGORY {
   BAKERY = "Bakery",
   BREAKFAST = "Breakfast",
   BRUNCH = "Brunch",
-  SNACKS = "Snacks"
+  SNACKS = "Snacks",
+  SNACKS = "Snacks",
+  Fried_Chicken = "Fried Chicken",
+  Syrian = "Syrian",
+  Waffles = "Waffles",
+  Desserts = "Desserts"
 };

@@ -7,8 +7,13 @@ export const generateMessage = (entity: string) => ({
 });
 
 export const message = {
-    user: generateMessage('User'),
+    user: {
+        ...generateMessage('User'),
+        InvalidPassword: 'Invalid password!',
+        PasswordNotMatch: 'Password and confirm password do not match!',
+    },
     restaurant: generateMessage('Restaurant'),
     meal: generateMessage('Meal'),
-    category : generateMessage('Category')
+    category: generateMessage('Category')
+
 };

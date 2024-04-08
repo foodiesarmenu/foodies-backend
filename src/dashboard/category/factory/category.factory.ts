@@ -4,23 +4,26 @@ import { Category } from '../entities/category.entity';
 
 @Injectable()
 export class CategoryFactoryService {
-  async createNewCategory(createCatDTO: CreateCategoryDto) {
 
-    const category = new Category();
-    category.image = createCatDTO.image;
-    category.name = createCatDTO.name;
-    category.description = createCatDTO.description;
+ 
+  async createNewCategory(createCategoryDto: CreateCategoryDto) {
 
-    return category;
+    const createCategory = new Category();
+    createCategory.image = createCategoryDto.image;
+    createCategory.name = createCategoryDto.name;
+    createCategory.description = createCategoryDto.description;
+
+    return createCategory;
   }
 
 
-  updateCategory(updatedCategory: UpdateCategoryDto) {
-    const updatedCat = new Category();
-    updatedCat.image = updatedCategory.image;
-    updatedCat.name = updatedCategory.name;
-    updatedCat.description = updatedCategory.description;
+  updateCategory(updatedCategoryDto: UpdateCategoryDto) {
+    const updatedCategory = new Category();
+    updatedCategory.image = updatedCategoryDto.image;
+    updatedCategory.name = updatedCategoryDto.name;
+    updatedCategory.description = updatedCategoryDto.description;
 
-    return updatedCat;
+    return updatedCategory;
+
   }
 }

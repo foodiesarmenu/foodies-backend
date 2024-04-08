@@ -4,13 +4,13 @@ export class Client {
   readonly _id?: mongoose.Types.ObjectId;
   name: string;
   email: string;
-  countryCode: string;
+  countryCode?: string;
   phoneNumber: string;
   password: string;
-  gender: string;
+  gender?: string;
   isDeleted?: boolean;
   isActive?: boolean;
-  dateOfBirth: Date;
+  dateOfBirth?: Date;
   type?: string;
   
 }

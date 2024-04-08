@@ -6,7 +6,8 @@ import {
   Get,
   Param,
   Patch,
-  Query
+  Query,
+  Request
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -24,7 +25,7 @@ import { CreateClientDto, UpdateClientDto } from './dtos';
 import { Client } from 'src/models';
 import { FindAllQuery, Role, Roles } from 'src/common';
 
-@Roles(Role.Client)
+
 @Controller('mobile/client')
 @ApiTags(swagger.MobileUser)
 export class ClientController {
@@ -52,78 +53,6 @@ export class ClientController {
     return createClientResponse;
   }
 
-  @ApiOperation({ summary: 'Get All Clients' })
-  @Get()
-  async getClients(@Query() query: FindAllQuery) {
-    const getClientsResponse = new FindAllResponse<Client>();
-    try {
-      const Clients = await this.clientService.findAll(query);
-      getClientsResponse.success = true;
-      getClientsResponse.data = Clients.data;
-      getClientsResponse.currentPage = Clients.currentPage;
-      getClientsResponse.numberOfPages = Clients.numberOfPages;
-      getClientsResponse.numberOfRecords = Clients.numberOfRecords;
-    } catch (error) {
-      getClientsResponse.success = false;
-      throw error;
-    }
-    return getClientsResponse;
-  }
 
-  @ApiOperation({ summary: 'Get Specific client' })
-  @Get(':clientId')
-  async getClient(@Param('clientId') clientId: string) {
-    const getClientResponse = new FindOneResponse<Client>();
-
-    try {
-      const client = await this.clientService.findClient(
-        clientId,
-      );
-      getClientResponse.success = true;
-      getClientResponse.data = client;
-    } catch (error) {
-      getClientResponse.success = false;
-      throw error;
-    }
-    return getClientResponse;
-  }
-
-  @ApiOperation({ summary: 'Update client' })
-  @Patch(':clientId')
-  async updateClient(
-    @Body() updateClientDto: UpdateClientDto,
-    @Param('clientId') clientId: string,
-  ) {
-    const updateClientResponse = new UpdateResponse<Client>();
-    try {
-      const client =
-        this.clientFactoryService.updateClient(updateClientDto);
-
-      const updateClient = await this.clientService.update(
-        clientId,
-        client,
-      );
-      updateClientResponse.success = true;
-      updateClientResponse.data = updateClient;
-    } catch (error) {
-      updateClientResponse.success = false;
-      throw error;
-    }
-    return updateClientResponse;
-  }
-
-  @ApiOperation({ summary: 'Delete Client' })
-  @Delete(':clientId')
-  async deleteClient(@Param('clientId') clientId: string) {
-    const deleteClientResponse = new RemoveResponse();
-    try {
-      await this.clientService.delete(clientId);
-      deleteClientResponse.success = true;
-    } catch (error) {
-      deleteClientResponse.success = false;
-      throw error;
-    }
-    return deleteClientResponse;
-  }
 
 }

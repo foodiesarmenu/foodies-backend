@@ -7,25 +7,22 @@ import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
 import { dashboardAppModule } from './dashboard/dashboard.module';
 import { VendorModule } from './vendor/vendor-app.module';
-import { RestaurantModule } from './mobile/restaurant/restaurant.module';
-
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
-    }),
+    },
+    ),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database').url,
+        uri: configService.get('onlineDatabase').url,
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),
     }),
-
-
     dashboardAppModule,
     MobileAppModule,
     VendorModule,

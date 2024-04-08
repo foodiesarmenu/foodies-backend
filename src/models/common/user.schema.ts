@@ -40,7 +40,7 @@ export class User {
   isPhoneVerified?: boolean;
 
   @Prop({ type: Date })
-  dateOfBirth: Date;
+  dateOfBirth?: Date;
 
   readonly _id?: mongoose.Types.ObjectId;
 }
