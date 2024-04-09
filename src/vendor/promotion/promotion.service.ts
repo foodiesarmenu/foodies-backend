@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Promotion, PromotionRepository } from 'src/models';
-import { createPromotionDto } from './dto';
 import { message } from 'src/common/constants/message.constant';
 import { FindAllQuery } from 'src/common';
 
