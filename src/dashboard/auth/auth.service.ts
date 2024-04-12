@@ -25,9 +25,11 @@ export class AuthService {
 
   public login(user: Express.User) {
     try {
-      const { email, _id, phoneNumber, countryCode, type } = user as Admin;
+      const { name, email, _id, phoneNumber, countryCode, type, image } = user as Admin;
       const payload = {
+        name,
         _id,
+        image,
         email,
         countryCode,
         phoneNumber,
