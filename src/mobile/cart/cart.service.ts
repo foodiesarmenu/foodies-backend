@@ -1,11 +1,12 @@
-import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { FindAllQuery } from 'src/common';
+import {
+    Injectable,
+    Logger,
+    NotFoundException
+} from '@nestjs/common';
 import { message } from 'src/common/constants/message.constant';
-import { Category } from 'src/models/category/category.schema';
 import { CartRepository } from 'src/models/cart/cart.repository';
 import { Cart } from 'src/models/cart/cart.schema';
 import { MealRepository } from 'src/models';
-import { log } from 'console';
 import { Types } from 'mongoose';
 
 @Injectable()
@@ -119,7 +120,6 @@ export class CartService {
     async updateMealQuantity(MealId: string, userId: string, updateCartDTO: number) {
         try {
             const mealExist = await this.findMealById(new Types.ObjectId(MealId));
-            console.log(updateCartDTO, 'updateCartDTO');
 
             if (!mealExist) {
                 throw new NotFoundException(message.meal.NotFound);
@@ -154,7 +154,6 @@ export class CartService {
 
     async removeMealFromCart(MealId: string, userId: Types.ObjectId) {
         try {
-            log(MealId, userId);
             let cartExist = await this.findCartByUserId(userId);
 
             if (!cartExist) {
@@ -168,16 +167,12 @@ export class CartService {
             );
 
             cartExist = await this.findCartByUserId(userId);
-            console.log(cartExist, 'cartExist');
 
             if (!deleteMeal) {
                 throw new NotFoundException(message.meal.NotFound);
             }
 
-            await this.cartRepository.update(
-                { _id: cartExist._id },
-                { totalPrice: this.calcTotalPrice(cartExist) },
-                { new: true });
+            cartExist.totalPrice = this.calcTotalPrice(cartExist)
 
             if (cartExist.discount) {
                 cartExist.totalPriceAfterDiscount = cartExist.totalPrice - (cartExist.totalPrice * cartExist.discount) / 100;
@@ -188,7 +183,7 @@ export class CartService {
                 cartExist,
                 { new: true },
             );
-            console.log(updatedCart, 'updatedCart');
+
 
             if (deleteMeal.cartItems.length === 0) {
                 await this.cartRepository.update({ _id: deleteMeal._id },
