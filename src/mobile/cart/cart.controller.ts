@@ -5,8 +5,6 @@ import { CartService } from "./cart.service";
 import { CreateCartDTO } from "./dto/cart-dto";
 import { Cart } from "src/models/cart/cart.schema";
 import { CartFactoryService } from "./factory/cart.factory";
-import { Types } from "mongoose";
-import { ObjectId } from "mongodb";
 
 @Roles(Role.Client)
 @ApiTags(swagger.MobileCart)
@@ -38,7 +36,6 @@ export class CartController {
         return createCartResponse;
     }
 
-
     @ApiOperation({ summary: 'Get Cart' })
     @Get()
     async get(
@@ -57,6 +54,26 @@ export class CartController {
         }
         return findCartResponse;
     }
+
+    @ApiOperation({ summary: 'Update Meal Quantity,' })
+    @Patch(':mealId')
+    async update(
+        @Param('mealId') mealId: string,
+        @Body() updateCartDTO: number,
+        @Request() req: Express.Request,
+    ) {
+        const updateCartResponse = new UpdateResponse<Cart>();
+        try {
+            const updatedCart = await this.cartService.updateMealQuantity(mealId, req.user['_id'], updateCartDTO);
+            updateCartResponse.success = true;
+            updateCartResponse.data = updatedCart;
+        } catch (error) {
+            updateCartResponse.success = false;
+            throw error;
+        }
+        return updateCartResponse;
+    }
+
 
     @ApiOperation({ summary: 'Remove Meal From Cart' })
     @Delete(':cartId')

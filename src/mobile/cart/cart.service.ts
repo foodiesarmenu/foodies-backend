@@ -1,10 +1,4 @@
-import {
-    BadRequestException,
-    ConflictException,
-    Injectable,
-    Logger,
-    NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Category } from 'src/models/category/category.schema';
@@ -13,7 +7,6 @@ import { Cart } from 'src/models/cart/cart.schema';
 import { MealRepository } from 'src/models';
 import { log } from 'console';
 import { Types } from 'mongoose';
-
 
 @Injectable()
 export class CartService {
@@ -24,18 +17,9 @@ export class CartService {
 
     private readonly logger = new Logger(CartService.name);
 
-
     handleError(error: any) {
         this.logger.error(error);
         throw error;
-    }
-
-    calcTotalPrice(cart: Cart) {
-        let totalPrice = 0;
-        cart.cartItems.forEach(meal => {
-            totalPrice += meal.quantity * meal.price;
-        });
-        cart.totalPrice = totalPrice;
     }
 
     async findMealById(id: Types.ObjectId) {
@@ -53,6 +37,14 @@ export class CartService {
         });
     }
 
+    calcTotalPrice(cart: Cart) {
+        let totalPrice = 0;
+        cart.cartItems.forEach(meal => {
+            totalPrice += meal.quantity * meal.price;
+        });
+        return cart.totalPrice = totalPrice;
+    }
+
     async addMealToCart(cart: Cart) {
         try {
             const meal = await this.findMealById(cart.cartItems[0].meal);
@@ -66,7 +58,11 @@ export class CartService {
                     cartItems: cart.cartItems,
                     restaurantId: cart.restaurantId
                 });
-                this.calcTotalPrice(cartCreated);
+                await this.cartRepository.update(
+                    { _id: cartCreated._id },
+                    { totalPrice: this.calcTotalPrice(cartCreated) },
+                    { new: true });
+
                 return cartCreated;
             }
 
@@ -98,7 +94,6 @@ export class CartService {
     async getCart(userId: Types.ObjectId) {
         try {
             const cart = await this.cartRepository.getOne({
-
                 userId: userId,
                 isDeleted: false
             }, {}, {
@@ -106,7 +101,6 @@ export class CartService {
                     {
                         path: 'cartItems.meal',
                     },
-
                     {
                         path: 'restaurantId',
                         select: '-password'
@@ -122,6 +116,42 @@ export class CartService {
         }
     }
 
+    async updateMealQuantity(MealId: string, userId: string, updateCartDTO: number) {
+        try {
+            const mealExist = await this.findMealById(new Types.ObjectId(MealId));
+            console.log(updateCartDTO, 'updateCartDTO');
+
+            if (!mealExist) {
+                throw new NotFoundException(message.meal.NotFound);
+            }
+
+            let existCart = await this.cartRepository.getOne({ userId: userId })
+
+            const item = existCart.cartItems.find(item => item.meal.toString() == MealId.toString());
+
+            if (item) {
+                item.quantity = updateCartDTO['quantity']
+            }
+
+
+            existCart.totalPrice = this.calcTotalPrice(existCart);
+
+            if (existCart.discount) {
+                existCart.totalPriceAfterDiscount = existCart.totalPrice - (existCart.totalPrice * existCart.discount) / 100 //NOTE - 100-(100*50)/100
+            }
+
+            const updatedCart = await this.cartRepository.update(
+                { _id: existCart._id },
+                existCart,
+                { new: true },
+            );
+
+            return updatedCart
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
     async removeMealFromCart(MealId: string, userId: Types.ObjectId) {
         try {
             log(MealId, userId);
@@ -131,7 +161,6 @@ export class CartService {
                 throw new NotFoundException(message.cart.NotFound);
             }
 
-
             const deleteMeal = await this.cartRepository.update(
                 { _id: cartExist._id },
                 { $pull: { cartItems: { _id: MealId } } },
@@ -139,12 +168,16 @@ export class CartService {
             );
 
             cartExist = await this.findCartByUserId(userId);
+            console.log(cartExist, 'cartExist');
 
             if (!deleteMeal) {
                 throw new NotFoundException(message.meal.NotFound);
             }
 
-            this.calcTotalPrice(deleteMeal);
+            await this.cartRepository.update(
+                { _id: cartExist._id },
+                { totalPrice: this.calcTotalPrice(cartExist) },
+                { new: true });
 
             if (cartExist.discount) {
                 cartExist.totalPriceAfterDiscount = cartExist.totalPrice - (cartExist.totalPrice * cartExist.discount) / 100;
@@ -155,6 +188,7 @@ export class CartService {
                 cartExist,
                 { new: true },
             );
+            console.log(updatedCart, 'updatedCart');
 
             if (deleteMeal.cartItems.length === 0) {
                 await this.cartRepository.update({ _id: deleteMeal._id },
@@ -175,10 +209,8 @@ export class CartService {
                 throw new NotFoundException(message.cart.NotFound);
             }
 
-            const deleteCart = await this.cartRepository.update(
-                { _id: cartExist._id },
-                { isDeleted: true },
-                { new: true },
+            const deleteCart = await this.cartRepository.delete(
+                { _id: cartExist._id }
             );
 
             return deleteCart;
@@ -186,7 +218,4 @@ export class CartService {
             this.handleError(error);
         }
     }
-
-
-
 }
