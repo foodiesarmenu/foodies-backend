@@ -10,6 +10,7 @@ export type AdminDocument = Admin & Document;
 export class Admin {
   readonly _id?: Types.ObjectId;
   name: string;
+  image: string;
   email: string;
   address?: string;
   avatar?: string;
