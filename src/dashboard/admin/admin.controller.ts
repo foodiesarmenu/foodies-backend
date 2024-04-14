@@ -1,12 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, UseInterceptors } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import { Public } from '../../common/decorators/public.decorator';
-import { CreateResponse } from '../../common/dto/response.dto';
+import { CreateResponse, FindOneResponse } from '../../common/dto/response.dto';
 import { Admin } from '../../models/admin/admin.schema';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dtos';
 import { AdminFactoryService } from './factory/admin.factory';
+import { Role, Roles } from 'src/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadInterceptor } from 'src/blocks/interceptors/image-upload.interceptor';
+
 
 @ApiTags(swagger.Dashboard)
 @Controller('dashboard/admin')
@@ -18,6 +22,7 @@ export class AdminController {
 
   @Public()
   @Post()
+  @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('profile'))
   async register(@Body() createAdminDto: CreateAdminDto) {
     const createAdminResponse = new CreateResponse<Admin>();
     try {
@@ -33,4 +38,22 @@ export class AdminController {
     }
     return createAdminResponse;
   }
+
+
+  @ApiOperation({ summary: 'Get admin' })
+  @Get('profile/:email')
+  async getOneAdmin(@Param('email') email: string) {
+    const getOneAdminResponse = new FindOneResponse<Admin>();
+
+    try {
+      const admin = await this.adminService.findOne(email);
+      getOneAdminResponse.success = true;
+      getOneAdminResponse.data = admin;
+    } catch (error) {
+      getOneAdminResponse.success = false;
+      throw error;
+    }
+    return getOneAdminResponse;
+  }
+
 }

@@ -37,7 +37,7 @@ export class CategoryController {
 
   @ApiOperation({ summary: 'add new category' })
   @UseInterceptors(FileInterceptor('image'), new ImageUploadInterceptor('category'))
-  @Post()
+  @Post() 
   async create(@Body() createNewCategory: CreateCategoryDto) {
     const createCategoryResponse = new CreateResponse<Category>();
 

@@ -123,10 +123,14 @@ export class RestaurantController {
   @ApiOperation({ summary: 'Delete restaurant' })
   @Delete(':restaurantId')
   async delete(@Param('restaurantId') restaurantId: string) {
-    const deleteRestaurantResponse = new RemoveResponse();
+    const deleteRestaurantResponse = new FindAllResponse();
     try {
-      await this.restaurantService.delete(restaurantId);
+      const deletedRestaurant = await this.restaurantService.delete(restaurantId);
       deleteRestaurantResponse.success = true;
+      deleteRestaurantResponse.data = deletedRestaurant.data;
+      deleteRestaurantResponse.numberOfPages = deletedRestaurant.numberOfPages;
+      deleteRestaurantResponse.currentPage = deletedRestaurant.currentPage;
+      deleteRestaurantResponse.numberOfRecords = deletedRestaurant.numberOfRecords;
     } catch (error) {
       deleteRestaurantResponse.success = false;
       throw error;
