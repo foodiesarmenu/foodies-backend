@@ -1,3 +1,4 @@
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -7,10 +8,13 @@ import configuration from './config/envs';
 import { MobileAppModule } from './mobile/mobile-app.module';
 import { dashboardAppModule } from './dashboard/dashboard.module';
 import { VendorModule } from './vendor/vendor-app.module';
+import { CartFactoryService } from './mobile/cart/factory/cart.factory';
 import { PromotionModule } from './mobile/promotion/promotion.module';
 
 @Module({
   imports: [
+
+    CartFactoryService,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -29,8 +33,9 @@ import { PromotionModule } from './mobile/promotion/promotion.module';
     VendorModule,
     PromotionModule,
   ],
-  controllers: [],
+
   providers: [
+
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

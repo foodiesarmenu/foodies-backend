@@ -15,5 +15,6 @@ export const message = {
     restaurant: generateMessage('Restaurant'),
     meal: generateMessage('Meal'),
     category: generateMessage('Category'),
+    cart: generateMessage('cart'),
     promotion: generateMessage('Promotion'),
 };

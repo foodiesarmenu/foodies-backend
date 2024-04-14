@@ -21,5 +21,8 @@ export * from './category/category.schema';
 export * from './favorite/favorite.repository';
 export * from './favorite/favorite.schema';
 
+export * from './cart/cart.repository';
+export * from './cart/cart.schema';
+
 export * from './promotion/promotion.repository';
 export * from './promotion/promotion.schema';
