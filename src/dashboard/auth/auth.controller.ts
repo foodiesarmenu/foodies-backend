@@ -20,4 +20,4 @@ export class AuthAdminController {
   async login(@Request() req: Express.Request) {
     return this.authService.login(req.user);
   }
-} 
+}
