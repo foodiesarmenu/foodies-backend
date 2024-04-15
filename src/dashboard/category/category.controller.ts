@@ -45,7 +45,6 @@ export class CategoryController {
       const category = await this.categoryFactoryService.createNewCategory(
         createNewCategory,
       );
-
       const createdCategory = await this.categoryService.create(category);
       createCategoryResponse.success = true;
       createCategoryResponse.data = createdCategory;
