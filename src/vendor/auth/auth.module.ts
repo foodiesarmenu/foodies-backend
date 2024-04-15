@@ -4,10 +4,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { VendorStrategy } from './stratigies/mobile.strategy';
 import { LocalStrategy } from './stratigies/local.strategy';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Restaurant, RestaurantRepository, RestaurantSchema } from 'src/models';
+import { VendorStrategy } from './stratigies/vendor.strategy';
 
 @Module({
   imports: [
