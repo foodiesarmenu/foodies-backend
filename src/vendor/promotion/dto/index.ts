@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
-import { IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
 import { SchemaTypes, Types } from "mongoose";
 
 
@@ -15,6 +15,11 @@ export class createPromotionDto {
     @ApiProperty({ type: 'string' })
     @IsString()
     image: string;
+
+    @ApiProperty({ type: 'boolean' })
+    @IsBoolean()
+    @IsOptional()
+    isActive: boolean;
 
 }
 

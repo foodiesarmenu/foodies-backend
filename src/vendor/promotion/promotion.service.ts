@@ -46,4 +46,27 @@ export class PromotionService {
             this.handleError(error);
         }
     }
+
+    public async update(promotionId: string, promotion: Promotion) {
+        try {
+            console.log(promotionId, promotion);
+            
+            const promotionUpdated = await this.promotionRepository.update(
+                {
+                    _id: promotionId
+                },
+                promotion,
+                { new: true }
+            );
+
+            if (!promotionUpdated) {
+                throw new BadRequestException(message.promotion.FailedToUpdate);
+            }
+
+            return promotionUpdated;
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
 }

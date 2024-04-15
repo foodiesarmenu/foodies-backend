@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  Patch,
   Post,
   Query,
   Request,
@@ -9,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { PromotionService } from './promotion.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateResponse, FindAllQuery, FindAllResponse, Role, Roles, swagger } from 'src/common';
+import { CreateResponse, FindAllQuery, FindAllResponse, Role, Roles, swagger, UpdateResponse } from 'src/common';
 import { PromotionFactoryService } from './factory/promotion.factory';
 import { Promotion } from 'src/models';
-import { createPromotionDto } from './dto';
+import { createPromotionDto, UpdatePromotionDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadInterceptor } from 'src/blocks/interceptors/image-upload.interceptor';
 
@@ -76,4 +78,31 @@ export class PromotionController {
 
     return findAllResponse;
   }
+
+
+  @ApiOperation({ summary: 'Update promotion' })
+  @Patch(':promotionId')
+  async update(
+    @Body() updatePromotionDto: UpdatePromotionDto,
+    @Param('promotionId') promotionId: string,
+  ) {
+    const updatePromotionResponse = new UpdateResponse<Promotion>();
+    try {
+      const promotion =
+        this.promotionFactoryService.updatePromotion(updatePromotionDto);
+
+      const promotionUpdated = await this.promotionService.update(
+        promotionId,
+        promotion,
+      );
+      updatePromotionResponse.success = true;
+      updatePromotionResponse.data = promotionUpdated;
+    } catch (error) {
+      updatePromotionResponse.success = false;
+      throw error;
+    }
+    return updatePromotionResponse;
+  }
+
+
 }
