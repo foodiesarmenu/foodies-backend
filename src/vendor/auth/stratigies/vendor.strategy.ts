@@ -16,9 +16,13 @@ export class VendorStrategy extends PassportStrategy(Strategy, 'vendor') {
       ).toString('ascii'),
       algorithms: ['RS256'],
     } as StrategyOptions);
+
+
+
   }
 
   async validate(payload: any) {
+    console.log('VendorStrategy');
     return {
       _id: payload._id,
       email: payload.email,
