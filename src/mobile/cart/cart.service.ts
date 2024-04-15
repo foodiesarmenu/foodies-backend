@@ -39,12 +39,14 @@ export class CartService {
         });
     }
 
-    calcTotalPrice(cart: Cart) {
+    calcCartTotalPrice(cart: Cart) {
         let totalPrice = 0;
         cart.cartItems.forEach(meal => {
+            meal.totalPrice = meal.quantity * meal.price;
             totalPrice += meal.quantity * meal.price;
         });
-        return cart.totalPrice = totalPrice;
+        cart.cartTotalPrice = totalPrice;
+        return cart
     }
 
     async addMealToCart(cart: Cart) {
@@ -52,8 +54,9 @@ export class CartService {
             const meal = await this.findMealById(cart.cartItems[0].meal);
             cart.cartItems[0].price = meal.price;
 
+
             if (meal.restaurant.toString() !== cart.restaurant.toString()) {
-                throw new Error('Meal does not belong to the specified restaurant do you want to delete your cart ');
+                throw new NotFoundException(message.cart.MealDoesNotBelongToRestaurant);
             }
 
             let cartExist = await this.findCartByUserId(cart.userId);
@@ -64,12 +67,28 @@ export class CartService {
                     cartItems: cart.cartItems,
                     restaurant: cart.restaurant
                 });
+
+
                 await this.cartRepository.update(
                     { _id: cartCreated._id },
-                    { totalPrice: this.calcTotalPrice(cartCreated) },
-                    { new: true });
+                    this.calcCartTotalPrice(cartCreated),
+                    {
+                        new: true,
+                    });
 
-                return cartCreated;
+                return await this.cartRepository.getOne({ _id: cartCreated._id }, {},
+                    {
+                        populate: [
+                            {
+                                path: 'cartItems.meal',
+                            },
+                            {
+                                path: 'restaurant',
+                                select: '-password -category'
+                            }
+                        ]
+                    }
+                );
             }
 
             const item = cartExist.cartItems.find(item => item.meal.toString() === cart.cartItems[0].meal.toString());
@@ -80,10 +99,10 @@ export class CartService {
                 cartExist.cartItems.push({ ...cart.cartItems[0], quantity: cart.cartItems[0].quantity || 1 });
             }
 
-            this.calcTotalPrice(cartExist);
+            this.calcCartTotalPrice(cartExist);
 
             if (cartExist.discount) {
-                cartExist.totalPriceAfterDiscount = cartExist.totalPrice - (cartExist.totalPrice * cartExist.discount) / 100;
+                cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
             }
 
             const updatedCart = await this.cartRepository.update(
@@ -92,6 +111,9 @@ export class CartService {
                 {
                     new: true,
                     populate: [
+                        {
+                            path: 'cartItems.meal',
+                        },
                         {
                             path: 'restaurant',
                             select: '-password -category'
@@ -144,13 +166,14 @@ export class CartService {
 
             if (item) {
                 item.quantity = updateCartDTO['quantity']
+                item.totalPrice = item.quantity * item.price;
             }
 
 
-            existCart.totalPrice = this.calcTotalPrice(existCart);
+            existCart.cartTotalPrice = this.calcCartTotalPrice(existCart).cartTotalPrice;
 
             if (existCart.discount) {
-                existCart.totalPriceAfterDiscount = existCart.totalPrice - (existCart.totalPrice * existCart.discount) / 100 //NOTE - 100-(100*50)/100
+                existCart.totalPriceAfterDiscount = existCart.cartTotalPrice - (existCart.cartTotalPrice * existCart.discount) / 100 //NOTE - 100-(100*50)/100
             }
 
             const updatedCart = await this.cartRepository.update(
@@ -193,10 +216,10 @@ export class CartService {
                 throw new NotFoundException(message.meal.NotFound);
             }
 
-            cartExist.totalPrice = this.calcTotalPrice(cartExist)
+            cartExist.cartTotalPrice = this.calcCartTotalPrice(cartExist).cartTotalPrice
 
             if (cartExist.discount) {
-                cartExist.totalPriceAfterDiscount = cartExist.totalPrice - (cartExist.totalPrice * cartExist.discount) / 100;
+                cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
             }
 
             const updatedCart = await this.cartRepository.update(

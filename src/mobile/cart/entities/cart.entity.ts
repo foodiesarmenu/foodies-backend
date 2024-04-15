@@ -8,8 +8,9 @@ export class Cart {
         meal: Types.ObjectId,
         quantity?: number,
         price?: number,
+        totalPrice?: number
     }[];
-    totalPrice?: number;
+    cartTotalPrice?: number;
     totalPriceAfterDiscount?: number;
     discount?: number;
     restaurant: Types.ObjectId;
