@@ -12,6 +12,6 @@ export class Cart {
     totalPrice?: number;
     totalPriceAfterDiscount?: number;
     discount?: number;
-    restaurantId: Types.ObjectId;
+    restaurant: Types.ObjectId;
     isDeleted?: boolean
 }

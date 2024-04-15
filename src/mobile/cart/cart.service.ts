@@ -28,6 +28,7 @@ export class CartService {
         if (!meal) {
             throw new NotFoundException(message.meal.NotFound);
         }
+
         return meal;
     }
 
@@ -51,13 +52,17 @@ export class CartService {
             const meal = await this.findMealById(cart.cartItems[0].meal);
             cart.cartItems[0].price = meal.price;
 
+            if (meal.restaurant.toString() !== cart.restaurant.toString()) {
+                throw new Error('Meal does not belong to the specified restaurant do you want to delete your cart ');
+            }
+
             let cartExist = await this.findCartByUserId(cart.userId);
 
             if (!cartExist) {
                 const cartCreated = await this.cartRepository.create({
                     userId: cart.userId,
                     cartItems: cart.cartItems,
-                    restaurantId: cart.restaurantId
+                    restaurant: cart.restaurant
                 });
                 await this.cartRepository.update(
                     { _id: cartCreated._id },
@@ -84,7 +89,15 @@ export class CartService {
             const updatedCart = await this.cartRepository.update(
                 { _id: cartExist._id },
                 cartExist,
-                { new: true },
+                {
+                    new: true,
+                    populate: [
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                },
             );
             return updatedCart;
         } catch (error) {
@@ -103,8 +116,8 @@ export class CartService {
                         path: 'cartItems.meal',
                     },
                     {
-                        path: 'restaurantId',
-                        select: '-password'
+                        path: 'restaurant',
+                        select: '-password -category'
                     }
                 ]
             });
@@ -143,7 +156,15 @@ export class CartService {
             const updatedCart = await this.cartRepository.update(
                 { _id: existCart._id },
                 existCart,
-                { new: true },
+                {
+                    new: true,
+                    populate: [
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                },
             );
 
             return updatedCart

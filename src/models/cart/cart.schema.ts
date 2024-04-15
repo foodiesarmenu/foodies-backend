@@ -37,7 +37,7 @@ export class Cart {
   discount?: number;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
-  restaurantId: Types.ObjectId;
+  restaurant: Types.ObjectId;
 
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
