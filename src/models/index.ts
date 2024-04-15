@@ -23,3 +23,6 @@ export * from './favorite/favorite.schema';
 
 export * from './promotion/promotion.repository';
 export * from './promotion/promotion.schema';
+
+export * from './coupon/coupon.repository';
+export * from './coupon/coupon.schema';
