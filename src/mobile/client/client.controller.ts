@@ -54,5 +54,25 @@ export class ClientController {
   }
 
 
+  @ApiOperation({ summary: 'update Client' })
+  @Patch()
+  async updateClient(
+    @Body() updateClientDto: UpdateClientDto,
+    @Request() req: Express.Request
+  ) {
+    const updateClientResponse = new UpdateResponse<Client>();
+    try {
+      const updatedClient = await this.clientService.update(
+        req.user['_id'],
+        updateClientDto,
+      );
+      updateClientResponse.success = true;
+      updateClientResponse.data = updatedClient;
+    } catch (error) {
+      updateClientResponse.success = false;
+      throw error;
+    }
+    return updateClientResponse;
+  }
 
 }
