@@ -25,7 +25,7 @@ export class PromotionService {
                 throw new BadRequestException(message.promotion.FailedToCreate);
             }
 
-            return promotionCreated;
+            return await this.promotionRepository.getAll({ restaurant: promotion.restaurant });
         } catch (error) {
             this.handleError(error);
         }
@@ -50,7 +50,7 @@ export class PromotionService {
     public async update(promotionId: string, promotion: Promotion) {
         try {
             console.log(promotionId, promotion);
-            
+
             const promotionUpdated = await this.promotionRepository.update(
                 {
                     _id: promotionId
