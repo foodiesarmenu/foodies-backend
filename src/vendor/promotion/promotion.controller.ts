@@ -45,7 +45,7 @@ export class PromotionController {
 
       const createdPromotion = await this.promotionService.create(promotion);
       createPromotionResponse.success = true;
-      createPromotionResponse.data = createdPromotion;
+      createPromotionResponse.data = createdPromotion.data;
     } catch (error) {
       createPromotionResponse.success = false;
       throw error;
