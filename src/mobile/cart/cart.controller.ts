@@ -28,7 +28,7 @@ export class CartController {
 
             const createdCart = await this.cartService.addMealToCart(cart);
             createCartResponse.success = true;
-            createCartResponse.data = cart;
+            createCartResponse.data = createdCart;
         } catch (error) {
             createCartResponse.success = false;
             throw error;
@@ -81,12 +81,12 @@ export class CartController {
         @Param('cartId') cartId: string,
         @Request() req: Express.Request,
     ) {
-        const deleteCartResponse = new RemoveResponse();
+        const deleteCartResponse = new UpdateResponse<Cart>();
         try {
-            await this.cartService.removeMealFromCart(cartId, req.user['_id']);
+            const deletedMeal = await this.cartService.removeMealFromCart(cartId, req.user['_id']);
 
             deleteCartResponse.success = true;
-
+            deleteCartResponse.data = deletedMeal;
         } catch (error) {
             deleteCartResponse.success = false;
             throw error;

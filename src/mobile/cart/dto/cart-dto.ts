@@ -15,7 +15,7 @@ export class CreateCartDTO {
     @ApiProperty()
     @IsMongoId()
     @IsNotEmpty()
-    restaurantId: Types.ObjectId;
+    restaurant: Types.ObjectId;
 
 }
 

@@ -17,7 +17,7 @@ export class Cart {
       meal: { type: SchemaTypes.ObjectId, ref: "Meal", required: true },
       quantity: { type: Number, default: 1 },
       price: { type: Number },
-
+      totalPrice: { type: Number }
     }],
     default: []
   })
@@ -25,10 +25,11 @@ export class Cart {
     meal: Types.ObjectId,
     quantity?: number,
     price?: number,
+    totalPrice?: number
   }[];
 
   @Prop({ type: Number, default: 0 })
-  totalPrice?: number;
+  cartTotalPrice?: number;
 
   @Prop({ type: Number, default: 0 })
   totalPriceAfterDiscount?: number;
@@ -37,7 +38,7 @@ export class Cart {
   discount?: number;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
-  restaurantId: Types.ObjectId;
+  restaurant: Types.ObjectId;
 
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean

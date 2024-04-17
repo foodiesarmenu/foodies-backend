@@ -25,7 +25,7 @@ export class PromotionService {
                 throw new BadRequestException(message.promotion.FailedToCreate);
             }
 
-            return promotionCreated;
+            return await this.promotionRepository.getAll({ restaurant: promotion.restaurant });
         } catch (error) {
             this.handleError(error);
         }
@@ -43,6 +43,29 @@ export class PromotionService {
             );
             return promotions;
         } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    public async update(promotionId: string, promotion: Promotion) {
+        try {
+            console.log(promotionId, promotion);
+
+            const promotionUpdated = await this.promotionRepository.update(
+                {
+                    _id: promotionId
+                },
+                promotion,
+                { new: true }
+            );
+
+            if (!promotionUpdated) {
+                throw new BadRequestException(message.promotion.FailedToUpdate);
+            }
+
+            return promotionUpdated;
+        }
+        catch (error) {
             this.handleError(error);
         }
     }

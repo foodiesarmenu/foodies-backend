@@ -32,12 +32,14 @@ export class AuthService {
 
   public login(vendor: Express.User) {
     try {
-      const { _id, email, address, phoneNumber, type } = vendor as Restaurant;
+      const { _id, name, email, address, phoneNumber, type, image } = vendor as Restaurant;
       const payload = {
         _id,
+        name,
         email,
         phoneNumber,
         address,
+        image,
         type
       };
       return {
