@@ -9,7 +9,7 @@ import { omit } from 'lodash';
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Restaurant, RestaurantRepository } from 'src/models';
-
+import * as qrcode from 'qrcode';
 @Injectable()
 export class RestaurantService {
   constructor(private restaurantRepository: RestaurantRepository) { }
@@ -34,14 +34,14 @@ export class RestaurantService {
       if (restaurantExists) {
         throw new ConflictException(message.restaurant.AlreadyExists);
       }
-
       const createdRestaurant = await this.restaurantRepository.create(restaurant);
 
+      createdRestaurant.qrCode = await qrcode.toDataURL(createdRestaurant._id.toString());
 
       if (!createdRestaurant) {
         throw new BadRequestException(message.restaurant.FailedToCreate);
       }
-
+ 
       return omit(createdRestaurant, ['password']) as unknown as Restaurant;
     } catch (error) {
       this.handleError(error);
