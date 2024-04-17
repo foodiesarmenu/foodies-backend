@@ -40,6 +40,9 @@ export class Cart {
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
   restaurant: Types.ObjectId;
 
+  @Prop({ type: Number, default: 0 })
+  noOfCartItems?: number;
+  
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
 

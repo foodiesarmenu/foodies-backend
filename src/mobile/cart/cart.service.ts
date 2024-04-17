@@ -49,6 +49,11 @@ export class CartService {
         return cart
     }
 
+    calcNoOfCartItems(cart: Cart) {
+        cart.noOfCartItems = cart.cartItems.length;
+        return cart;
+    }
+
     async addMealToCart(cart: Cart) {
         try {
             const meal = await this.findMealById(cart.cartItems[0].meal);
@@ -68,10 +73,12 @@ export class CartService {
                     restaurant: cart.restaurant
                 });
 
+                cartCreated.cartTotalPrice = this.calcCartTotalPrice(cartCreated).cartTotalPrice;
+                cartCreated.noOfCartItems = this.calcNoOfCartItems(cartCreated).noOfCartItems;
 
                 await this.cartRepository.update(
                     { _id: cartCreated._id },
-                    this.calcCartTotalPrice(cartCreated),
+                    cartCreated,
                     {
                         new: true,
                     });
@@ -107,7 +114,10 @@ export class CartService {
 
             const updatedCart = await this.cartRepository.update(
                 { _id: cartExist._id },
-                cartExist,
+                {
+                    ...cartExist,
+                    noOfCartItems: cartExist.cartItems.length
+                },
                 {
                     new: true,
                     populate: [
@@ -176,6 +186,7 @@ export class CartService {
                 existCart.totalPriceAfterDiscount = existCart.cartTotalPrice - (existCart.cartTotalPrice * existCart.discount) / 100 //NOTE - 100-(100*50)/100
             }
 
+
             const updatedCart = await this.cartRepository.update(
                 { _id: existCart._id },
                 existCart,
@@ -225,6 +236,7 @@ export class CartService {
                 cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
             }
 
+            cartExist.noOfCartItems = this.calcNoOfCartItems(cartExist).noOfCartItems;
             const updatedCart = await this.cartRepository.update(
                 { _id: cartExist._id },
                 cartExist,
