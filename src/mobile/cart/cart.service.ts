@@ -183,6 +183,9 @@ export class CartService {
                     new: true,
                     populate: [
                         {
+                            path: 'cartItems.meal',
+                        },
+                        {
                             path: 'restaurant',
                             select: '-password -category'
                         }
@@ -225,7 +228,18 @@ export class CartService {
             const updatedCart = await this.cartRepository.update(
                 { _id: cartExist._id },
                 cartExist,
-                { new: true },
+                {
+                    new: true,
+                    populate: [
+                        {
+                            path: 'cartItems.meal',
+                        },
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                },
             );
 
 
