@@ -6,7 +6,7 @@ export type CouponDocument = Coupon & Document;
 })
 export class Coupon {
     readonly _id?: Types.ObjectId;
-    
+
     @Prop({ type: String, required: true, unique: true })
     code: string;
 

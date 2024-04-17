@@ -2,32 +2,29 @@ import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsDate,
-  IsEmail,
-  IsEnum,
   IsNotEmpty,
-  IsOptional,
+  IsNumber,
   IsString,
-  Matches,
-  MaxLength,
-  MinLength,
 } from 'class-validator';
 
-export class CreateCouponeDto {
+export class CreateCouponDto {
+
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   code: string;
 
   @ApiProperty()
+  @Transform(({ value }) => new Date(value))
   @IsDate()
-  @IsOptional()
+  @IsNotEmpty()
   expires: Date;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  descount: Number;
+  discount: number;
 
-  }
+}
 
-export class UpdateCouponeDto extends PartialType(CreateCouponeDto) { }
+export class UpdateCouponDto extends PartialType(CreateCouponDto) { }
