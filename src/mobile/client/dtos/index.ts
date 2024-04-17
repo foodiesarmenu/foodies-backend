@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsEnum,
@@ -10,8 +11,46 @@ import {
   Matches,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { GENDER } from '../../../common/constants/gender.constant';
+
+export class AddressDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  firstAddress: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  secondAddress: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  buildingNumber: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  streetName: string;  
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  floorNumber: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  apartmentNumber: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  note: string;
+}
 
 export class CreateClientDto {
   @ApiProperty()
@@ -56,6 +95,12 @@ export class CreateClientDto {
   @IsDate()
   @IsOptional()
   dateOfBirth: Date;
+
+  @ApiProperty({ type: [AddressDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AddressDto)
+  addresses: AddressDto[];
 }
 
 export class UpdateClientDto extends PartialType(CreateClientDto) { }
