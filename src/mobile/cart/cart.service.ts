@@ -245,7 +245,10 @@ export class CartService {
 
             if (deleteMeal.cartItems.length === 0) {
                 await this.cartRepository.update({ _id: deleteMeal._id },
-                    { discount: 0 },
+                    {
+                        discount: 0,
+                        restaurant: null,
+                    },
                     { new: true });
             }
             return updatedCart;
