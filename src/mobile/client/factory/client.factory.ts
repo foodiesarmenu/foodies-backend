@@ -16,7 +16,6 @@ export class ClientFactoryService {
     newClient.gender = createClientDto.gender;
     newClient.dateOfBirth = createClientDto.dateOfBirth;
     newClient.password = hashedPassword;
-    newClient.addresses = createClientDto.addresses;
 
     return newClient;
   }
@@ -33,7 +32,7 @@ export class ClientFactoryService {
     newClient.gender = updateClientDto.gender && updateClientDto.gender;
     newClient.dateOfBirth =
       updateClientDto.dateOfBirth && updateClientDto.dateOfBirth;
-    newClient.addresses = updateClientDto.addresses;
+    newClient.addresses = updateClientDto.addresses && updateClientDto.addresses;
 
     return newClient;
   }

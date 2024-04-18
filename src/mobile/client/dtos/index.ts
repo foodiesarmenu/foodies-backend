@@ -14,43 +14,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { GENDER } from '../../../common/constants/gender.constant';
+import { AddressDto } from 'src/common';
 
-export class AddressDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  firstAddress: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  secondAddress: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  buildingNumber: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  streetName: string;  
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  floorNumber: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  apartmentNumber: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  note: string;
-}
 
 export class CreateClientDto {
   @ApiProperty()
@@ -97,10 +63,10 @@ export class CreateClientDto {
   dateOfBirth: Date;
 
   @ApiProperty({ type: [AddressDto] })
-  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => AddressDto)
-  addresses: AddressDto[];
+  addresses?: AddressDto[];
+
 }
 
 export class UpdateClientDto extends PartialType(CreateClientDto) { }

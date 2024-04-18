@@ -3,29 +3,7 @@ import { Document, Types } from 'mongoose';
 
 export type ClientDocument = Client & Document;
 
-@Schema()
-export class Address {
-  @Prop({ required: true })
-  firstAddress: string;
 
-  @Prop({ required: true })
-  secondAddress: string;
-
-  @Prop({ required: true })
-  buildingNumber: string;
-
-  @Prop({ required: true })
-  streetName: string;
-
-  @Prop({ required: true })
-  floorNumber: string;
-
-  @Prop({ required: true })
-  apartmentNumber: string;
-
-  @Prop()
-  note?: string;
-}
 
 @Schema({
   timestamps: true,
@@ -54,8 +32,30 @@ export class Client {
   @Prop({ type: Boolean, default: true })
   isActive?: boolean;
 
-  @Prop([Address])
-  addresses?: Address[];
+  @Prop({
+    type: [{
+      firstAddress: { type: String, required: true },
+      secondAddress: { type: String },
+      buildingNumber: { type: String },
+      streetName: { type: String },
+      floorNumber: { type: String },
+      apartmentNumber: { type: String },
+      note: { type: String }
+    }
+    ]
+  })
+  addresses?: {
+    firstAddress: string;
+    secondAddress: string;
+    buildingNumber: string;
+    streetName: string;
+    floorNumber: string;
+    apartmentNumber?: string;
+    note?: string;
+  }[];
 }
+
+
+
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

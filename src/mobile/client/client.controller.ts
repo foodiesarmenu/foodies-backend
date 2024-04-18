@@ -2,28 +2,22 @@ import {
   Body,
   Controller,
   Post,
-  Delete,
-  Get,
-  Param,
   Patch,
-  Query,
-  Request
+  Request,
+  Get
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import { Public } from '../../common/decorators/public.decorator';
 import {
   CreateResponse,
-  FindAllResponse,
   FindOneResponse,
-  RemoveResponse,
   UpdateResponse
 } from '../../common/dto/response.dto';
 import { ClientFactoryService } from './factory/client.factory';
 import { ClientService } from './client.service';
 import { CreateClientDto, UpdateClientDto } from './dtos';
 import { Client } from 'src/models';
-import { FindAllQuery, Role, Roles } from 'src/common';
 
 
 @Controller('mobile/client')
@@ -53,6 +47,23 @@ export class ClientController {
     return createClientResponse;
   }
 
+  @ApiOperation({ summary: 'Get Client Information' })
+  @Get()
+  async getClient(
+    @Request() req: Express.Request
+  ) {
+    const getClientResponse = new FindOneResponse<Client>();
+    try {
+      const client = await this.clientService.findClient(req.user['_id']);
+      getClientResponse.success = true;
+      getClientResponse.data = client;
+    } catch (error) {
+      getClientResponse.success = false;
+      throw error;
+    }
+
+    return getClientResponse;
+  }
 
   @ApiOperation({ summary: 'update Client' })
   @Patch()
@@ -62,9 +73,15 @@ export class ClientController {
   ) {
     const updateClientResponse = new UpdateResponse<Client>();
     try {
+
+      const client = this.clientFactoryService.updateClient(
+        updateClientDto,
+      );
+      console.log('clientclientclientclientclientclientclientclient', client);
+
       const updatedClient = await this.clientService.update(
         req.user['_id'],
-        updateClientDto,
+        client,
       );
       updateClientResponse.success = true;
       updateClientResponse.data = updatedClient;
