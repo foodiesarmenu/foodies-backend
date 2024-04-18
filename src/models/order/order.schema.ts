@@ -44,20 +44,19 @@ export class Order {
     noOfOrderItems?: number;
 
     @Prop({
-        type: {
-            enum: ['pending', 'accepted', 'rejected', 'delivered'],
-        }, required: true,
+        type: String,
+        enum: ['pending', 'accepted', 'rejected', 'delivered'],
+        required: true,
         default: 'pending'
     })
-    status: string;
+    status?: string;
 
     @Prop({
-        type: {
-            enum: ['cash', 'card'],
-            default: 'cash'
-        },
+        type: String,
+        enum: ['cash', 'card'],
+        default: 'cash'
     })
-    paymentMethod?: string;
+    paymentMethod: string;
 
     @Prop({ type: Boolean, default: false })
     isPaid?: boolean;
