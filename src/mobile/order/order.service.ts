@@ -157,7 +157,7 @@ export class OrderService {
                     orderItems: cart.cartItems,
                     restaurant: cart.restaurant,
                     status: 'pending',
-                    paymentMethod: 'online',
+                    paymentMethod: 'card',
                     noOfOrderItems: cart.noOfCartItems,
                     discount: cart.discount,
                     orderTotalPrice: cart.cartTotalPrice,
