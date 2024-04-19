@@ -66,7 +66,7 @@ export class OrderController {
   @Public()
   @Post('webhook')
   async handleStripeWebhook(
-    @Body() requestBody: any,
+    @Body() requestBody: Buffer,
     @Headers('stripe-signature') stripeSignature: string
   ) {
     return await this.orderService.handleStripeWebhook(requestBody, stripeSignature);
