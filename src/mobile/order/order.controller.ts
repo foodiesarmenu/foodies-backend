@@ -69,6 +69,9 @@ export class OrderController {
     @Body() requestBody: Buffer,
     @Headers('stripe-signature') stripeSignature: string
   ) {
-    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature);
+    console.log('stripeSignature', stripeSignature);
+    console.log('stripeSignature', stripeSignature.toString());
+
+    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature.toString());
   }
 }
