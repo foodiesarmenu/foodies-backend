@@ -69,8 +69,6 @@ export class OrderController {
     @Body() request: ExpressRequest,
     @Headers('stripe-signature') stripeSignature: string
   ) {
-
-
-    return await this.orderService.handleStripeWebhook(JSON.stringify(request), stripeSignature);
+    return await this.orderService.handleStripeWebhook(Buffer.from(JSON.stringify(request)), stripeSignature);
   }
 }

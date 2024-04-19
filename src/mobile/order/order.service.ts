@@ -129,9 +129,9 @@ export class OrderService {
     }
 
 
-    async handleStripeWebhook(requestBody: any, stripeSignature: string) {
+    async handleStripeWebhook(requestBody: Buffer, stripeSignature: string) {
         try {
-            console.log('requestBodyasd', requestBody);
+            console.log('requestBodyasdasdasdasdasd', requestBody);
             console.log('stripeSignatureasd', stripeSignature);
 
             const event = this.stripe.webhooks.constructEvent(
