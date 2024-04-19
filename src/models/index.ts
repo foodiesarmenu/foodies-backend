@@ -29,3 +29,6 @@ export * from './promotion/promotion.schema';
 
 export * from './coupon/coupon.repository';
 export * from './coupon/coupon.schema';
+
+export * from './order/order.repository';
+export * from './order/order.schema';

@@ -42,7 +42,7 @@ export class Cart {
 
   @Prop({ type: Number, default: 0 })
   noOfCartItems?: number;
-  
+
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
 
