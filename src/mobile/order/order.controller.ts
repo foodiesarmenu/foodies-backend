@@ -1,6 +1,6 @@
 import { Body, Controller, Headers, Post, Request } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateResponse, Role, Roles, swagger } from 'src/common';
+import { CreateResponse, Public, Role, Roles, swagger } from 'src/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
@@ -63,6 +63,7 @@ export class OrderController {
   }
 
 
+  @Public()
   @Post('webhook')
   async handleStripeWebhook(
     @Body() requestBody: any,
