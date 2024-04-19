@@ -129,4 +129,47 @@ export class OrderService {
     }
 
 
+    async handleStripeWebhook(requestBody: any, stripeSignature: string) {
+        try {
+            const event = this.stripe.webhooks.constructEvent(
+                requestBody,
+                stripeSignature,
+                process.env.STRIPE_WEBHOOK_SECRET
+            );
+
+            if (event.type === 'checkout.session.completed') {
+                const session = event.data.object as Stripe.Checkout.Session;
+                const cartId = session.client_reference_id;
+                const cart = await this.cartRepository.getOne({ _id: cartId });
+
+                if (!cart) {
+                    throw new NotFoundException(message.cart.NotFound);
+                }
+
+                const order = await this.orderRepository.create({
+                    userId: cart.userId,
+                    orderItems: cart.cartItems,
+                    restaurant: cart.restaurant,
+                    status: 'pending',
+                    paymentMethod: 'online',
+                    noOfOrderItems: cart.noOfCartItems,
+                    discount: cart.discount,
+                    orderTotalPrice: cart.cartTotalPrice,
+                    totalPriceAfterDiscount: cart.totalPriceAfterDiscount,
+                    deliveryAddress: {
+                        firstAddress: session.metadata.firstAddress,
+                        secondAddress: session.metadata.secondAddress,
+                        buildingNumber: session.metadata.buildingNumber,
+                        streetName: session.metadata.streetName,
+                        floorNumber: session.metadata.floorNumber,
+                    },
+                });
+                await this.cartRepository.delete({ _id: cartId });
+
+                return order;
+            }
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
 }
