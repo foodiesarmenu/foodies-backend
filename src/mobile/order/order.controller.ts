@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import { Body, Controller, Headers, Post, Request } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateResponse, Role, Roles, swagger } from 'src/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -60,5 +60,14 @@ export class OrderController {
 
 
     return createOrderResponse;
+  }
+
+
+  @Post('webhook')
+  async handleStripeWebhook(
+    @Body() requestBody: any,
+    @Headers('stripe-signature') stripeSignature: string
+  ) {
+    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature);
   }
 }
