@@ -1,11 +1,10 @@
-import { Body, Controller, Headers, Post, Request } from '@nestjs/common';
+import { Body, Controller, Headers, Post, RawBodyRequest, Req, Request } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateResponse, Public, Role, Roles, swagger } from 'src/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
 import { Order } from 'src/models';
-import { Request as ExpressRequest } from 'express';
 @ApiTags(swagger.MobileOrder)
 @Controller('client/order')
 export class OrderController {
@@ -66,9 +65,11 @@ export class OrderController {
   @Public()
   @Post('webhook')
   async handleStripeWebhook(
-    @Body() request: Buffer,
+    @Req() req: RawBodyRequest<Request>,
     @Headers('stripe-signature') stripeSignature: string
   ) {
-    return await this.orderService.handleStripeWebhook(Buffer.from(JSON.stringify(request)), stripeSignature.toString());
+    console.log('req.rawBody', req);
+
+    return await this.orderService.handleStripeWebhook(req, stripeSignature.toString());
   }
 }

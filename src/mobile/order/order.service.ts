@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, RawBodyRequest } from '@nestjs/common';
 import { message } from 'src/common/constants/message.constant';
 import { CartRepository, Order, OrderRepository } from 'src/models';
 import Stripe from 'stripe';
@@ -129,18 +129,19 @@ export class OrderService {
     }
 
 
-    async handleStripeWebhook(requestBody: Buffer, stripeSignature: string) {
+    async handleStripeWebhook(requestBody: RawBodyRequest<Request>, stripeSignature: string) {
         try {
-            console.log('requestBodyasdasdasdasdasd', requestBody);
+            console.log('requestBodyasdasdasdasdasd', requestBody.rawBody);
             console.log('stripeSignatureasd', stripeSignature);
 
+            console.log('process.env.STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET);
+
             const event = this.stripe.webhooks.constructEvent(
-                requestBody,
+                requestBody.rawBody,
                 stripeSignature,
                 process.env.STRIPE_WEBHOOK_SECRET
             );
 
-            console.log('process.env.STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET);
 
             if (event.type === 'checkout.session.completed') {
                 const session = event.data.object as Stripe.Checkout.Session;
