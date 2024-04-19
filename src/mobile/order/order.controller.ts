@@ -6,7 +6,6 @@ import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
 import { Order } from 'src/models';
 
-@Roles(Role.Client)
 @ApiTags(swagger.MobileOrder)
 @Controller('client/order')
 export class OrderController {
@@ -15,7 +14,7 @@ export class OrderController {
     private readonly orderFactoryService: OrderFactoryService
   ) { }
 
-
+  @Roles(Role.Client)
   @Post('createCashOrder')
   async createCashOrder(
     @Body() createOrderDto: CreateOrderDto,
@@ -37,6 +36,7 @@ export class OrderController {
     return createOrderResponse;
   }
 
+  @Roles(Role.Client)
   @Post('createOnlineOrder')
   async createOnlineOrder(
     @Body() createOrderDto: CreateOrderDto,
