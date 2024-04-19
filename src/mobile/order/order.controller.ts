@@ -72,6 +72,6 @@ export class OrderController {
     console.log('stripeSignature', stripeSignature);
     console.log('stripeSignature', stripeSignature.toString());
 
-    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature.toString());
+    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature);
   }
 }

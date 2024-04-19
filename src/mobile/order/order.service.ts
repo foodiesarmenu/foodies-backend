@@ -131,11 +131,16 @@ export class OrderService {
 
     async handleStripeWebhook(requestBody: any, stripeSignature: string) {
         try {
+            console.log('requestBodyasd', requestBody);
+            console.log('stripeSignatureasd', stripeSignature);
+
             const event = this.stripe.webhooks.constructEvent(
                 requestBody,
                 stripeSignature,
                 process.env.STRIPE_WEBHOOK_SECRET
             );
+
+            console.log('eventasd', event);
 
             if (event.type === 'checkout.session.completed') {
                 const session = event.data.object as Stripe.Checkout.Session;
