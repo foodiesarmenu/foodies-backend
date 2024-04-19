@@ -71,6 +71,6 @@ export class OrderController {
   ) {
 
 
-    return await this.orderService.handleStripeWebhook(request, stripeSignature);
+    return await this.orderService.handleStripeWebhook(JSON.stringify(request), stripeSignature);
   }
 }
