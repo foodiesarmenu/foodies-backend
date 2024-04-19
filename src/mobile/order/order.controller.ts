@@ -5,7 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
 import { Order } from 'src/models';
-
+import { Request as ExpressRequest } from 'express';
 @ApiTags(swagger.MobileOrder)
 @Controller('client/order')
 export class OrderController {
@@ -66,12 +66,11 @@ export class OrderController {
   @Public()
   @Post('webhook')
   async handleStripeWebhook(
-    @Body() requestBody: Buffer,
+    @Body() request: ExpressRequest,
     @Headers('stripe-signature') stripeSignature: string
   ) {
-    console.log('stripeSignature', stripeSignature);
-    console.log('stripeSignature', stripeSignature.toString());
 
-    return await this.orderService.handleStripeWebhook(requestBody, stripeSignature);
+
+    return await this.orderService.handleStripeWebhook(request, stripeSignature);
   }
 }

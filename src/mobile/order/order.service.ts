@@ -140,7 +140,7 @@ export class OrderService {
                 process.env.STRIPE_WEBHOOK_SECRET
             );
 
-            console.log('eventasd', event);
+            console.log('process.env.STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET);
 
             if (event.type === 'checkout.session.completed') {
                 const session = event.data.object as Stripe.Checkout.Session;
