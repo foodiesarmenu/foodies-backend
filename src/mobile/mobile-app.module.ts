@@ -8,6 +8,7 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { MenuModule } from './menu/menu.module';
 import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { CartModule } from './cart/cart.module';
     CategoryModule,
     FavoriteModule,
     MenuModule,
-    CartModule
+    CartModule,
+    OrderModule
   ],
   providers: [
     {

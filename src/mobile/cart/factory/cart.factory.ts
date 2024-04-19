@@ -10,7 +10,7 @@ export class CartFactoryService {
         createCart.userId = userId;
         createCart.cartItems = [];
         createCart.cartItems.push({ meal: createCartDto.meal });
-        createCart.restaurant= createCartDto.restaurant;
+        createCart.restaurant = createCartDto.restaurant;
         return createCart
     }
 

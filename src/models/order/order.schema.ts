@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, SchemaTypes, Types } from "mongoose";
+import { AddressDto } from "src/common";
 
 export type OrderDocument = Order & Document;
 
@@ -61,8 +62,8 @@ export class Order {
     @Prop({ type: Boolean, default: false })
     isPaid?: boolean;
 
-    @Prop({ type: String })
-    deliveryAddress?: string;
+    @Prop({ type: AddressDto })
+    deliveryAddress?: AddressDto;
 
     @Prop({ type: Date })
     deliveryTime?: Date;

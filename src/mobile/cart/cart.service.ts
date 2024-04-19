@@ -107,7 +107,7 @@ export class CartService {
             }
 
             this.calcCartTotalPrice(cartExist);
-
+            cartExist.restaurant = cart.restaurant;
             if (cartExist.discount) {
                 cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
             }
