@@ -1,6 +1,6 @@
-import { Body, Controller, Headers, Post, RawBodyRequest, Req, Request } from '@nestjs/common';
+import { Body, Controller, Headers, Post, RawBodyRequest, Req, Request, Param, Get } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateResponse, Public, Role, Roles, swagger } from 'src/common';
+import { CreateResponse, FindAllResponse, FindOneResponse, Public, Role, Roles, swagger } from 'src/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
@@ -55,11 +55,46 @@ export class OrderController {
       createOrderResponse.success = false;
       throw error;
     }
-
-
-
     return createOrderResponse;
   }
+
+  
+  @Roles(Role.Client)
+  @Get('getOrders')
+  async getOrders(@Request() req: Express.Request) {
+    const getOrdersResponse = new FindAllResponse<Order>();
+    try {
+      const orders = await this.orderService.getOrders(req.user['_id']);
+      getOrdersResponse.success = true;
+      getOrdersResponse.data = orders.data;
+      getOrdersResponse.currentPage = orders.currentPage;
+      getOrdersResponse.numberOfPages = orders.numberOfPages;
+      getOrdersResponse.numberOfRecords = orders.numberOfRecords;
+    } catch (error) {
+      getOrdersResponse.success = false;
+      throw error;
+    }
+
+    return getOrdersResponse;
+  }
+
+  @Roles(Role.Client)
+  @Get(':orderId')
+  async getOrder(@Param('orderId') orderId: string) {
+    const getOrdersResponse = new FindOneResponse<Order>();
+    try {
+      const order = await this.orderService.getOrderById(orderId);
+      getOrdersResponse.success = true;
+      getOrdersResponse.data = order;
+
+    } catch (error) {
+      getOrdersResponse.success = false;
+      throw error;
+    }
+
+    return getOrdersResponse;
+  }
+
 
 
   @Public()

@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException, RawBodyRequest } from '@nestjs/common';
+import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { CartRepository, Order, OrderRepository } from 'src/models';
 import Stripe from 'stripe';
@@ -123,6 +124,53 @@ export class OrderService {
             });
 
             return session;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    
+    async getOrders(query: FindAllQuery) {
+        try {
+            const orders = await this.orderRepository.getAll(
+                { isDeleted: false },
+                {
+                    ...query,
+                    populate: [
+                        {
+                            path: 'orderItems.meal',
+                        },
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ],
+                }
+            );
+            return orders;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    async getOrderById(orderId: string) {
+        try {
+            return await this.orderRepository.getOne(
+                { _id: orderId, isDeleted: false },
+                {},
+                {
+                    populate: [
+                        {
+                            path: 'orderItems.meal',
+                        },
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ],
+
+                }
+            );
         } catch (error) {
             this.handleError(error);
         }
