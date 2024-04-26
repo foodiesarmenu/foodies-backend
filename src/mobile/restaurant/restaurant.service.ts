@@ -27,6 +27,21 @@ export class RestaurantService {
         }
     }
 
+    public async searchByName(name: string) {
+        try {
+            const restaurants = await this.restaurantRepository.getAll(
+                {
+                    isDeleted: false,
+                    name: { $regex: name, $options: 'i' }
+                },
+                { populate: [{ path: 'category', select: 'name' }] },
+            );
+            return restaurants;
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+    
     public async getAllByCategory(categoryId: string) {
         try {
             const restaurants = await this.restaurantRepository.getAll(

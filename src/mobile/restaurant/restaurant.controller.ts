@@ -42,6 +42,26 @@ export class RestaurantController {
   }
 
   @ApiOperation({ summary: 'Get all restaurants' })
+  @Get('searchByName')
+  async searchByName(@Query('name') name: string) {
+    const getAllRestaurantsResponse = new FindAllResponse<Restaurant>();
+
+    try {
+      const restaurants = await this.restaurantService.searchByName(name);
+      getAllRestaurantsResponse.success = true;
+      getAllRestaurantsResponse.data = restaurants.data;
+      getAllRestaurantsResponse.currentPage = restaurants.currentPage;
+      getAllRestaurantsResponse.numberOfPages = restaurants.numberOfPages;
+      getAllRestaurantsResponse.numberOfRecords = restaurants.numberOfRecords;
+    } catch (error) {
+      getAllRestaurantsResponse.success = false;
+      throw error;
+    }
+
+    return getAllRestaurantsResponse;
+  }
+
+  @ApiOperation({ summary: 'Get all restaurants' })
   @Get(':categoryId')
   async search(
     @Param('categoryId') categoryId: string,
