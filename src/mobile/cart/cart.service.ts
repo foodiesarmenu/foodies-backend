@@ -50,7 +50,11 @@ export class CartService {
     }
 
     calcNoOfCartItems(cart: Cart) {
-        cart.noOfCartItems = cart.cartItems.length;
+        let totalItems = 0;
+        cart.cartItems.forEach(item => {
+            totalItems += item.quantity;
+        });
+        cart.noOfCartItems = totalItems;
         return cart;
     }
 
@@ -153,6 +157,9 @@ export class CartService {
                     }
                 ]
             });
+
+            this.calcNoOfCartItems(cart);
+
             if (!cart) {
                 throw new NotFoundException(message.cart.NotFound);
             }
