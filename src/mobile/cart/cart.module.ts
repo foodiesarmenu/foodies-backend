@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CartService } from './cart.service';
 import { CartRepository } from 'src/models/cart/cart.repository';
 import { Cart, CartSchema } from 'src/models/cart/cart.schema';
-import { Meal, MealRepository, MealSchema } from 'src/models';
+import { Coupon, CouponRepository, CouponSchema, Meal, MealRepository, MealSchema } from 'src/models';
 import { CartFactoryService } from './factory/cart.factory';
 import { CartController } from './cart.controller';
 
@@ -18,11 +18,15 @@ import { CartController } from './cart.controller';
             {
                 name: Meal.name,
                 schema: MealSchema,
+            },
+            {
+                name: Coupon.name,
+                schema: CouponSchema,
             }
         ]),
     ],
     controllers: [CartController],
-    providers: [CartService, CartRepository, CartFactoryService, MealRepository],
+    providers: [CartService, CartRepository, CartFactoryService, MealRepository, CouponRepository],
     exports: [CartService, CartRepository, CartFactoryService, MealRepository],
 })
 export class CartModule { }

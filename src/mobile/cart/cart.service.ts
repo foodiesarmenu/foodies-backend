@@ -6,14 +6,15 @@ import {
 import { message } from 'src/common/constants/message.constant';
 import { CartRepository } from 'src/models/cart/cart.repository';
 import { Cart } from 'src/models/cart/cart.schema';
-import { MealRepository } from 'src/models';
+import { CouponRepository, MealRepository } from 'src/models';
 import { Types } from 'mongoose';
 
 @Injectable()
 export class CartService {
     constructor(
         private cartRepository: CartRepository,
-        private mealRepository: MealRepository
+        private mealRepository: MealRepository,
+        private couponRepository: CouponRepository
     ) { }
 
     private readonly logger = new Logger(CartService.name);
@@ -111,6 +112,7 @@ export class CartService {
             }
 
             this.calcCartTotalPrice(cartExist);
+            this.calcNoOfCartItems(cartExist);
             cartExist.restaurant = cart.restaurant;
             if (cartExist.discount) {
                 cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
@@ -120,7 +122,7 @@ export class CartService {
                 { _id: cartExist._id },
                 {
                     ...cartExist,
-                    noOfCartItems: cartExist.cartItems.length
+                    noOfCartItems: cartExist.noOfCartItems
                 },
                 {
                     new: true,
@@ -289,6 +291,59 @@ export class CartService {
             );
 
             return deleteCart;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    async applyCoupon(couponCode: string, userId: String) {
+        try {
+
+            console.log(userId, couponCode);
+
+            const couponExist = await this.couponRepository.getOne({ code: couponCode });
+            console.log(couponExist);
+
+            if (!couponExist) {
+                throw new NotFoundException(message.coupon.NotFound);
+            }
+
+            let cartExist = await this.cartRepository.getOne({ userId: userId });
+            cartExist.discount = couponExist.discount;
+            cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * couponExist.discount) / 100;
+
+            const updatedCart = await this.cartRepository.update(
+                { _id: cartExist._id },
+                cartExist,
+                {
+                    new: true,
+                    populate: [
+                        {
+                            path: 'cartItems.meal',
+                        },
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                },
+            );
+
+            return await this.cartRepository.getOne(
+                { _id: updatedCart._id }
+                ,
+                {},
+                {
+                    populate: [
+                        {
+                            path: 'cartItems.meal',
+                        },
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                })
         } catch (error) {
             this.handleError(error);
         }

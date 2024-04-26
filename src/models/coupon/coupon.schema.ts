@@ -14,7 +14,7 @@ export class Coupon {
     expires: Date;
 
     @Prop({ type: Number, required: true })
-    discount: Number;
+    discount: number;
 
     @Prop({ type: Boolean, default: false })
     isDeleted?: boolean

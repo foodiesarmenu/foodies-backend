@@ -36,6 +36,24 @@ export class CartController {
         return createCartResponse;
     }
 
+    @ApiOperation({ summary: 'Apply Coupon' })
+    @Post('coupon')
+    async applyCoupon(
+        @Body('coupon') couponCode: string,
+        @Request() req: Express.Request,
+    ) {
+        const applyCouponResponse = new UpdateResponse<Cart>();
+        try {
+            const cart = await this.cartService.applyCoupon(couponCode, req.user['_id']);
+            applyCouponResponse.success = true;
+            applyCouponResponse.data = cart;
+        } catch (error) {
+            applyCouponResponse.success = false;
+            throw error;
+        }
+        return applyCouponResponse;
+    }
+
     @ApiOperation({ summary: 'Get Cart' })
     @Get()
     async get(
