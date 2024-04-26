@@ -59,10 +59,16 @@ export class FavoriteService {
                     isDeleted: false
                 },
                 {
-                    populate: [{
-                        path: 'restaurant',
-                        select: '-password '
-                    }], ...query
+                    populate: [
+                        {
+                            path: 'restaurant',
+                            select: '-password',
+                            populate: {
+                                path: 'category',
+                            }
+                        },
+
+                    ], ...query
                 }
             );
             console.log(favorites, 'favorites');
@@ -82,7 +88,7 @@ export class FavoriteService {
             });
 
             console.log(isFavorite, 'isFavorite');
-            
+
             return !!isFavorite;
         } catch (error) {
             this.handleError(error);
