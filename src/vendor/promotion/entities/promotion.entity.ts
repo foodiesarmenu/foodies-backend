@@ -6,5 +6,6 @@ export class Promotion {
     description: string;
     image: string;
     restaurant: Types.ObjectId;
+    isActive?: boolean;
     isDeleted?: boolean;
 }

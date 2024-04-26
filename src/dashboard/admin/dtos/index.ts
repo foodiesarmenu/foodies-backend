@@ -17,6 +17,10 @@ export class CreateAdminDto {
   name: string;
 
   @ApiProperty()
+  @IsString()
+  image: string;
+
+  @ApiProperty()
   @IsEmail()
   email: string;
 
@@ -48,4 +52,4 @@ export class CreateAdminDto {
   dateOfBirth: Date;
 }
 
-export class UpdateAdminDto extends PartialType(CreateAdminDto) {}
+export class UpdateAdminDto extends PartialType(CreateAdminDto) { }

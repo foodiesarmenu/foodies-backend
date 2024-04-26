@@ -15,5 +15,10 @@ export const message = {
     restaurant: generateMessage('Restaurant'),
     meal: generateMessage('Meal'),
     category: generateMessage('Category'),
+    coupon: generateMessage('Coupon'),
+    cart: {
+        ...generateMessage('Cart'),
+        MealDoesNotBelongToRestaurant: 'Meal does not belong to the specified restaurant. Do you want to delete your cart?',
+    },
     promotion: generateMessage('Promotion'),
 };

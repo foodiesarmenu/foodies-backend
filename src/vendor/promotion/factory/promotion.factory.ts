@@ -20,6 +20,7 @@ export class PromotionFactoryService {
         const newPromotion = new Promotion();
         newPromotion.title = updatePromotionDto.title && updatePromotionDto.title;
         newPromotion.description = updatePromotionDto.description && updatePromotionDto.description;
+        newPromotion.isActive = updatePromotionDto.isActive && updatePromotionDto.isActive;
 
         return newPromotion;
     }

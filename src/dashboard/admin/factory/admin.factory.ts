@@ -10,6 +10,7 @@ export class AdminFactoryService {
     const hashedPassword = await bcrypt.hash(createAdminDto.password, 12);
 
     newAdmin.name = createAdminDto.name;
+    newAdmin.image = createAdminDto.image;
     newAdmin.email = createAdminDto.email;
     newAdmin.countryCode = createAdminDto.countryCode;
     newAdmin.phoneNumber = createAdminDto.phoneNumber;

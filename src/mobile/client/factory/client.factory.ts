@@ -32,6 +32,7 @@ export class ClientFactoryService {
     newClient.gender = updateClientDto.gender && updateClientDto.gender;
     newClient.dateOfBirth =
       updateClientDto.dateOfBirth && updateClientDto.dateOfBirth;
+    newClient.addresses = updateClientDto.addresses && updateClientDto.addresses;
 
     return newClient;
   }

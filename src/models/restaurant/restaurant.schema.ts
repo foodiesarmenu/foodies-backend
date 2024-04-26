@@ -47,6 +47,9 @@ export class Restaurant {
   @Prop({ type: String, default: 'Restaurant' })
   type?: string
 
+  @Prop({ type: String, })
+  qrCode?: string
+
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean
 }

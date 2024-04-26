@@ -13,6 +13,7 @@ export class Restaurant {
   canDeliver?: boolean;
   city: string;
   category: Types.ObjectId[];
+  qrCode?: string;
   status: string;
   isDeleted?: boolean;
 }

@@ -8,6 +8,8 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { MenuModule } from './menu/menu.module';
 import { PromotionModule } from './promotion/promotion.module';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { PromotionModule } from './promotion/promotion.module';
     CategoryModule,
     FavoriteModule,
     PromotionModule,
-    MenuModule
+    MenuModule,
+    CartModule,
+    OrderModule
   ],
   providers: [
     {

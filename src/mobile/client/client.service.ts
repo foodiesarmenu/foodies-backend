@@ -9,6 +9,7 @@ import { omit } from 'lodash';
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Client, ClientRepository } from 'src/models';
+import { UpdateClientDto } from './dtos';
 
 @Injectable()
 export class ClientService {
@@ -76,7 +77,7 @@ export class ClientService {
     }
   }
 
-  public async update(clientId: string, client: Client) {
+  public async update(clientId: string, client: UpdateClientDto) {
     try {
       const clientExists = await this.clientRepository.exists({
         _id: clientId,
