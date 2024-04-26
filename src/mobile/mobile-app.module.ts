@@ -7,6 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { MenuModule } from './menu/menu.module';
+import { PromotionModule } from './promotion/promotion.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MenuModule } from './menu/menu.module';
     RestaurantModule,
     CategoryModule,
     FavoriteModule,
+    PromotionModule,
     MenuModule
   ],
   providers: [
