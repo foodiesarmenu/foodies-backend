@@ -5,6 +5,7 @@ export const swagger = {
   MobileCategory: 'Mobile Category Operations',
   MobileRestaurant: 'Mobile Restaurant Operations',
   MobileFavorite: 'Mobile Favorite Operations',
+  MobilePromotion: 'Mobile Promotion Operations',
   MobileCart: 'Mobile Cart Operations',
   MobilePromotion: 'Mobile Promotion Operations',
   MobileOrder: 'Mobile Order Operations',

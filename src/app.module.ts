@@ -13,8 +13,6 @@ import { PromotionModule } from './mobile/promotion/promotion.module';
 
 @Module({
   imports: [
-
-
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -31,6 +29,7 @@ import { PromotionModule } from './mobile/promotion/promotion.module';
     dashboardAppModule,
     MobileAppModule,
     VendorModule,
+    PromotionModule,
   ],
 
   providers: [
