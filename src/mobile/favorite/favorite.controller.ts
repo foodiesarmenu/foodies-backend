@@ -78,25 +78,7 @@ export class FavoriteController {
     return getAllFavoritesResponse;
   }
 
-  @ApiOperation({ summary: 'Delete favorite restaurant' })
-  @Delete(':favoriteId')
-  async delete(
-    @Param('favoriteId') favoriteId: string,
-    @Request() req: Express.Request
-  ) {
-    const deleteFavoriteResponse = new RemoveResponse();
-    try {
-      await this.favoriteService.delete(
-        favoriteId,
-        req.user['_id']
-      );
-      deleteFavoriteResponse.success = true;
-    } catch (error) {
-      deleteFavoriteResponse.success = false;
-      throw error;
-    }
-    return deleteFavoriteResponse;
-  }
+
 }
 
 

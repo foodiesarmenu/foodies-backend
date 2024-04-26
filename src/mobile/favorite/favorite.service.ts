@@ -15,6 +15,23 @@ export class FavoriteService {
 
     async create(favorite: Favorite) {
         try {
+            console.log(favorite, 'favorite');
+
+            const isExist = await this.favoriteRepository.getOne({
+                restaurant: favorite.restaurant,
+                user: favorite.user
+            });
+            console.log(isExist, 'isExist');
+
+            if (isExist) {
+                return await this.favoriteRepository.delete(
+                    {
+                        _id: isExist._id
+                    }
+                );
+            }
+
+
             return await this.favoriteRepository.create(favorite);
         } catch (error) {
             this.handleError(error);
@@ -43,18 +60,5 @@ export class FavoriteService {
         }
     }
 
-    async delete(id: string, userId: string) {
-        try {
-            return await this.favoriteRepository.update(
-                {
-                    _id: id,
-                    user: userId
-                },
-                { isDeleted: true },
-                { new: true }
-            );
-        } catch (error) {
-            this.handleError(error);
-        }
-    }
+
 }
