@@ -22,6 +22,9 @@ export class Meal {
   @Prop({ type: Number, required: true })
   price: number;
 
+  @Prop({ type: [ { size: String, price: Number } ], required: true })
+  sizes: { size: string, price: number }[];
+
   @Prop({ type: String, required: true })
   currency: string;
 

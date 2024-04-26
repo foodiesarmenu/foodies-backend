@@ -12,6 +12,7 @@ export class MealFactoryService {
     newMeal.name = createMealDto.name;
     newMeal.description = createMealDto.description;
     newMeal.price = createMealDto.price;
+    newMeal.sizes = createMealDto.sizes;
     newMeal.currency = createMealDto.currency;
     newMeal.rate = createMealDto.rate;
     newMeal.calories = createMealDto.calories;
@@ -28,6 +29,7 @@ export class MealFactoryService {
     newMeal.image = updateMealDto.image && updateMealDto.image;
     newMeal.name = updateMealDto.name && updateMealDto.name;
     newMeal.price = updateMealDto.price && updateMealDto.price;
+    newMeal.sizes = updateMealDto.sizes && updateMealDto.sizes;
     newMeal.currency = updateMealDto.currency && updateMealDto.currency;
     newMeal.description = updateMealDto.description && updateMealDto.description;
     newMeal.rate = updateMealDto.rate && updateMealDto.rate;

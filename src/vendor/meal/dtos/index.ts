@@ -22,6 +22,10 @@ export class CreateMealDto {
   @IsString()
   price: number;
 
+  @ApiProperty({ type: 'array', items: { type: 'object' } })
+  @IsArray()
+  sizes: { size: string, price: number }[];
+
   @ApiProperty({ type: 'string' })
   @IsString()
   currency: string;
