@@ -31,8 +31,21 @@ export class FavoriteService {
                 );
             }
 
+            const favoriteCreated = await this.favoriteRepository.create(favorite);
 
-            return await this.favoriteRepository.create(favorite);
+            return await this.favoriteRepository.getOne({
+                _id: favoriteCreated._id
+            },
+                {},
+                {
+                    populate: [
+                        {
+                            path: 'restaurant',
+                            select: '-password -category'
+                        }
+                    ]
+                }
+            );
         } catch (error) {
             this.handleError(error);
         }
