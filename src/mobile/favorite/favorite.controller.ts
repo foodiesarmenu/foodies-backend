@@ -5,7 +5,6 @@ import {
   Get,
   Query,
   Param,
-  Delete,
   Request
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -13,7 +12,6 @@ import { swagger } from '../../common/constants/swagger.constant';
 import {
   CreateResponse,
   FindAllResponse,
-  RemoveResponse,
 } from '../../common/dto/response.dto';
 import { FavoriteFactoryService } from './factory/favorite.factory';
 import { FavoriteService } from './favorite.service';
@@ -78,6 +76,25 @@ export class FavoriteController {
     return getAllFavoritesResponse;
   }
 
+
+  @ApiOperation({ summary: 'Is Favorite' })
+  @Get('is-favorite/:restaurantId')
+  async isFavorite(
+    @Param('restaurantId') restaurantId: string,
+    @Request() req: Express.Request
+  ) {
+    const isFavoriteResponse = new CreateResponse<boolean>();
+
+    try {
+      const isFavorite = await this.favoriteService.isFavorite(restaurantId, req.user['_id']);
+      isFavoriteResponse.success = isFavorite;
+    } catch (error) {
+      isFavoriteResponse.success = false;
+      throw error;
+    }
+
+    return isFavoriteResponse;
+  }
 
 }
 

@@ -74,4 +74,18 @@ export class FavoriteService {
     }
 
 
+    async isFavorite(restaurantId: string, userId: string) {
+        try {
+            const isFavorite = await this.favoriteRepository.getOne({
+                restaurant: restaurantId,
+                user: userId
+            });
+
+            console.log(isFavorite, 'isFavorite');
+            
+            return !!isFavorite;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
 }
