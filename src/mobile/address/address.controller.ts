@@ -76,7 +76,7 @@ export class AddressController {
   }
 
   @ApiOperation({ summary: 'Get one address' })
-  @Get(':addressId')
+  @Get('getOne/:addressId')
   async getOne(@Param('addressId') addressId: string) {
     const getOneAddressResponse = new CreateResponse<Address>();
 
@@ -91,17 +91,20 @@ export class AddressController {
     return getOneAddressResponse;
   }
 
+
   @ApiOperation({ summary: 'Update address' })
   @Patch(':addressId')
   async update(
     @Param('addressId') addressId: string,
     @Body() updateAddressDto: CreateAddressDto,
+    @Request() req: Express.Request,
   ) {
     const updateAddressResponse = new CreateResponse<Address>();
 
     try {
       const address = await this.addressFactoryService.updateAddress(
         updateAddressDto,
+        req.user['_id'],
       );
 
       const updatedAddress = await this.addressService.update(
@@ -115,6 +118,22 @@ export class AddressController {
       throw error;
     }
     return updateAddressResponse;
+  }
+
+   @ApiOperation({ summary: 'Get primary address' })
+  @Get('primary')
+  async getPrimary(@Request() req: Express.Request) {
+    const getPrimaryAddressResponse = new CreateResponse<Address>();
+
+    try {
+      const address = await this.addressService.getPrimary(req.user['_id'] );
+      getPrimaryAddressResponse.success = true;
+      getPrimaryAddressResponse.data = address;
+    } catch (error) {
+      getPrimaryAddressResponse.success = false;
+      throw error;
+    }
+    return getPrimaryAddressResponse;
   }
 
   @ApiOperation({ summary: 'Delete address' })

@@ -20,9 +20,9 @@ export class AddressFactoryService {
         return newAddress;
     }
     
-    updateAddress(updateAddressDto: UpdateAddressDto) {
+    updateAddress(updateAddressDto: UpdateAddressDto, userId: Types.ObjectId) {
         const newAddress = new Address();
-    
+        newAddress.user = userId;
         newAddress.firstAddress = updateAddressDto.firstAddress && updateAddressDto.firstAddress;
         newAddress.secondAddress = updateAddressDto.secondAddress && updateAddressDto.secondAddress;
         newAddress.buildingNumber = updateAddressDto.buildingNumber && updateAddressDto.buildingNumber;
