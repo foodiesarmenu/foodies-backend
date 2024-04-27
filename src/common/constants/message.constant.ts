@@ -16,6 +16,7 @@ export const message = {
     meal: generateMessage('Meal'),
     category: generateMessage('Category'),
     coupon: generateMessage('Coupon'),
+    address: generateMessage('Address'),
     cart: {
         ...generateMessage('Cart'),
         MealDoesNotBelongToRestaurant: 'Meal does not belong to the specified restaurant. Do you want to delete your cart?',

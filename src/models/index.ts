@@ -18,6 +18,9 @@ export * from './meal/meal.schema';
 export * from './category/category.repository';
 export * from './category/category.schema';
 
+export * from './address/address.repository';
+export * from './address/address.schema';
+
 export * from './favorite/favorite.repository';
 export * from './favorite/favorite.schema';
 
