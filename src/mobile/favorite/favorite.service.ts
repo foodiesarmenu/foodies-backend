@@ -73,7 +73,15 @@ export class FavoriteService {
             );
             console.log(favorites, 'favorites');
 
-            return favorites;
+            console.log(favorites.data.length, 'favorites.data');
+            favorites['noOfFavorites'] = favorites.data.length;
+            return {
+                data: favorites.data,
+                noOfFavorites: favorites['noOfFavorites'],
+                currentPage: favorites.currentPage,
+                numberOfPages: favorites.numberOfPages,
+                numberOfRecords: favorites.numberOfRecords,
+            };
         } catch (error) {
             this.handleError(error);
         }

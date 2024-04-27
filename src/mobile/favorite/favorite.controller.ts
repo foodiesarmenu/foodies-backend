@@ -11,7 +11,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
 import {
   CreateResponse,
-  FindAllResponse,
+  FindAllFavoriteResponse,
 } from '../../common/dto/response.dto';
 import { FavoriteFactoryService } from './factory/favorite.factory';
 import { FavoriteService } from './favorite.service';
@@ -59,12 +59,13 @@ export class FavoriteController {
     @Query() query: FindAllQuery,
     @Request() req: Express.Request
   ) {
-    const getAllFavoritesResponse = new FindAllResponse<Favorite>();
+    const getAllFavoritesResponse = new FindAllFavoriteResponse<Favorite>();
 
     try {
       const favorites = await this.favoriteService.getAll(query, req.user['_id']);
       getAllFavoritesResponse.success = true;
       getAllFavoritesResponse.data = favorites.data;
+      getAllFavoritesResponse.noOfFavorites = favorites.noOfFavorites;
       getAllFavoritesResponse.currentPage = favorites.currentPage;
       getAllFavoritesResponse.numberOfPages = favorites.numberOfPages;
       getAllFavoritesResponse.numberOfRecords = favorites.numberOfRecords;

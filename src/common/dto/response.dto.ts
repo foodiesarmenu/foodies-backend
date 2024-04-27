@@ -20,6 +20,9 @@ export class FindAllResponse<T> {
   numberOfRecords?: number;
 }
 
+export class FindAllFavoriteResponse<R> extends FindAllResponse<R> {
+  noOfFavorites?: number;
+}
 export class FindOneResponse<T> {
   success: boolean;
   data: T;
