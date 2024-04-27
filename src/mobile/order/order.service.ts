@@ -71,8 +71,6 @@ export class OrderService {
         }
     }
 
-
-
     async createOnlineOrder(order: Order, user: any) {
         try {
             const cart = await this.cartRepository.getOne({ userId: order.userId }
@@ -129,11 +127,13 @@ export class OrderService {
         }
     }
 
-    
-    async getOrders(query: FindAllQuery) {
+    async getOrders(query: FindAllQuery, userId: string) {
         try {
             const orders = await this.orderRepository.getAll(
-                { isDeleted: false },
+                {
+                    userId: userId,
+                    isDeleted: false
+                },
                 {
                     ...query,
                     populate: [
@@ -155,8 +155,11 @@ export class OrderService {
 
     async getOrderById(orderId: string) {
         try {
-            return await this.orderRepository.getOne(
-                { _id: orderId, isDeleted: false },
+            const order = await this.orderRepository.getOne(
+                {
+                    _id: orderId,
+                    isDeleted: false
+                },
                 {},
                 {
                     populate: [
@@ -171,11 +174,14 @@ export class OrderService {
 
                 }
             );
+            if (!order) {
+                throw new NotFoundException(message.order.NotFound);
+            }
+            return order;
         } catch (error) {
             this.handleError(error);
         }
     }
-
 
     async handleStripeWebhook(requestBody: RawBodyRequest<Request>, stripeSignature: string) {
         try {

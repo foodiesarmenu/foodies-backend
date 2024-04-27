@@ -1,6 +1,6 @@
-import { Body, Controller, Headers, Post, RawBodyRequest, Req, Request, Param, Get } from '@nestjs/common';
+import { Body, Controller, Headers, Post, RawBodyRequest, Req, Request, Param, Get, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateResponse, FindAllResponse, FindOneResponse, Public, Role, Roles, swagger } from 'src/common';
+import { CreateResponse, FindAllQuery, FindAllResponse, FindOneResponse, Public, Role, Roles, swagger } from 'src/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderFactoryService } from './factory/order.factory';
 import { CreateOrderDto } from './dto';
@@ -58,13 +58,26 @@ export class OrderController {
     return createOrderResponse;
   }
 
-  
+  @Public()
+  @Post('webhook')
+  async handleStripeWebhook(
+    @Req() req: RawBodyRequest<Request>,
+    @Headers('stripe-signature') stripeSignature: string
+  ) {
+    console.log('req.rawBody', req);
+
+    return await this.orderService.handleStripeWebhook(req, stripeSignature.toString());
+  }
+
   @Roles(Role.Client)
-  @Get('getOrders')
-  async getOrders(@Request() req: Express.Request) {
+  @Get()
+  async getOrders(
+    @Request() req: Express.Request,
+    @Query() query: FindAllQuery
+  ) {
     const getOrdersResponse = new FindAllResponse<Order>();
     try {
-      const orders = await this.orderService.getOrders(req.user['_id']);
+      const orders = await this.orderService.getOrders(query, req.user['_id']);
       getOrdersResponse.success = true;
       getOrdersResponse.data = orders.data;
       getOrdersResponse.currentPage = orders.currentPage;
@@ -82,6 +95,7 @@ export class OrderController {
   @Get(':orderId')
   async getOrder(@Param('orderId') orderId: string) {
     const getOrdersResponse = new FindOneResponse<Order>();
+
     try {
       const order = await this.orderService.getOrderById(orderId);
       getOrdersResponse.success = true;
@@ -93,18 +107,5 @@ export class OrderController {
     }
 
     return getOrdersResponse;
-  }
-
-
-
-  @Public()
-  @Post('webhook')
-  async handleStripeWebhook(
-    @Req() req: RawBodyRequest<Request>,
-    @Headers('stripe-signature') stripeSignature: string
-  ) {
-    console.log('req.rawBody', req);
-
-    return await this.orderService.handleStripeWebhook(req, stripeSignature.toString());
   }
 }

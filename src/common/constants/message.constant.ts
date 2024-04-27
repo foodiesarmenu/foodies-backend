@@ -21,4 +21,5 @@ export const message = {
         MealDoesNotBelongToRestaurant: 'Meal does not belong to the specified restaurant. Do you want to delete your cart?',
     },
     promotion: generateMessage('Promotion'),
+    order: generateMessage('Order'),
 };
