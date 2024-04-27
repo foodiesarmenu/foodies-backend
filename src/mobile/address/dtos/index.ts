@@ -13,9 +13,9 @@ export class CreateAddressDto {
   secondAddress: string;
 
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  buildingNumber: number;
+  buildingNumber: string;
 
   @ApiProperty()
   @IsString()
@@ -23,8 +23,8 @@ export class CreateAddressDto {
   streetName: string;
 
   @ApiProperty()
-  @IsNumber()
-  floorNumber: number;
+  @IsString()
+  floorNumber: string;
 
   @ApiProperty()
   @IsString()

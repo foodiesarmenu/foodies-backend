@@ -15,14 +15,14 @@ export class Address {
   @Prop({ type: String })
   secondAddress: string;
 
-  @Prop({ type: Number })
-  buildingNumber: Number;
+  @Prop({ type: String })
+  buildingNumber: string;
 
   @Prop({ type: String })
   streetName: string;
 
-  @Prop({ type: Number })
-  floorNumber: Number;
+  @Prop({ type: String })
+  floorNumber: string;
 
   @Prop({ type: String })
   apartmentNumber: string;

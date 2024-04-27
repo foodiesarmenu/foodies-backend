@@ -5,9 +5,9 @@ export class Address {
   user: Types.ObjectId;
   firstAddress: string;
   secondAddress: string;
-  buildingNumber: Number;
+  buildingNumber: string;
   streetName: string;
-  floorNumber: Number;
+  floorNumber: string;
   apartmentNumber: string;
   note: string;
   isPrimary?: boolean;
