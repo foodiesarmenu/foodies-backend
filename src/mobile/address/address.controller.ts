@@ -81,8 +81,25 @@ export class AddressController {
     return getAllAddressesResponse;
   }
 
+  @ApiOperation({ summary: 'Get primary address' })
+  @Get('primary')
+  async getPrimary(@Request() req: Express.Request) {
+    const getPrimaryAddressResponse = new FindOneResponse<Address>();
+    console.log(req.user['_id']);
+
+    try {
+      const address = await this.addressService.getPrimary(req.user['_id']);
+      getPrimaryAddressResponse.success = true;
+      getPrimaryAddressResponse.data = address;
+    } catch (error) {
+      getPrimaryAddressResponse.success = false;
+      throw error;
+    }
+    return getPrimaryAddressResponse;
+  }
+
   @ApiOperation({ summary: 'Get one address' })
-  @Get(':addressId')
+  @Get('getById/:addressId')
   async getOne(
     @Param('addressId') addressId: string,
     @Request() req: Express.Request
@@ -99,7 +116,6 @@ export class AddressController {
     }
     return getOneAddressResponse;
   }
-
 
   @ApiOperation({ summary: 'Update address' })
   @Patch(':addressId')
@@ -127,22 +143,6 @@ export class AddressController {
       throw error;
     }
     return updateAddressResponse;
-  }
-
-  @ApiOperation({ summary: 'Get primary address' })
-  @Get('primary')
-  async getPrimary(@Request() req: Express.Request) {
-    const getPrimaryAddressResponse = new FindOneResponse<Address>();
-
-    try {
-      const address = await this.addressService.getPrimary(req.user['_id']);
-      getPrimaryAddressResponse.success = true;
-      getPrimaryAddressResponse.data = address;
-    } catch (error) {
-      getPrimaryAddressResponse.success = false;
-      throw error;
-    }
-    return getPrimaryAddressResponse;
   }
 
   @ApiOperation({ summary: 'Delete address' })
