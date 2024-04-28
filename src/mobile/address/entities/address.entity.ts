@@ -9,7 +9,7 @@ export class Address {
   streetName: string;
   floorNumber: string;
   apartmentNumber: string;
-  note: string;
+  note?: string;
   isPrimary?: boolean;
   isDeleted?: boolean;
 }

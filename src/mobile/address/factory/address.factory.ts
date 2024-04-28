@@ -15,14 +15,12 @@ export class AddressFactoryService {
         newAddress.floorNumber = createAddressDto.floorNumber;
         newAddress.apartmentNumber = createAddressDto.apartmentNumber;
         newAddress.note = createAddressDto.note;
-        newAddress.isPrimary = createAddressDto.isPrimary;
-    
+
         return newAddress;
     }
-    
-    updateAddress(updateAddressDto: UpdateAddressDto, userId: Types.ObjectId) {
+
+    updateAddress(updateAddressDto: UpdateAddressDto) {
         const newAddress = new Address();
-        newAddress.user = userId;
         newAddress.firstAddress = updateAddressDto.firstAddress && updateAddressDto.firstAddress;
         newAddress.secondAddress = updateAddressDto.secondAddress && updateAddressDto.secondAddress;
         newAddress.buildingNumber = updateAddressDto.buildingNumber && updateAddressDto.buildingNumber;
@@ -31,7 +29,7 @@ export class AddressFactoryService {
         newAddress.apartmentNumber = updateAddressDto.apartmentNumber && updateAddressDto.apartmentNumber;
         newAddress.note = updateAddressDto.note && updateAddressDto.note;
         newAddress.isPrimary = updateAddressDto.isPrimary && updateAddressDto.isPrimary;
-    
+
         return newAddress;
     }
-    }
+}

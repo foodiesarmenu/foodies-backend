@@ -12,7 +12,7 @@ import { Address, AddressRepository } from 'src/models';
 
 @Injectable()
 export class AddressService {
-  constructor(private readonly addressRepository: AddressRepository) {}
+  constructor(private readonly addressRepository: AddressRepository) { }
   private readonly logger = new Logger(AddressService.name);
 
   handleError(error: any) {
@@ -22,35 +22,26 @@ export class AddressService {
 
   public async create(address: Address) {
     try {
-      const currentPrimaryAddress = await this.addressRepository.getOne({
-        user: address.user,
-        isPrimary: true,
-      });
-
-      if (currentPrimaryAddress) {
-        currentPrimaryAddress.isPrimary = false;
-        await this.addressRepository.update(
-          { _id: currentPrimaryAddress._id },
-          currentPrimaryAddress,
-          { new: true },
-        );
-      }
-
       const addressCreated = await this.addressRepository.create(address);
+
       if (!addressCreated) {
         throw new BadRequestException(message.address.FailedToCreate);
       }
+
       return addressCreated;
     } catch (error) {
       this.handleError(error);
     }
   }
 
-  public async getAll(query: FindAllQuery) {
+  public async getAll(query: FindAllQuery, userId: string) {
     try {
       const address = await this.addressRepository.getAll(
-        { isDeleted: false },
-        { ...query },
+        {
+          user: userId,
+          isDeleted: false
+        },
+        query,
       );
       return address;
     } catch (error) {
@@ -58,15 +49,18 @@ export class AddressService {
     }
   }
 
-  public async getById(adderssId: string) {
+  public async getOne(addressId: string, userId: string) {
     try {
       const address = await this.addressRepository.getOne({
-        _id: adderssId,
+        _id: addressId,
+        user: userId,
         isDeleted: false,
       });
+
       if (!address) {
-        throw new NotFoundException('Address not found');
+        throw new NotFoundException(message.address.NotFound);
       }
+
       return address;
     } catch (error) {
       this.handleError(error);
@@ -80,36 +74,39 @@ export class AddressService {
         isPrimary: true,
         isDeleted: false,
       });
+
       if (!address) {
-        throw new NotFoundException('Primary address not found');
+        throw new NotFoundException(message.address.NotFound);
       }
+
       return address;
     } catch (error) {
-      this.handleError(error); 
+      this.handleError(error);
     }
   }
 
-  public async update(addressId: string, address: Address) {
+  public async update(addressId: string, address: Address, userId: string) {
     try {
       const isExist = await this.addressRepository.getOne({
         _id: addressId,
         isDeleted: false,
       });
-      if (!isExist) throw new NotFoundException('Address not found');
 
-      const currentPrimaryAddress = await this.addressRepository.getOne({
-        user: address.user,
-        isPrimary: true,
-        isDeleted: false,
-      });
+      if (!isExist) throw new NotFoundException(message.address.NotFound);
 
-      if (currentPrimaryAddress && currentPrimaryAddress._id != addressId) {
-        currentPrimaryAddress.isPrimary = false;
-        await this.addressRepository.update(
-          { _id: currentPrimaryAddress._id },
-          currentPrimaryAddress,
+      if (address.isPrimary) {
+        console.log(address.isPrimary, addressId);
+
+        const u = await this.addressRepository.update(
+          {
+            user: userId,
+            isPrimary: true
+          },
+          { isPrimary: false },
           { new: true },
         );
+        console.log(u);
+
       }
       const updatedAddress = await this.addressRepository.update(
         { _id: addressId },
@@ -129,7 +126,7 @@ export class AddressService {
         isDeleted: false,
       });
 
-      if (!isExist) throw new NotFoundException('Address not found');
+      if (!isExist) throw new NotFoundException(message.address.NotFound);
 
       const deletedAddress = await this.addressRepository.update(
         { _id: addressId },

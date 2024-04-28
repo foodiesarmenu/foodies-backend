@@ -8,6 +8,7 @@ export const swagger = {
   MobilePromotion: 'Mobile Promotion Operations',
   MobileCart: 'Mobile Cart Operations',
   MobileOrder: 'Mobile Order Operations',
+  MobileAddress: 'Mobile Address Operations',
   
   //Dashboard
   AdminRestaurant: 'Admin Dashboard Restaurant Operations',

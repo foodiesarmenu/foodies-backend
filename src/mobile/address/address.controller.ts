@@ -14,29 +14,32 @@ import {
   CreateResponse,
   FindAllQuery,
   FindAllResponse,
+  FindOneResponse,
+  RemoveResponse,
   Role,
   Roles,
   swagger,
+  UpdateResponse,
 } from 'src/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddressFactoryService } from './factory/address.factory';
-import { CreateAddressDto } from './dtos';
+import { CreateAddressDto, UpdateAddressDto } from './dtos';
 import { Address } from 'src/models';
 
 @Roles(Role.Client)
-@ApiTags(swagger.MobileCategory)
+@ApiTags(swagger.MobileAddress)
 @Controller('mobile/address')
 export class AddressController {
   constructor(
     private readonly addressService: AddressService,
     private readonly addressFactoryService: AddressFactoryService,
-  ) {}
+  ) { }
 
   @ApiOperation({ summary: 'Create a new address' })
   @Post()
   async create(
     @Body() createAddressDto: CreateAddressDto,
-    @Request() req: Express.Request,
+    @Request() req: Express.Request
   ) {
     const createAddressResponse = new CreateResponse<Address>();
 
@@ -58,11 +61,14 @@ export class AddressController {
 
   @ApiOperation({ summary: 'Get all addresses' })
   @Get()
-  async getAll(@Query() query: FindAllQuery) {
+  async getAll(
+    @Query() query: FindAllQuery,
+    @Request() req: Express.Request
+  ) {
     const getAllAddressesResponse = new FindAllResponse<Address>();
 
     try {
-      const addresses = await this.addressService.getAll(query);
+      const addresses = await this.addressService.getAll(query, req.user['_id']);
       getAllAddressesResponse.success = true;
       getAllAddressesResponse.data = addresses.data;
       getAllAddressesResponse.currentPage = addresses.currentPage;
@@ -76,12 +82,15 @@ export class AddressController {
   }
 
   @ApiOperation({ summary: 'Get one address' })
-  @Get('getOne/:addressId')
-  async getOne(@Param('addressId') addressId: string) {
-    const getOneAddressResponse = new CreateResponse<Address>();
+  @Get(':addressId')
+  async getOne(
+    @Param('addressId') addressId: string,
+    @Request() req: Express.Request
+  ) {
+    const getOneAddressResponse = new FindOneResponse<Address>();
 
     try {
-      const address = await this.addressService.getById(addressId);
+      const address = await this.addressService.getOne(addressId, req.user['_id']);
       getOneAddressResponse.success = true;
       getOneAddressResponse.data = address;
     } catch (error) {
@@ -96,20 +105,20 @@ export class AddressController {
   @Patch(':addressId')
   async update(
     @Param('addressId') addressId: string,
-    @Body() updateAddressDto: CreateAddressDto,
+    @Body() updateAddressDto: UpdateAddressDto,
     @Request() req: Express.Request,
   ) {
-    const updateAddressResponse = new CreateResponse<Address>();
+    const updateAddressResponse = new UpdateResponse<Address>();
 
     try {
-      const address = await this.addressFactoryService.updateAddress(
+      const address = this.addressFactoryService.updateAddress(
         updateAddressDto,
-        req.user['_id'],
       );
 
       const updatedAddress = await this.addressService.update(
         addressId,
         address,
+        req.user['_id'],
       );
       updateAddressResponse.success = true;
       updateAddressResponse.data = updatedAddress;
@@ -120,13 +129,13 @@ export class AddressController {
     return updateAddressResponse;
   }
 
-   @ApiOperation({ summary: 'Get primary address' })
+  @ApiOperation({ summary: 'Get primary address' })
   @Get('primary')
   async getPrimary(@Request() req: Express.Request) {
-    const getPrimaryAddressResponse = new CreateResponse<Address>();
+    const getPrimaryAddressResponse = new FindOneResponse<Address>();
 
     try {
-      const address = await this.addressService.getPrimary(req.user['_id'] );
+      const address = await this.addressService.getPrimary(req.user['_id']);
       getPrimaryAddressResponse.success = true;
       getPrimaryAddressResponse.data = address;
     } catch (error) {
@@ -139,7 +148,7 @@ export class AddressController {
   @ApiOperation({ summary: 'Delete address' })
   @Delete(':addressId')
   async delete(@Param('addressId') addressId: string) {
-    const deleteAddressResponse = new CreateResponse<Address>();
+    const deleteAddressResponse = new RemoveResponse();
 
     try {
       await this.addressService.delete(addressId);

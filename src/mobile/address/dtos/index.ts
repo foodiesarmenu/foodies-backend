@@ -32,12 +32,13 @@ export class CreateAddressDto {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   note: string;
 
   @ApiProperty()
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   isPrimary?: boolean;
 }
 
-export class UpdateAddressDto extends PartialType(CreateAddressDto) {}
+export class UpdateAddressDto extends PartialType(CreateAddressDto) { }

@@ -31,9 +31,9 @@ export class Address {
   user: Types.ObjectId;
 
   @Prop({ type: String })
-  note: string;
+  note?: string;
 
-  @Prop({ type: Boolean, default: true })
+  @Prop({ type: Boolean, default: false })
   isPrimary?: boolean;
 
   @Prop({ type: Boolean, default: false })
