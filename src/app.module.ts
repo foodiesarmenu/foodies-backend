@@ -10,6 +10,7 @@ import { dashboardAppModule } from './dashboard/dashboard.module';
 import { VendorModule } from './vendor/vendor-app.module';
 import { CartFactoryService } from './mobile/cart/factory/cart.factory';
 import { PromotionModule } from './mobile/promotion/promotion.module';
+import { AddressModule } from './mobile/address/address.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PromotionModule } from './mobile/promotion/promotion.module';
     MobileAppModule,
     VendorModule,
     PromotionModule,
+    AddressModule,
   ],
 
   providers: [
