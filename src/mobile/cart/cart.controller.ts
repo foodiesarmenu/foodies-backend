@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseI
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateResponse, FindAllQuery, FindAllResponse, FindOneResponse, RemoveResponse, Role, Roles, UpdateResponse, swagger } from "src/common";
 import { CartService } from "./cart.service";
-import { CreateCartDTO } from "./dto/cart-dto";
+import { CreateCartDTO, UpdateCartDTO } from "./dto/cart-dto";
 import { Cart } from "src/models/cart/cart.schema";
 import { CartFactoryService } from "./factory/cart.factory";
 
@@ -77,7 +77,7 @@ export class CartController {
     @Patch(':mealId')
     async update(
         @Param('mealId') mealId: string,
-        @Body() updateCartDTO: number,
+        @Body() updateCartDTO: UpdateCartDTO,
         @Request() req: Express.Request,
     ) {
         const updateCartResponse = new UpdateResponse<Cart>();

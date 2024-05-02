@@ -9,7 +9,7 @@ export class CartFactoryService {
         const createCart = new Cart();
         createCart.userId = userId;
         createCart.cartItems = [];
-        createCart.cartItems.push({ meal: createCartDto.meal });
+        createCart.cartItems.push({ meal: createCartDto.meal, size: createCartDto.size, quantity: createCartDto.quantity });
         createCart.restaurant = createCartDto.restaurant;
         return createCart
     }

@@ -8,3 +8,4 @@ export * from './city.constants';
 export * from './category.constants';
 export * from './tags.constants';
 export * from './address.constants';
+export * from './size.constant';
