@@ -38,11 +38,11 @@ export class OrderService {
 
             const order = await this.orderRepository.create({
                 userId: createOrderDto.userId,
-                orderItems: cart.cartItems,
+                cartItems: cart.cartItems,
                 restaurant: cart.restaurant,
                 status: 'pending',
                 paymentMethod: 'cash',
-                noOfOrderItems: cart.noOfCartItems,
+                noOfCartItems: cart.noOfCartItems,
                 discount: cart.discount,
                 orderTotalPrice: cart.cartTotalPrice,
                 totalPriceAfterDiscount: totalPrice,
@@ -57,7 +57,7 @@ export class OrderService {
             return await this.orderRepository.getOne({ _id: order._id }, {}, {
                 populate: [
                     {
-                        path: 'orderItems.meal',
+                        path: 'cartItems.meal',
 
                     },
                     {
@@ -138,7 +138,7 @@ export class OrderService {
                     ...query,
                     populate: [
                         {
-                            path: 'orderItems.meal',
+                            path: 'cartItems.meal',
                         },
                         {
                             path: 'restaurant',
@@ -161,7 +161,7 @@ export class OrderService {
                 {
                     populate: [
                         {
-                            path: 'orderItems.meal',
+                            path: 'cartItems.meal',
                         },
                         {
                             path: 'restaurant',
@@ -202,11 +202,11 @@ export class OrderService {
 
                 const order = await this.orderRepository.create({
                     userId: cart.userId,
-                    orderItems: cart.cartItems,
+                    cartItems: cart.cartItems,
                     restaurant: cart.restaurant,
                     status: 'pending',
                     paymentMethod: 'card',
-                    noOfOrderItems: cart.noOfCartItems,
+                    noOfCartItems: cart.noOfCartItems,
                     discount: cart.discount,
                     orderTotalPrice: cart.cartTotalPrice,
                     totalPriceAfterDiscount: cart.totalPriceAfterDiscount,
