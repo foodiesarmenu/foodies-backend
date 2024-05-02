@@ -22,7 +22,7 @@ export class Order {
         }],
         default: []
     })
-    orderItems: {
+    cartItems: {
         meal: Types.ObjectId,
         quantity?: number,
         price?: number,
@@ -42,7 +42,7 @@ export class Order {
     restaurant: Types.ObjectId;
 
     @Prop({ type: Number, default: 0 })
-    noOfOrderItems?: number;
+    noOfCartItems?: number;
 
     @Prop({
         type: String,
