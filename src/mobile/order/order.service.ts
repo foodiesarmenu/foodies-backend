@@ -44,7 +44,7 @@ export class OrderService {
                 paymentMethod: 'cash',
                 noOfCartItems: cart.noOfCartItems,
                 discount: cart.discount,
-                orderTotalPrice: cart.cartTotalPrice,
+                cartTotalPrice: cart.cartTotalPrice,
                 totalPriceAfterDiscount: totalPrice,
                 deliveryAddress: createOrderDto.deliveryAddress,
             });
@@ -214,7 +214,7 @@ export class OrderService {
                     paymentMethod: 'card',
                     noOfCartItems: cart.noOfCartItems,
                     discount: cart.discount,
-                    orderTotalPrice: cart.cartTotalPrice,
+                    cartTotalPrice: cart.cartTotalPrice,
                     totalPriceAfterDiscount: cart.totalPriceAfterDiscount,
                     deliveryAddress: {
                         firstAddress: session.metadata.firstAddress,
