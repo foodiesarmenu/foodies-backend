@@ -8,6 +8,7 @@ import { CartRepository } from 'src/models/cart/cart.repository';
 import { Cart } from 'src/models/cart/cart.schema';
 import { CouponRepository, MealRepository } from 'src/models';
 import { Types } from 'mongoose';
+import { UpdateCartDTO } from './dto/cart-dto';
 
 @Injectable()
 export class CartService {
@@ -25,7 +26,7 @@ export class CartService {
     }
 
     async findMealById(id: Types.ObjectId) {
-        const meal = await this.mealRepository.getOne({ _id: id });
+        const meal = await this.mealRepository.getOne({ _id: id }, {}, { lean: true });
         if (!meal) {
             throw new NotFoundException(message.meal.NotFound);
         }
@@ -62,8 +63,15 @@ export class CartService {
     async addMealToCart(cart: Cart) {
         try {
             const meal = await this.findMealById(cart.cartItems[0].meal);
-            cart.cartItems[0].price = meal.price;
+            const selectedSize = meal.sizes.find(size => size.size === cart.cartItems[0].size);
 
+
+            if (!selectedSize) {
+                throw new NotFoundException(message.meal.SizeNotFound);
+            }
+
+            cart.cartItems[0].price = selectedSize.price;
+            cart.cartItems[0].size = selectedSize.size;
 
             if (meal.restaurant.toString() !== cart.restaurant.toString()) {
                 throw new NotFoundException(message.cart.MealDoesNotBelongToRestaurant);
@@ -103,9 +111,10 @@ export class CartService {
                 );
             }
 
-            const item = cartExist.cartItems.find(item => item.meal.toString() === cart.cartItems[0].meal.toString());
+            const item = cartExist.cartItems.find(item => (item.meal.toString() === cart.cartItems[0].meal.toString()) && (item.size === cart.cartItems[0].size));
+            console.log(item, 'item');
 
-            if (item) {
+            if (item && item.size === cart.cartItems[0].size) {
                 item.quantity += cart.cartItems[0].quantity || 1;
             } else {
                 cartExist.cartItems.push({ ...cart.cartItems[0], quantity: cart.cartItems[0].quantity || 1 });
@@ -160,18 +169,20 @@ export class CartService {
                 ]
             });
 
-            this.calcNoOfCartItems(cart);
-
             if (!cart) {
                 throw new NotFoundException(message.cart.NotFound);
             }
+
+            this.calcNoOfCartItems(cart);
+
+
             return cart;
         } catch (error) {
             this.handleError(error);
         }
     }
 
-    async updateMealQuantity(MealId: string, userId: string, updateCartDTO: number) {
+    async updateMealQuantity(MealId: string, userId: string, updateCartDTO: UpdateCartDTO) {
         try {
             const mealExist = await this.findMealById(new Types.ObjectId(MealId));
 
@@ -179,13 +190,20 @@ export class CartService {
                 throw new NotFoundException(message.meal.NotFound);
             }
 
+            const selectedSize = mealExist.sizes.find(size => size.size === updateCartDTO.size);
+
+            if (!selectedSize) {
+                throw new NotFoundException(message.meal.SizeNotFound);
+            }
+
             let existCart = await this.cartRepository.getOne({ userId: userId })
 
-            const item = existCart.cartItems.find(item => item.meal.toString() == MealId.toString());
+            const item = existCart.cartItems.find(item => (item.meal.toString() == MealId.toString()) && (item.size === updateCartDTO.size));
 
             if (item) {
                 item.quantity = updateCartDTO['quantity']
-                item.totalPrice = item.quantity * item.price;
+                item.totalPrice = item.quantity * selectedSize.price;
+                item.size = selectedSize.size;
             }
 
 

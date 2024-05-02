@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
+import { Size } from 'src/common';
 
 export type MealDocument = Meal & Document;
 
@@ -45,6 +46,9 @@ export class Meal {
 
   @Prop({ type: Number, required: true })
   carbohydrates: number;
+
+  @Prop({ type: [{ size: { type: String, enum: Object.values(Size) }, price: Number }], default: [] }) // Array of objects containing size and price
+  sizes?: { size: Size, price: number }[];
 
   @Prop({ type: Boolean, default: false })
   isDeleted?: boolean;

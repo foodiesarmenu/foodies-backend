@@ -7,6 +7,7 @@ export class Cart {
     cartItems: {
         meal: Types.ObjectId,
         quantity?: number,
+        size: string,
         price?: number,
         totalPrice?: number
     }[];

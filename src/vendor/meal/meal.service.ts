@@ -8,6 +8,7 @@ import {
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Meal, MealRepository } from 'src/models';
+import { UpdateMealDto } from './dtos';
 
 @Injectable()
 export class MealService {
@@ -54,7 +55,7 @@ export class MealService {
     });
   }
 
-  async updateMeal(mealId: string, meal: Meal) {
+  async updateMeal(mealId: string, meal: UpdateMealDto) {
 
     try {
       const isExist = await this.mealRepository.getOne({

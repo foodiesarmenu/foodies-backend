@@ -13,7 +13,10 @@ export const message = {
         PasswordNotMatch: 'Password and confirm password do not match!',
     },
     restaurant: generateMessage('Restaurant'),
-    meal: generateMessage('Meal'),
+    meal: {
+        ...generateMessage('Meal'),
+        SizeNotFound: 'Size not found!',
+    },
     category: generateMessage('Category'),
     coupon: generateMessage('Coupon'),
     address: generateMessage('Address'),

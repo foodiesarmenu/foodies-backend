@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
-import { Types } from 'mongoose';
+import { IsArray, IsOptional, IsString } from 'class-validator';
+import { SchemaTypes, Types } from 'mongoose';
+import { Size } from 'src/common';
 
 export class CreateMealDto {
 
@@ -14,13 +15,12 @@ export class CreateMealDto {
   @IsString()
   name: string;
 
+  @ApiProperty({ type: SchemaTypes.ObjectId })
+  restaurant: Types.ObjectId;
+
   @ApiProperty({ type: 'string' })
   @IsString()
   description: string;
-
-  @ApiProperty({ type: 'number' })
-  @IsString()
-  price: number;
 
   @ApiProperty({ type: 'string' })
   @IsString()
@@ -28,7 +28,8 @@ export class CreateMealDto {
 
   @ApiProperty({ type: 'number' })
   @IsString()
-  rate: number;
+  @IsOptional()
+  rate?: number;
 
   @ApiProperty({ type: 'number' })
   @IsString()
@@ -49,5 +50,9 @@ export class CreateMealDto {
   @ApiProperty({ type: 'array', items: { type: 'string' } })
   @IsArray()
   tags: string[];
+
+  @ApiProperty({ type: 'array', items: { type: 'object' } })
+  @IsArray()
+  sizes: { size: Size, price: number }[]; // 
 }
 export class UpdateMealDto extends PartialType(CreateMealDto) { }
