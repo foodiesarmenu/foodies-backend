@@ -30,7 +30,7 @@ export class Order {
     }[];
 
     @Prop({ type: Number, default: 0 })
-    orderTotalPrice?: number;
+    cartTotalPrice?: number;
 
     @Prop({ type: Number, default: 0 })
     totalPriceAfterDiscount?: number;
