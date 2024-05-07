@@ -12,7 +12,7 @@ import { Address, AddressRepository } from 'src/models';
 
 @Injectable()
 export class AddressService {
-  constructor(private readonly addressRepository: AddressRepository) { }
+  constructor(private readonly addressRepository: AddressRepository) {}
   private readonly logger = new Logger(AddressService.name);
 
   handleError(error: any) {
@@ -22,8 +22,12 @@ export class AddressService {
 
   public async create(address: Address) {
     try {
-      await this.addressRepository.update({ user: address.user, isPrimary: true }, { isPrimary: false }, {});
-     
+      await this.addressRepository.update(
+        { user: address.user, isPrimary: true },
+        { isPrimary: false },
+        {},
+      );
+
       address.isPrimary = true;
 
       const addressCreated = await this.addressRepository.create(address);
@@ -43,7 +47,7 @@ export class AddressService {
       const address = await this.addressRepository.getAll(
         {
           user: userId,
-          isDeleted: false
+          isDeleted: false,
         },
         query,
       );
@@ -104,13 +108,12 @@ export class AddressService {
         const u = await this.addressRepository.update(
           {
             user: userId,
-            isPrimary: true
+            isPrimary: true,
           },
           { isPrimary: false },
           { new: true },
         );
         console.log(u);
-
       }
       const updatedAddress = await this.addressRepository.update(
         { _id: addressId },
