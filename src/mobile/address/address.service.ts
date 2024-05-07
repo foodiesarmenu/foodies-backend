@@ -22,6 +22,10 @@ export class AddressService {
 
   public async create(address: Address) {
     try {
+      await this.addressRepository.update({ user: address.user, isPrimary: true }, { isPrimary: false }, {});
+     
+      address.isPrimary = true;
+
       const addressCreated = await this.addressRepository.create(address);
 
       if (!addressCreated) {

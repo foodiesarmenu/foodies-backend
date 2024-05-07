@@ -33,7 +33,7 @@ export class Address {
   @Prop({ type: String })
   note?: string;
 
-  @Prop({ type: Boolean, default: false })
+  @Prop({ type: Boolean, default: true })
   isPrimary?: boolean;
 
   @Prop({ type: Boolean, default: false })
