@@ -5,5 +5,6 @@ export class Coupon {
   code: string;
   expires: Date;
   discount: number;
+  restaurant?: Types.ObjectId;
   isDeleted?: boolean;
 }

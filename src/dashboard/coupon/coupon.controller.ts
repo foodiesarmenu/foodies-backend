@@ -42,7 +42,7 @@ export class CouponController {
     try {
       const coupon = await this.couponFactoryService.createNewCoupon(
         createCouponDto,
-      );
+      ); 
 
       const createdCoupon = await this.couponService.create(coupon);
       createCouponResponse.success = true;
