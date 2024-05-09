@@ -3,10 +3,12 @@ import {
   ConflictException,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { omit } from 'lodash';
 import { Admin, AdminRepository } from '../../models';
 import { message } from 'src/common/constants/message.constant';
+import { UpdateAdminDto } from './dtos';
 
 @Injectable()
 export class AdminService {
@@ -47,6 +49,33 @@ export class AdminService {
     } catch (error) {
       this.logger.error('--Error--', error);
       throw new BadRequestException(error);
+    }
+  }
+  
+
+  public async update(adminId: string, admin: UpdateAdminDto) {
+    try {
+      const adminExists = await this.adminRepository.exists({
+        _id: adminId,
+      });
+  
+      if (!adminExists) {
+        throw new NotFoundException(message.user.NotFound);
+      }
+  
+      const updatedAdmin = await this.adminRepository.update(
+        { _id: adminId },
+        admin,
+        { new: true },
+      );
+  
+      if (!updatedAdmin) {
+        throw new BadRequestException(message.user.FailedToUpdate);
+      }
+  
+      return omit(updatedAdmin, ['password']) as unknown as Admin;
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
