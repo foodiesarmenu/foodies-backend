@@ -4,6 +4,7 @@ import {
   IsDate,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -24,6 +25,13 @@ export class CreateCouponDto {
   @IsNumber()
   @IsNotEmpty()
   discount: number;
+
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  restaurant?: string; 
+
 
 }
 

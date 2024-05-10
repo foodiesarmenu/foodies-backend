@@ -4,6 +4,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { FindAllQuery } from 'src/common';
 import { message } from 'src/common/constants/message.constant';
 import { Coupon } from 'src/models';
@@ -23,8 +24,11 @@ export class CouponService {
   }
 
 
-  public async create(coupon: Coupon) {
+  public async create(coupon: Coupon , restaurant?: Types.ObjectId) {
     try {
+      if (restaurant) {
+        coupon.restaurant = restaurant;
+      }  
       const createdCoupon = await this.couponRepository.create(coupon);
 
       if (!createdCoupon) {

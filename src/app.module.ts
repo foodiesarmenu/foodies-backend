@@ -11,6 +11,7 @@ import { VendorModule } from './vendor/vendor-app.module';
 import { CartFactoryService } from './mobile/cart/factory/cart.factory';
 import { PromotionModule } from './mobile/promotion/promotion.module';
 import { AddressModule } from './mobile/address/address.module';
+import { RestaurantModule } from './vendor/restaurant/restaurant.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AddressModule } from './mobile/address/address.module';
     VendorModule,
     PromotionModule,
     AddressModule,
+    RestaurantModule,
   ],
 
   providers: [
