@@ -20,7 +20,7 @@ import {
   Role,
   Roles,
   swagger,
-  UpdateResponse
+  UpdateResponse,
 } from 'src/common';
 import { CreateCouponDto, UpdateCouponDto } from './dtos';
 import { CouponFactoryService } from './factory/coupon.factory';
@@ -32,7 +32,7 @@ export class CouponController {
   constructor(
     private readonly couponService: CouponService,
     private readonly couponFactoryService: CouponFactoryService,
-  ) { }
+  ) {}
 
   @ApiOperation({ summary: 'Create a new coupon' })
   @Post()
@@ -42,7 +42,7 @@ export class CouponController {
     try {
       const coupon = await this.couponFactoryService.createNewCoupon(
         createCouponDto,
-      ); 
+      );
 
       const createdCoupon = await this.couponService.create(coupon);
       createCouponResponse.success = true;
@@ -80,7 +80,6 @@ export class CouponController {
   async getOne(@Param('couponId') couponId: string) {
     const getOneCouponResponse = new FindOneResponse<Coupon>();
     try {
-
       const coupon = await this.couponService.getOne(couponId);
       getOneCouponResponse.success = true;
       getOneCouponResponse.data = coupon;
@@ -92,26 +91,41 @@ export class CouponController {
     return getOneCouponResponse;
   }
 
+  @ApiOperation({ summary: 'get all coupons by restaurant' })
+  @Get('restaurant/:restaurantId')
+  async getAllByRestaurant(
+    @Param('restaurantId') restaurantId: string,
+    @Query() query: FindAllQuery,
+  ) {
+    const getAllByRestaurantResponse = new FindAllResponse<Coupon>();
+    try {
+      const coupons = await this.couponService.getAllByRestaurant(restaurantId, query);
+      getAllByRestaurantResponse.success = true;
+      getAllByRestaurantResponse.data = coupons.data;
+      getAllByRestaurantResponse.currentPage = coupons.currentPage;
+      getAllByRestaurantResponse.numberOfPages = coupons.numberOfPages;
+      getAllByRestaurantResponse.numberOfRecords = coupons.numberOfRecords;
+    } catch (error) {
+      getAllByRestaurantResponse.success = false;
+      throw error;
+    }
+
+    return getAllByRestaurantResponse;
+  }
+
   @ApiOperation({ summary: 'Update an existing coupon' })
   @Patch(':couponId')
-  async update
-    (
-      @Param('couponId') couponId: string,
-      @Body() updatedCouponData: UpdateCouponDto
-    ) {
+  async update(
+    @Param('couponId') couponId: string,
+    @Body() updatedCouponData: UpdateCouponDto,
+  ) {
     const updateCouponResponse = new UpdateResponse<Coupon>();
     try {
-      const Coupon = this.couponFactoryService.updateCoupon(
-        updatedCouponData,
-      );
+      const Coupon = this.couponFactoryService.updateCoupon(updatedCouponData);
 
-      const updatedCoupon = await this.couponService.update(
-        couponId,
-        Coupon,
-      );
+      const updatedCoupon = await this.couponService.update(couponId, Coupon);
       updateCouponResponse.success = true;
       updateCouponResponse.data = updatedCoupon;
-
     } catch (error) {
       updateCouponResponse.success = false;
       throw error;
@@ -134,5 +148,4 @@ export class CouponController {
 
     return deleteCouponResponse;
   }
-
 }
