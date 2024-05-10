@@ -70,6 +70,22 @@ export class CouponService {
     }
   }
 
+  public async getAllByRestaurant(restaurantId: string, query: FindAllQuery) {
+    try {
+      const coupons = await this.couponRepository.getAll(
+        {
+          restaurant: restaurantId,
+          isDeleted: false
+        },
+        query
+      );
+      return coupons;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+  
+
   public async update(couponId: string, updatedCouponData: Coupon) {
     try {
       const isExist = await this.couponRepository.exists({
