@@ -208,7 +208,7 @@ export class CartService {
 
 
             existCart.cartTotalPrice = this.calcCartTotalPrice(existCart).cartTotalPrice;
-
+            existCart.noOfCartItems = this.calcNoOfCartItems(existCart).noOfCartItems;
             if (existCart.discount) {
                 existCart.totalPriceAfterDiscount = existCart.cartTotalPrice - (existCart.cartTotalPrice * existCart.discount) / 100 //NOTE - 100-(100*50)/100
             }
