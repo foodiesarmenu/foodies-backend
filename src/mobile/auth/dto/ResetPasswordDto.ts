@@ -6,8 +6,12 @@ import {
     MinLength,
     MaxLength,
 } from 'class-validator';
- 
-export class ChangePasswordDto {
+
+export class ResetPasswordDto {
+    @ApiProperty({ example: 'currentPassword' })
+    @IsNotEmpty()
+    @IsString()
+    currentPassword: string;
 
     @ApiProperty({ example: 'newPassword' })
     @MinLength(6)

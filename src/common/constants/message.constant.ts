@@ -11,6 +11,7 @@ export const message = {
         ...generateMessage('User'),
         InvalidPassword: 'Invalid password!',
         PasswordNotMatch: 'Password and confirm password do not match!',
+        InvalidCode: 'Invalid code!',
     },
     restaurant: generateMessage('Restaurant'),
     meal: {
