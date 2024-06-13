@@ -282,4 +282,52 @@ export class OrderService {
             this.handleError(error);
         }
     }
+
+
+    async reOrder(orderId: string, userId: string) {
+        try {
+            const order = await this.orderRepository.getOne(
+                {
+                    _id: orderId,
+                    isDeleted: false
+                },
+                {},
+                {
+                }
+            );
+
+            if (!order) {
+                throw new NotFoundException(message.order.NotFound);
+            }
+
+            const cart = await this.cartRepository.create({
+                userId: order.userId,
+                cartItems: order.cartItems,
+                restaurant: order.restaurant,
+                noOfCartItems: order.noOfCartItems,
+                discount: order.discount,
+                cartTotalPrice: order.cartTotalPrice,
+                totalPriceAfterDiscount: order.totalPriceAfterDiscount,
+            });
+
+
+            return await this.cartRepository.getOne({
+                userId: userId,
+                isDeleted: false
+            }, {}, {
+                populate: [
+                    {
+                        path: 'cartItems.meal',
+                    },
+                    {
+                        path: 'restaurant',
+                        select: '-password -category'
+                    }
+                ]
+            });
+
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
 }

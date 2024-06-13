@@ -107,4 +107,27 @@ export class OrderController {
 
     return getOrdersResponse;
   }
+
+  @Roles(Role.Client)
+  @Post('reOrder/:orderId')
+  async reOrder(
+    @Param('orderId') orderId: string,
+    @Request() req: Express.Request,
+  ) {
+    const createOrderResponse = new CreateResponse<Order>();
+
+    try {
+      const order = await this.orderService.reOrder(
+        orderId,
+        req.user['_id']
+      );
+      createOrderResponse.success = true;
+      createOrderResponse.data = order;
+    } catch (error) {
+      createOrderResponse.success = false;
+      throw error;
+    }
+
+    return createOrderResponse;
+  }
 }
