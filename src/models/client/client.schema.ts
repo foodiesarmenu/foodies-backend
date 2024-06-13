@@ -53,6 +53,9 @@ export class Client {
     apartmentNumber?: string;
     note?: string;
   }[];
+
+  @Prop({})
+  emailCode?: string;
 }
 
 

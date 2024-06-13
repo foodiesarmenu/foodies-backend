@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { MobileStrategy } from './stratigies/mobile.strategy';
 import { LocalStrategy } from './stratigies/local.strategy';
 import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
+import { EmailService } from 'src/common/email/sendEmail';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { UserMongoModule } from 'src/shared/modules/user-mongo.module';
     UserMongoModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, MobileStrategy],
+  providers: [AuthService, LocalStrategy, MobileStrategy, EmailService],
   exports: [AuthService]
 })
 export class AuthModule { }

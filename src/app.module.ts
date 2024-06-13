@@ -12,6 +12,7 @@ import { CartFactoryService } from './mobile/cart/factory/cart.factory';
 import { PromotionModule } from './mobile/promotion/promotion.module';
 import { AddressModule } from './mobile/address/address.module';
 import { RestaurantModule } from './vendor/restaurant/restaurant.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -27,6 +28,15 @@ import { RestaurantModule } from './vendor/restaurant/restaurant.module';
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),
+    }),
+    MailerModule.forRoot({
+      transport: {
+        service: process.env.EMAIL_SERVICE,
+        auth: { 
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      },
     }),
     dashboardAppModule,
     MobileAppModule,
