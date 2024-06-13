@@ -19,7 +19,7 @@ export class Promotion {
     @Prop({ type: String, required: true })
     image: string;
 
-    @Prop({ type: SchemaTypes.ObjectId, required: true })
+    @Prop({ type: SchemaTypes.ObjectId, ref: 'Restaurant', required: true })
     restaurant: Types.ObjectId;
 
     @Prop({ type: Boolean, default: true })

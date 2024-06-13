@@ -22,7 +22,12 @@ export class PromotionService {
           isActive: true,
           isDeleted: false
         },
-        query
+        {
+          populate: [{
+            path: 'restaurant',
+            select: '-password -category'
+          }], ...query
+        },
       );
       return promotions;
     } catch (error) {
