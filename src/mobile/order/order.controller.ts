@@ -47,7 +47,6 @@ export class OrderController {
         await this.orderFactoryService.createNewOrder(createOrderDto,
           req.user['_id']);
       const orderCreated = await this.orderService.createOnlineOrder(order,
-        req.user
       );
       createOrderResponse.success = true;
       createOrderResponse.data = orderCreated;

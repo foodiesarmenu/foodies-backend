@@ -70,62 +70,112 @@ export class OrderService {
             this.handleError(error);
         }
     }
+    async createOnlineOrder(createOrderDto: Order) {
 
-    async createOnlineOrder(order: Order, user: any) {
         try {
-            const cart = await this.cartRepository.getOne({ userId: order.userId }
-                , {},
-                {
-                    populate: [
-                        {
-                            path: 'cartItems.meal',
-                        },
-                        {
-                            path: 'restaurant',
-                            select: '-password -category'
-                        }
-                    ],
-                    lean: false
-                }
-            );
+            const cart = await this.cartRepository.getOne({
+                userId: createOrderDto.userId,
+            });
 
             if (!cart) {
                 throw new NotFoundException(message.cart.NotFound);
             }
 
-            const totalPrice = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.cartTotalPrice;
+            const totalPrice = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.cartTotalPrice
 
-            const session = await this.stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                line_items: [
-                    {
-                        price_data: {
-                            currency: 'usd',
-                            unit_amount: totalPrice * 100, // Convert to cents
-                            product_data: {
-                                name: cart.restaurant['name'],
-                                images: [cart.restaurant['image']],
-                            },
+            console.log('createOrderDto', createOrderDto);
 
-                        },
-                        quantity: 1,
-                    },
-                ],
-                mode: 'payment',
-                success_url: `https://www.google.com/`,
-                cancel_url: `https://www.yahoo.com/`,
-                customer_email: user.email,
-                client_reference_id: cart._id.toString(),
-                metadata: {
-                    ...order.deliveryAddress,
-                }
+            const order = await this.orderRepository.create({
+                userId: createOrderDto.userId,
+                cartItems: cart.cartItems,
+                restaurant: cart.restaurant,
+                status: 'pending',
+                paymentMethod: 'card',
+                noOfCartItems: cart.noOfCartItems,
+                discount: cart.discount,
+                cartTotalPrice: cart.cartTotalPrice,
+                totalPriceAfterDiscount: totalPrice,
+                deliveryAddress: createOrderDto.deliveryAddress,
             });
 
-            return session;
+            if (order) {
+                await this.cartRepository.delete({
+                    userId: createOrderDto.userId,
+                });
+            }
+            return await this.orderRepository.getOne({ _id: order._id }, {}, {
+                populate: [
+                    {
+                        path: 'cartItems.meal',
+
+                    },
+                    {
+                        path: 'restaurant',
+                        select: '-password -category'
+                    }
+                ]
+            });
         } catch (error) {
             this.handleError(error);
         }
     }
+
+
+    // async createOnlineOrder(order: Order, user: any) {
+    //     try {
+    //         const cart = await this.cartRepository.getOne({ userId: order.userId }
+    //             , {},
+    //             {
+    //                 populate: [
+    //                     {
+    //                         path: 'cartItems.meal',
+    //                     },
+    //                     {
+    //                         path: 'restaurant',
+    //                         select: '-password -category'
+    //                     }
+    //                 ],
+    //                 lean: false
+    //             }
+    //         );
+
+    //         if (!cart) {
+    //             throw new NotFoundException(message.cart.NotFound);
+    //         }
+
+    //         const totalPrice = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.cartTotalPrice;
+
+    //         const session = await this.stripe.checkout.sessions.create({
+    //             payment_method_types: ['card'],
+    //             line_items: [
+    //                 {
+    //                     price_data: {
+    //                         currency: 'usd',
+    //                         unit_amount: totalPrice * 100, // Convert to cents
+    //                         product_data: {
+    //                             name: cart.restaurant['name'],
+    //                             images: [cart.restaurant['image']],
+    //                         },
+
+    //                     },
+    //                     quantity: 1,
+    //                 },
+    //             ],
+    //             mode: 'payment',
+    //             success_url: `https://www.google.com/`,
+    //             cancel_url: `https://www.yahoo.com/`,
+    //             customer_email: user.email,
+    //             client_reference_id: cart._id.toString(),
+    //             metadata: {
+    //                 ...order.deliveryAddress,
+    //             }
+    //         });
+
+    //         return session;
+    //     } catch (error) {
+    //         this.handleError(error);
+    //     }
+    // }
 
     async getOrders(query: FindAllQuery, userId: string) {
         try {
