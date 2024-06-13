@@ -46,6 +46,12 @@ export class OTPResponse {
   status?: string;
 }
 
+export class SendEmailResponse {
+  message: string;
+  to: string;
+  success: boolean;
+}
+
 export class changePasswordResponse<T> {
   success: boolean;
   data: T;
