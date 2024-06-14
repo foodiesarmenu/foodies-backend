@@ -13,7 +13,6 @@ import { PromotionModule } from './mobile/promotion/promotion.module';
 import { AddressModule } from './mobile/address/address.module';
 import { RestaurantModule } from './vendor/restaurant/restaurant.module';
 import { MailerModule } from '@nestjs-modules/mailer';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
