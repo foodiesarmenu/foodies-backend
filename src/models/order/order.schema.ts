@@ -46,7 +46,7 @@ export class Order {
 
     @Prop({
         type: String,
-        enum: ['pending', 'accepted', 'rejected', 'delivered'],
+        enum: ['pending', 'preparing', 'rejected', 'delivered'],
         required: true,
         default: 'pending'
     })

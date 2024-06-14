@@ -4,9 +4,10 @@ import { AuthVendorModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/common';
 import { PromotionModule } from './promotion/promotion.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [MealModule, AuthVendorModule, PromotionModule],
+  imports: [MealModule, AuthVendorModule, PromotionModule, OrderModule],
   providers: [
     {
       provide: APP_GUARD,
