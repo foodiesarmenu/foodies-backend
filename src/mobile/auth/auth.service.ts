@@ -39,9 +39,10 @@ export class AuthService {
 
   public login(user: Express.User) {
     try {
-      const { email, _id, phoneNumber, countryCode, type } = user as Client;
+      const { email, _id, name, phoneNumber, countryCode, type } = user as Client;
       const payload = {
         _id,
+        name,
         email,
         countryCode,
         phoneNumber,

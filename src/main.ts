@@ -20,7 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerUi);
   SwaggerModule.setup('api-docs', app, document);
 
-  //app.use(json({ limit: '5mb' }));
+  // app.use(json({ limit: '5mb' }));
   app.useGlobalInterceptors(new RestLoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.use(urlencoded({ extended: true }));

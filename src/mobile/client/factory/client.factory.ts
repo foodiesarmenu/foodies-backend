@@ -33,7 +33,7 @@ export class ClientFactoryService {
     newClient.dateOfBirth =
       updateClientDto.dateOfBirth && updateClientDto.dateOfBirth;
     newClient.addresses = updateClientDto.addresses && updateClientDto.addresses;
-
+    newClient.image = updateClientDto.image && updateClientDto.image;
     return newClient;
   }
 }

@@ -4,7 +4,8 @@ import {
   Post,
   Patch,
   Request,
-  Get
+  Get,
+  UseInterceptors
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swagger } from '../../common/constants/swagger.constant';
@@ -18,6 +19,8 @@ import { ClientFactoryService } from './factory/client.factory';
 import { ClientService } from './client.service';
 import { CreateClientDto, UpdateClientDto } from './dtos';
 import { Client } from 'src/models';
+import { UpdateProfileImageInterceptor } from 'src/blocks/interceptors/update-profile-image-interciptor';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 
 @Controller('mobile/client')
@@ -67,6 +70,7 @@ export class ClientController {
 
   @ApiOperation({ summary: 'update Client' })
   @Patch()
+  @UseInterceptors(FileInterceptor('image'), new UpdateProfileImageInterceptor('client'))
   async updateClient(
     @Body() updateClientDto: UpdateClientDto,
     @Request() req: Express.Request
@@ -77,7 +81,6 @@ export class ClientController {
       const client = this.clientFactoryService.updateClient(
         updateClientDto,
       );
-      console.log('clientclientclientclientclientclientclientclient', client);
 
       const updatedClient = await this.clientService.update(
         req.user['_id'],

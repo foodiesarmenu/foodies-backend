@@ -67,6 +67,9 @@ export class CreateClientDto {
   @Type(() => AddressDto)
   addresses?: AddressDto[];
 
+  @ApiProperty()
+  @IsOptional()
+  image?: string;
 }
 
 export class UpdateClientDto extends PartialType(CreateClientDto) { }

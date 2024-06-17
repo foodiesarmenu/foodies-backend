@@ -12,6 +12,7 @@ export class Client {
   isDeleted?: boolean;
   isActive?: boolean;
   dateOfBirth?: Date;
+  image?: string;
   type?: string;
   addresses?: {
     firstAddress: string;

@@ -12,10 +12,11 @@ export type ClientDocument = Client & Document;
 export class Client {
   readonly _id?: Types.ObjectId;
   name: string;
+
   email: string;
 
   @Prop()
-  avatar?: string;
+  image?: string;
 
   @Prop()
   countryCode?: string;
