@@ -1,8 +1,11 @@
 import { Controller, Get, Param, Patch, Query, Request } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { FindAllQuery, FindAllResponse, FindOneResponse } from 'src/common';
+import { FindAllQuery, FindAllResponse, FindOneResponse, Role, Roles, swagger } from 'src/common';
 import { Order } from 'src/models';
+import { ApiTags } from '@nestjs/swagger';
 
+@Roles(Role.RESTAURANT)
+@ApiTags(swagger.RestaurantOrder)
 @Controller('dashboard/vendor/order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) { }
