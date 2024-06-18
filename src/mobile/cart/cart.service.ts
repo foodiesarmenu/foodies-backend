@@ -123,8 +123,12 @@ export class CartService {
             this.calcCartTotalPrice(cartExist);
             this.calcNoOfCartItems(cartExist);
             cartExist.restaurant = cart.restaurant;
+            console.log(cartExist, 'cartExist');
+            
             if (cartExist.discount) {
                 cartExist.totalPriceAfterDiscount = cartExist.cartTotalPrice - (cartExist.cartTotalPrice * cartExist.discount) / 100;
+                console.log(cartExist.totalPriceAfterDiscount, 'totalPriceAfterDiscount');
+
             }
 
             const updatedCart = await this.cartRepository.update(

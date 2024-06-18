@@ -32,7 +32,6 @@ export class OrderService {
                 throw new NotFoundException(message.cart.NotFound);
             }
 
-            const totalPrice = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.cartTotalPrice
 
             console.log('createOrderDto', createOrderDto);
 
@@ -45,7 +44,7 @@ export class OrderService {
                 noOfCartItems: cart.noOfCartItems,
                 discount: cart.discount,
                 cartTotalPrice: cart.cartTotalPrice,
-                totalPriceAfterDiscount: totalPrice,
+                totalPriceAfterDiscount: cart.totalPriceAfterDiscount,
                 deliveryAddress: createOrderDto.deliveryAddress,
             });
 
@@ -81,7 +80,6 @@ export class OrderService {
                 throw new NotFoundException(message.cart.NotFound);
             }
 
-            const totalPrice = cart.totalPriceAfterDiscount ? cart.totalPriceAfterDiscount : cart.cartTotalPrice
 
             console.log('createOrderDto', createOrderDto);
 
@@ -94,7 +92,7 @@ export class OrderService {
                 noOfCartItems: cart.noOfCartItems,
                 discount: cart.discount,
                 cartTotalPrice: cart.cartTotalPrice,
-                totalPriceAfterDiscount: totalPrice,
+                totalPriceAfterDiscount: cart.totalPriceAfterDiscount,
                 deliveryAddress: createOrderDto.deliveryAddress,
             });
 

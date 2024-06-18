@@ -17,6 +17,7 @@ export class Order {
         type: [{
             meal: { type: SchemaTypes.ObjectId, ref: "Meal", required: true },
             quantity: { type: Number, default: 1 },
+            size: { type: String },
             price: { type: Number },
             totalPrice: { type: Number }
         }],
@@ -25,6 +26,7 @@ export class Order {
     cartItems: {
         meal: Types.ObjectId,
         quantity?: number,
+        size?: string,
         price?: number,
         totalPrice?: number
     }[];
