@@ -27,6 +27,27 @@ export class RestaurantService {
         }
     }
 
+    public async getOne(id: string) {
+        try {
+            const restaurant = await this.restaurantRepository.getOne(
+                {
+                    _id: id,
+                    isDeleted: false
+                },
+                {},
+                {
+                    populate: [{
+                        path: 'category',
+                        select: 'name'
+                    }]
+                },
+            );
+            return restaurant;
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
     public async searchByName(name: string) {
         try {
             const restaurants = await this.restaurantRepository.getAll(
@@ -41,7 +62,7 @@ export class RestaurantService {
             this.handleError(error)
         }
     }
-    
+
     public async getAllByCategory(categoryId: string) {
         try {
             const restaurants = await this.restaurantRepository.getAll(

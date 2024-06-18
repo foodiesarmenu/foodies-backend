@@ -8,6 +8,7 @@ import { RestaurantService } from './restaurant.service';
 import {
   FindAllQuery,
   FindAllResponse,
+  FindOneResponse,
   Role,
   Roles,
   swagger
@@ -39,6 +40,23 @@ export class RestaurantController {
     }
 
     return getAllRestaurantsResponse;
+  }
+
+  @ApiOperation({ summary: 'Get  restaurant by id ' })
+  @Get(':id')
+  async getOne(@Param('id') id: string) {
+    const getOneRestaurantResponse = new FindOneResponse<Restaurant>();
+
+    try {
+      const restaurant = await this.restaurantService.getOne(id);
+      getOneRestaurantResponse.success = true;
+      getOneRestaurantResponse.data = restaurant;
+    } catch (error) {
+      getOneRestaurantResponse.success = false;
+      throw error;
+    }
+
+    return getOneRestaurantResponse;
   }
 
   @ApiOperation({ summary: 'Get all restaurants' })
