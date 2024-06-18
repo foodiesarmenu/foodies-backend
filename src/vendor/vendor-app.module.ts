@@ -5,9 +5,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/common';
 import { PromotionModule } from './promotion/promotion.module';
 import { OrderModule } from './order/order.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
-  imports: [MealModule, AuthVendorModule, PromotionModule, OrderModule],
+  imports: [
+    MealModule,
+    AuthVendorModule,
+    PromotionModule,
+    OrderModule,
+    CouponModule
+  ],
   providers: [
     {
       provide: APP_GUARD,
