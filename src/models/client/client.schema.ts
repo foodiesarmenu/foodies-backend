@@ -18,7 +18,7 @@ export class Client {
   @Prop(
     {
       type: String,
-      default: 'https://asset.cloudinary.com/dlvndc08a/a1845bec0021a63c7061af235ddac532'
+      default: 'http://res.cloudinary.com/dlvndc08a/image/upload/v1718631096/client/d0svujuorpom6ay60ias.jpg'
     }
   )
   image?: string;
