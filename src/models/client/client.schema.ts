@@ -18,7 +18,7 @@ export class Client {
   @Prop(
     {
       type: String,
-      default: 'http://res.cloudinary.com/dlvndc08a/image/upload/v1718631096/client/d0svujuorpom6ay60ias.jpg'
+      default: 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?w=740&t=st=1718791125~exp=1718791725~hmac=9fcf8dc761f8f9b1bd49ea0c7fbbfccf5eb75e77b68d4167ae1a1a431b8516f3'
     }
   )
   image?: string;
