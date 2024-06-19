@@ -15,7 +15,12 @@ export class Client {
 
   email: string;
 
-  @Prop()
+  @Prop(
+    {
+      type: String,
+      default: 'https://asset.cloudinary.com/dlvndc08a/a1845bec0021a63c7061af235ddac532'
+    }
+  )
   image?: string;
 
   @Prop()
