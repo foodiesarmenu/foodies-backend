@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Query, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Request } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { FindAllQuery, FindAllResponse, FindOneResponse, Role, Roles, swagger } from 'src/common';
 import { Order } from 'src/models';
@@ -57,11 +57,12 @@ export class OrderController {
   @Patch(':orderId')
   async updateOrder(
     @Request() req: Express.Request,
-    @Param('orderId') orderId: string
+    @Param('orderId') orderId: string,
+    @Body('status') status: string
   ) {
     const updateOrderResponse = new FindOneResponse<Order>();
     try {
-      const order = await this.orderService.updateOrder(orderId);
+      const order = await this.orderService.updateOrder(status, orderId);
       updateOrderResponse.success = true;
       updateOrderResponse.data = order;
     } catch (error) {

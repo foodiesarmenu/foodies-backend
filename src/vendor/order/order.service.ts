@@ -72,7 +72,7 @@ export class OrderService {
     }
 
 
-    public async updateOrder(orderId: string) {
+    public async updateOrder(status: string, orderId: string) {
         try {
             await this.orderRepository.update(
                 {
@@ -80,7 +80,7 @@ export class OrderService {
                     isDeleted: false
                 },
                 {
-                    status: 'preparing'
+                    status: status
                 },
                 {
                     new: true
