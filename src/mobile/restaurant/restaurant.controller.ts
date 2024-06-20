@@ -80,7 +80,7 @@ export class RestaurantController {
   }
 
   @ApiOperation({ summary: 'Get all restaurants' })
-  @Get(':categoryId')
+  @Get(':categoryId/category')
   async search(
     @Param('categoryId') categoryId: string,
   ) {
