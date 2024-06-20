@@ -34,14 +34,15 @@ export class RestaurantService {
       if (restaurantExists) {
         throw new ConflictException(message.restaurant.AlreadyExists);
       }
-      const createdRestaurant = await this.restaurantRepository.create(restaurant);
 
       createdRestaurant.qrCode = await qrcode.toDataURL(createdRestaurant._id.toString());
+      
+      const createdRestaurant = await this.restaurantRepository.create(restaurant);
 
       if (!createdRestaurant) {
         throw new BadRequestException(message.restaurant.FailedToCreate);
       }
- 
+
       return omit(createdRestaurant, ['password']) as unknown as Restaurant;
     } catch (error) {
       this.handleError(error);
