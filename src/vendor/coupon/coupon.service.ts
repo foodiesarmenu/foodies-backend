@@ -24,11 +24,19 @@ export class CouponService {
   }
 
 
-  public async create(coupon: Coupon , restaurant?: Types.ObjectId) {
+  public async create(coupon: Coupon, restaurant?: Types.ObjectId) {
     try {
       if (restaurant) {
         coupon.restaurant = restaurant;
-      }  
+      }
+
+      const isExist = await this.couponRepository.exists({
+        code: coupon.code
+      });
+
+      if (isExist) {
+        throw new BadRequestException(message.coupon.AlreadyExists);
+      }
       const createdCoupon = await this.couponRepository.create(coupon);
 
       if (!createdCoupon) {
@@ -84,7 +92,7 @@ export class CouponService {
       this.handleError(error);
     }
   }
-  
+
 
   public async update(couponId: string, updatedCouponData: Coupon) {
     try {
