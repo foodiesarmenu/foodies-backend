@@ -35,13 +35,20 @@ export class RestaurantService {
         throw new ConflictException(message.restaurant.AlreadyExists);
       }
 
-      restaurant.qrCode = await qrcode.toDataURL(restaurant._id.toString());
-
       const createdRestaurant = await this.restaurantRepository.create(restaurant);
 
       if (!createdRestaurant) {
         throw new BadRequestException(message.restaurant.FailedToCreate);
       }
+
+      const restaurantCode = await qrcode.toDataURL(createdRestaurant._id.toString());
+      createdRestaurant.qrCode = restaurantCode;
+
+      await this.restaurantRepository.update(
+        { _id: createdRestaurant._id },
+        { qrCode: restaurantCode },
+        { new: true },
+      );
 
       return omit(createdRestaurant, ['password']) as unknown as Restaurant;
     } catch (error) {
