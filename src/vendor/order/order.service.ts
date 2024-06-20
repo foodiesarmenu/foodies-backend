@@ -74,7 +74,7 @@ export class OrderService {
 
     public async updateOrder(orderId: string) {
         try {
-            const order = await this.orderRepository.update(
+            await this.orderRepository.update(
                 {
                     _id: orderId,
                     isDeleted: false
@@ -85,6 +85,26 @@ export class OrderService {
                 {
                     new: true
                 }
+            );
+
+            const order = await this.orderRepository.getOne(
+                {
+                    _id: orderId,
+                }, {
+
+            },
+                {
+                    populate: [{
+                        path: 'userId',
+                        select: '-password'
+                    },
+                    {
+                        path: 'cartItems.meal',
+                    },
+                    ],
+
+                },
+
             );
             return order;
         } catch (error) {
