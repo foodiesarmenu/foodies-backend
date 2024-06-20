@@ -35,8 +35,8 @@ export class RestaurantService {
         throw new ConflictException(message.restaurant.AlreadyExists);
       }
 
-      createdRestaurant.qrCode = await qrcode.toDataURL(createdRestaurant._id.toString());
-      
+      restaurant.qrCode = await qrcode.toDataURL(restaurant._id.toString());
+
       const createdRestaurant = await this.restaurantRepository.create(restaurant);
 
       if (!createdRestaurant) {
