@@ -9,6 +9,7 @@ import { ResetPasswordDto } from './dto/ResetPasswordDto';
 import { SendEmailResponse, changePasswordResponse } from 'src/common';
 import { Client } from 'src/models';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
+import { VerifyOtpDto } from './dto/verifyOtp';
 
 @ApiTags(swagger.MobileAuth)
 @Controller('mobile/auth')
@@ -70,7 +71,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Verify OTP' })
   @Public()
   @Post('verify-otp')
-  async verifyOTP(@Body() body: { email: string, code: string }) {
+  async verifyOTP(@Body() body: VerifyOtpDto) {
     const response = new SendEmailResponse()
 
     try {
@@ -79,6 +80,7 @@ export class AuthController {
       response.to = body.email;
       response.success = true;
     } catch (error) {
+      response.message = error.message;
       response.success = false;
       throw error;
     }

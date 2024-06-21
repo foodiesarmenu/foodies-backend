@@ -132,6 +132,7 @@ export class AuthService {
       if (user.emailCode !== code) {
         throw new ConflictException(message.user.InvalidCode);
       }
+
       await this.clientRepository.update({
         email
       }, {
