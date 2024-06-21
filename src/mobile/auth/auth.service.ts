@@ -122,7 +122,13 @@ export class AuthService {
 
   async verifyOTP(email: string, code: string) {
     try {
+      console.log(email, 'email', code, 'code');
+
       const user = await this.clientRepository.getOne({ email });
+      if (!user) {
+        throw new ConflictException(message.user.NotFound);
+      }
+
       if (user.emailCode !== code) {
         throw new ConflictException(message.user.InvalidCode);
       }
