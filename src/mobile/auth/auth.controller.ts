@@ -75,7 +75,7 @@ export class AuthController {
     const response = new SendEmailResponse()
 
     try {
-      this.authService.verifyOTP(body.email, body.code);
+      await this.authService.verifyOTP(body.email, body.code);
       response.message = 'OTP verified';
       response.to = body.email;
       response.success = true;
